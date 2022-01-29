@@ -2,7 +2,8 @@
   "kind": "collectionType",
   "collectionName": "account",
   "info": {
-    "name": "Account"
+    "name": "Account",
+    "description": ""
   },
   "options": {
     "increments": true,
@@ -22,6 +23,12 @@
     "leverage": {
       "type": "integer",
       "required": true
+    },
+    "balance": {
+      "type": "decimal"
+    },
+    "equity": {
+      "type": "decimal"
     }
   }
 }

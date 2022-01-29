@@ -573,7 +573,34 @@
                 "takeProfit": {
                   "type": "number"
                 },
-                "published_at": {
+                "M30": {
+                  "type": "string"
+                },
+                "H1": {
+                  "type": "string"
+                },
+                "H4": {
+                  "type": "string"
+                },
+                "D1": {
+                  "type": "string"
+                },
+                "W1": {
+                  "type": "string"
+                },
+                "MN": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "M1": {
+                  "type": "string"
+                },
+                "M5": {
+                  "type": "string"
+                },
+                "M15": {
                   "type": "string"
                 },
                 "created_by": {
@@ -611,9 +638,6 @@
               "contractSize": {
                 "type": "integer"
               },
-              "published_at": {
-                "type": "string"
-              },
               "created_by": {
                 "type": "string"
               },
@@ -622,9 +646,35 @@
               }
             }
           },
-          "published_at": {
-            "type": "string",
-            "format": "date-time"
+          "M1": {
+            "type": "string"
+          },
+          "M5": {
+            "type": "string"
+          },
+          "M15": {
+            "type": "string"
+          },
+          "M30": {
+            "type": "string"
+          },
+          "H1": {
+            "type": "string"
+          },
+          "H4": {
+            "type": "string"
+          },
+          "D1": {
+            "type": "string"
+          },
+          "W1": {
+            "type": "string"
+          },
+          "MN": {
+            "type": "string"
+          },
+          "comment": {
+            "type": "string"
           }
         }
       },
@@ -674,9 +724,35 @@
           "product": {
             "type": "string"
           },
-          "published_at": {
-            "type": "string",
-            "format": "date-time"
+          "M1": {
+            "type": "string"
+          },
+          "M5": {
+            "type": "string"
+          },
+          "M15": {
+            "type": "string"
+          },
+          "M30": {
+            "type": "string"
+          },
+          "H1": {
+            "type": "string"
+          },
+          "H4": {
+            "type": "string"
+          },
+          "D1": {
+            "type": "string"
+          },
+          "W1": {
+            "type": "string"
+          },
+          "MN": {
+            "type": "string"
+          },
+          "comment": {
+            "type": "string"
           },
           "created_by": {
             "type": "string"

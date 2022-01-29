@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "01/29/2022 5:43:59 PM"
+    "x-generation-date": "01/29/2022 11:26:12 PM"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -4422,6 +4422,12 @@
           "leverage": {
             "type": "integer"
           },
+          "balance": {
+            "type": "number"
+          },
+          "equity": {
+            "type": "number"
+          },
           "published_at": {
             "type": "string",
             "format": "date-time"
@@ -4443,6 +4449,12 @@
           },
           "leverage": {
             "type": "integer"
+          },
+          "balance": {
+            "type": "number"
+          },
+          "equity": {
+            "type": "number"
           },
           "published_at": {
             "type": "string",
@@ -4470,9 +4482,35 @@
           "takeProfit": {
             "type": "number"
           },
-          "published_at": {
-            "type": "string",
-            "format": "date-time"
+          "M30": {
+            "type": "string"
+          },
+          "H1": {
+            "type": "string"
+          },
+          "H4": {
+            "type": "string"
+          },
+          "D1": {
+            "type": "string"
+          },
+          "W1": {
+            "type": "string"
+          },
+          "MN": {
+            "type": "string"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "M1": {
+            "type": "string"
+          },
+          "M5": {
+            "type": "string"
+          },
+          "M15": {
+            "type": "string"
           }
         }
       },
@@ -4484,9 +4522,35 @@
           "takeProfit": {
             "type": "number"
           },
-          "published_at": {
-            "type": "string",
-            "format": "date-time"
+          "M30": {
+            "type": "string"
+          },
+          "H1": {
+            "type": "string"
+          },
+          "H4": {
+            "type": "string"
+          },
+          "D1": {
+            "type": "string"
+          },
+          "W1": {
+            "type": "string"
+          },
+          "MN": {
+            "type": "string"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "M1": {
+            "type": "string"
+          },
+          "M5": {
+            "type": "string"
+          },
+          "M15": {
+            "type": "string"
           },
           "created_by": {
             "type": "string"
@@ -4555,7 +4619,34 @@
                 "takeProfit": {
                   "type": "number"
                 },
-                "published_at": {
+                "M30": {
+                  "type": "string"
+                },
+                "H1": {
+                  "type": "string"
+                },
+                "H4": {
+                  "type": "string"
+                },
+                "D1": {
+                  "type": "string"
+                },
+                "W1": {
+                  "type": "string"
+                },
+                "MN": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "M1": {
+                  "type": "string"
+                },
+                "M5": {
+                  "type": "string"
+                },
+                "M15": {
                   "type": "string"
                 },
                 "created_by": {
@@ -4593,9 +4684,6 @@
               "contractSize": {
                 "type": "integer"
               },
-              "published_at": {
-                "type": "string"
-              },
               "created_by": {
                 "type": "string"
               },
@@ -4604,9 +4692,35 @@
               }
             }
           },
-          "published_at": {
-            "type": "string",
-            "format": "date-time"
+          "M1": {
+            "type": "string"
+          },
+          "M5": {
+            "type": "string"
+          },
+          "M15": {
+            "type": "string"
+          },
+          "M30": {
+            "type": "string"
+          },
+          "H1": {
+            "type": "string"
+          },
+          "H4": {
+            "type": "string"
+          },
+          "D1": {
+            "type": "string"
+          },
+          "W1": {
+            "type": "string"
+          },
+          "MN": {
+            "type": "string"
+          },
+          "comment": {
+            "type": "string"
           }
         }
       },
@@ -4656,9 +4770,35 @@
           "product": {
             "type": "string"
           },
-          "published_at": {
-            "type": "string",
-            "format": "date-time"
+          "M1": {
+            "type": "string"
+          },
+          "M5": {
+            "type": "string"
+          },
+          "M15": {
+            "type": "string"
+          },
+          "M30": {
+            "type": "string"
+          },
+          "H1": {
+            "type": "string"
+          },
+          "H4": {
+            "type": "string"
+          },
+          "D1": {
+            "type": "string"
+          },
+          "W1": {
+            "type": "string"
+          },
+          "MN": {
+            "type": "string"
+          },
+          "comment": {
+            "type": "string"
           },
           "created_by": {
             "type": "string"
@@ -4693,10 +4833,6 @@
           },
           "contractSize": {
             "type": "integer"
-          },
-          "published_at": {
-            "type": "string",
-            "format": "date-time"
           }
         }
       },
@@ -4721,10 +4857,6 @@
           },
           "contractSize": {
             "type": "integer"
-          },
-          "published_at": {
-            "type": "string",
-            "format": "date-time"
           },
           "created_by": {
             "type": "string"

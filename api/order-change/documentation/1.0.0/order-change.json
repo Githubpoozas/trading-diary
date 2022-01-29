@@ -541,9 +541,35 @@
           "takeProfit": {
             "type": "number"
           },
-          "published_at": {
-            "type": "string",
-            "format": "date-time"
+          "M30": {
+            "type": "string"
+          },
+          "H1": {
+            "type": "string"
+          },
+          "H4": {
+            "type": "string"
+          },
+          "D1": {
+            "type": "string"
+          },
+          "W1": {
+            "type": "string"
+          },
+          "MN": {
+            "type": "string"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "M1": {
+            "type": "string"
+          },
+          "M5": {
+            "type": "string"
+          },
+          "M15": {
+            "type": "string"
           }
         }
       },
@@ -555,9 +581,35 @@
           "takeProfit": {
             "type": "number"
           },
-          "published_at": {
-            "type": "string",
-            "format": "date-time"
+          "M30": {
+            "type": "string"
+          },
+          "H1": {
+            "type": "string"
+          },
+          "H4": {
+            "type": "string"
+          },
+          "D1": {
+            "type": "string"
+          },
+          "W1": {
+            "type": "string"
+          },
+          "MN": {
+            "type": "string"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "M1": {
+            "type": "string"
+          },
+          "M5": {
+            "type": "string"
+          },
+          "M15": {
+            "type": "string"
           },
           "created_by": {
             "type": "string"

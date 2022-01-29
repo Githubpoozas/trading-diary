@@ -534,6 +534,12 @@
           "leverage": {
             "type": "integer"
           },
+          "balance": {
+            "type": "number"
+          },
+          "equity": {
+            "type": "number"
+          },
           "published_at": {
             "type": "string",
             "format": "date-time"
@@ -555,6 +561,12 @@
           },
           "leverage": {
             "type": "integer"
+          },
+          "balance": {
+            "type": "number"
+          },
+          "equity": {
+            "type": "number"
           },
           "published_at": {
             "type": "string",

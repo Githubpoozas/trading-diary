@@ -8,7 +8,7 @@
   "options": {
     "increments": true,
     "timestamps": true,
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
@@ -20,7 +20,7 @@
     },
     "type": {
       "type": "string",
-      "regex": "\\b(sell|buy|sellLimit|buyLimit|sellStop|byStop|balance)\\b"
+      "regex": "\\b(sell|buy|sellLimit|buyLimit|sellStop|buyStop|balance)\\b"
     },
     "size": {
       "type": "decimal"
@@ -52,6 +52,36 @@
     },
     "product": {
       "model": "product"
+    },
+    "M1": {
+      "type": "string"
+    },
+    "M5": {
+      "type": "string"
+    },
+    "M15": {
+      "type": "string"
+    },
+    "M30": {
+      "type": "string"
+    },
+    "H1": {
+      "type": "string"
+    },
+    "H4": {
+      "type": "string"
+    },
+    "D1": {
+      "type": "string"
+    },
+    "W1": {
+      "type": "string"
+    },
+    "MN": {
+      "type": "string"
+    },
+    "comment": {
+      "type": "text"
     }
   }
 }

@@ -2,12 +2,13 @@
   "kind": "collectionType",
   "collectionName": "order_change",
   "info": {
-    "name": "OrderChange"
+    "name": "OrderChange",
+    "description": ""
   },
   "options": {
     "increments": true,
     "timestamps": true,
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
@@ -16,6 +17,36 @@
     },
     "takeProfit": {
       "type": "float"
+    },
+    "M1": {
+      "type": "string"
+    },
+    "M5": {
+      "type": "string"
+    },
+    "M15": {
+      "type": "string"
+    },
+    "M30": {
+      "type": "string"
+    },
+    "H1": {
+      "type": "string"
+    },
+    "H4": {
+      "type": "string"
+    },
+    "D1": {
+      "type": "string"
+    },
+    "W1": {
+      "type": "string"
+    },
+    "MN": {
+      "type": "string"
+    },
+    "comment": {
+      "type": "text"
     }
   }
 }

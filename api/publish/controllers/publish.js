@@ -5,21 +5,15 @@ module.exports = {
     const { name } = ctx.request.body;
 
     try {
-      console.log("name", name);
-
-      const findRes = await strapi.query(name).find();
-      console.log("findRes", findRes);
+      const findRes = await strapi.query(name).find({ _limit: -1 });
 
       const promises = findRes.map(async (item) => {
         if (item.published_at) return;
-
         const res = await strapi
           .query(name)
           .update({ id: item.id }, { published_at: new Date().toISOString() });
-
         return res;
       });
-
       const publishRes = await Promise.all(promises);
 
       ctx.response.status = 200;

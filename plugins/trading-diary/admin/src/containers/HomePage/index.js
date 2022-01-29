@@ -12,7 +12,7 @@ const HomePage = () => {
   return (
     <div>
       <h1>{pluginId}&apos;s HomePage</h1>
-      <p>Deploy from github</p>
+      <p>Deploy from github again</p>
     </div>
   );
 };

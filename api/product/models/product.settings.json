@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "product",
+  "info": {
+    "name": "Product",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "provider": {
+      "type": "string",
+      "required": true,
+      "regex": "\\b(xm)\\b"
+    },
+    "type": {
+      "type": "string",
+      "regex": "\\b(forex|metals|indices|crypto)\\b",
+      "required": true
+    },
+    "digits": {
+      "type": "integer"
+    },
+    "contractSize": {
+      "type": "integer"
+    }
+  }
+}

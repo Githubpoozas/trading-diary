@@ -1,0 +1,57 @@
+{
+  "kind": "collectionType",
+  "collectionName": "orders",
+  "info": {
+    "name": "Orders",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "ticket": {
+      "type": "string"
+    },
+    "openTime": {
+      "type": "datetime"
+    },
+    "type": {
+      "type": "string",
+      "regex": "\\b(sell|buy|sellLimit|buyLimit|sellStop|byStop|balance)\\b"
+    },
+    "size": {
+      "type": "decimal"
+    },
+    "openPrice": {
+      "type": "float"
+    },
+    "stopLoss": {
+      "type": "float"
+    },
+    "takeProfit": {
+      "type": "float"
+    },
+    "closeTime": {
+      "type": "datetime"
+    },
+    "swap": {
+      "type": "decimal"
+    },
+    "profit": {
+      "type": "decimal"
+    },
+    "status": {
+      "type": "string",
+      "regex": "\\b(open|close|cancelled)\\b"
+    },
+    "order_changes": {
+      "collection": "order-change"
+    },
+    "product": {
+      "model": "product"
+    }
+  }
+}

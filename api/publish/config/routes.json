@@ -1,0 +1,12 @@
+{
+  "routes": [
+    {
+      "method": "POST",
+      "path": "/publish",
+      "handler": "publish.publish",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

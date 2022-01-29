@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "account",
+  "info": {
+    "name": "Account"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "accountId": {
+      "type": "string",
+      "required": true
+    },
+    "type": {
+      "type": "string",
+      "required": true
+    },
+    "leverage": {
+      "type": "integer",
+      "required": true
+    }
+  }
+}

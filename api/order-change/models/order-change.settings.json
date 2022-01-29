@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "order_change",
+  "info": {
+    "name": "OrderChange"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "stopLoss": {
+      "type": "float"
+    },
+    "takeProfit": {
+      "type": "float"
+    }
+  }
+}

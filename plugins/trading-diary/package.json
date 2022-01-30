@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "description": "This is the description of the plugin.",
   "strapi": {
-    "name": "trading-diary",
+    "name": "Trading-diary",
     "icon": "journal-whills",
-    "description": "Description of trading-diary plugin."
+    "description": "Description of Trading-diary plugin."
   },
   "dependencies": {},
   "author": {

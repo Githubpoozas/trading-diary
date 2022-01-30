@@ -33,11 +33,11 @@ import theme from "../../theme";
 import MainLayout from "../../component/MainLayout/index";
 
 import { getToken, tokenDecrypt } from "../../services";
+import { getApiUrl } from "../../utils/urlFactory";
 
 /* ---------- Apollo Client ---------- */
 const httpLink = createHttpLink({
-  uri: `${strapi.backendURL}/graphql`,
-  // uri: `http://localhost:1337/graphql`,
+  uri: `${getApiUrl()}/graphql`,
 });
 
 const authLink = setContext(async (_, { headers }) => {

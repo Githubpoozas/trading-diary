@@ -36,8 +36,8 @@ import { getToken, tokenDecrypt } from "../../services";
 
 /* ---------- Apollo Client ---------- */
 const httpLink = createHttpLink({
-  // uri: `${strapi.backendURL}/graphql`,
-  uri: `http://localhost:1337/graphql`,
+  uri: `${strapi.backendURL}/graphql`,
+  // uri: `http://localhost:1337/graphql`,
 });
 
 const authLink = setContext(async (_, { headers }) => {

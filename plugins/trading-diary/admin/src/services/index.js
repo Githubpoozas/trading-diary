@@ -2,8 +2,8 @@ import axios from "axios";
 import { gql } from "@apollo/client";
 
 const instance = axios.create({
-  //   baseURL: strapi.baseURL,
-  baseURL: "http://localhost:1337",
+    baseURL: strapi.baseURL,
+  // baseURL: "http://localhost:1337",
   timeout: 600000,
   headers: {
     "Content-Type": "application/json",

@@ -679,6 +679,9 @@
                 "type": "string"
               }
             }
+          },
+          "closePrice": {
+            "type": "number"
           }
         }
       },
@@ -727,6 +730,9 @@
           },
           "trade": {
             "type": "string"
+          },
+          "closePrice": {
+            "type": "number"
           },
           "created_by": {
             "type": "string"

@@ -53,6 +53,9 @@
     "trade": {
       "via": "orders",
       "model": "trade"
+    },
+    "closePrice": {
+      "type": "float"
     }
   }
 }

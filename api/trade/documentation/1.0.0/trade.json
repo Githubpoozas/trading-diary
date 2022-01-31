@@ -548,6 +548,9 @@
               "contractSize": {
                 "type": "integer"
               },
+              "order": {
+                "type": "string"
+              },
               "created_by": {
                 "type": "string"
               },
@@ -681,8 +684,11 @@
                     "type": "string"
                   }
                 },
-                "product": {
-                  "type": "string"
+                "products": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
                 },
                 "comment": {
                   "type": "string"

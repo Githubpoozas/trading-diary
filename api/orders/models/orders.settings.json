@@ -44,8 +44,9 @@
       "collection": "order-change",
       "via": "order"
     },
-    "product": {
-      "model": "product"
+    "products": {
+      "collection": "product",
+      "via": "order"
     },
     "comment": {
       "type": "text"

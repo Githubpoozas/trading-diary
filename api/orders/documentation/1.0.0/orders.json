@@ -582,37 +582,43 @@
               }
             }
           },
-          "product": {
-            "required": [
-              "id",
-              "name",
-              "provider",
-              "type"
-            ],
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "name": {
-                "type": "string"
-              },
-              "provider": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string"
-              },
-              "digits": {
-                "type": "integer"
-              },
-              "contractSize": {
-                "type": "integer"
-              },
-              "created_by": {
-                "type": "string"
-              },
-              "updated_by": {
-                "type": "string"
+          "products": {
+            "type": "array",
+            "items": {
+              "required": [
+                "id",
+                "name",
+                "provider",
+                "type"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "provider": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "digits": {
+                  "type": "integer"
+                },
+                "contractSize": {
+                  "type": "integer"
+                },
+                "order": {
+                  "type": "string"
+                },
+                "created_by": {
+                  "type": "string"
+                },
+                "updated_by": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -722,8 +728,11 @@
               "type": "string"
             }
           },
-          "product": {
-            "type": "string"
+          "products": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "comment": {
             "type": "string"

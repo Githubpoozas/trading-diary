@@ -83,6 +83,7 @@ const App = () => {
   };
 
   useEffect(() => {
+    console.log("getApiUrl", getApiUrl());
     const verifyToken = async () => {
       const jwt = localStorage.getItem("str_token");
       if (!_.isNull(jwt)) {

@@ -1,6 +1,6 @@
 {
   "paths": {
-    "/order-changes": {
+    "/trading-updates": {
       "get": {
         "deprecated": false,
         "description": "",
@@ -52,7 +52,7 @@
         },
         "summary": "",
         "tags": [
-          "Order-change"
+          "Trading-update"
         ],
         "parameters": [
           {
@@ -244,7 +244,7 @@
         },
         "summary": "",
         "tags": [
-          "Order-change"
+          "Trading-update"
         ],
         "requestBody": {
           "description": "",
@@ -252,14 +252,14 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewOrder-change"
+                "$ref": "#/components/schemas/NewTrading-update"
               }
             }
           }
         }
       }
     },
-    "/order-changes/count": {
+    "/trading-updates/count": {
       "get": {
         "deprecated": false,
         "description": "",
@@ -311,12 +311,12 @@
         },
         "summary": "",
         "tags": [
-          "Order-change"
+          "Trading-update"
         ],
         "parameters": []
       }
     },
-    "/order-changes/{id}": {
+    "/trading-updates/{id}": {
       "get": {
         "deprecated": false,
         "description": "",
@@ -368,7 +368,7 @@
         },
         "summary": "",
         "tags": [
-          "Order-change"
+          "Trading-update"
         ],
         "parameters": [
           {
@@ -434,7 +434,7 @@
         },
         "summary": "",
         "tags": [
-          "Order-change"
+          "Trading-update"
         ],
         "requestBody": {
           "description": "",
@@ -442,7 +442,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewOrder-change"
+                "$ref": "#/components/schemas/NewTrading-update"
               }
             }
           }
@@ -508,7 +508,7 @@
         },
         "summary": "",
         "tags": [
-          "Order-change"
+          "Trading-update"
         ],
         "parameters": [
           {
@@ -527,7 +527,7 @@
   },
   "components": {
     "schemas": {
-      "Order-change": {
+      "Trading-update": {
         "required": [
           "id"
         ],
@@ -535,16 +535,37 @@
           "id": {
             "type": "string"
           },
-          "stopLoss": {
-            "type": "number"
+          "M1": {
+            "type": "string"
           },
-          "takeProfit": {
-            "type": "number"
+          "M5": {
+            "type": "string"
+          },
+          "M15": {
+            "type": "string"
+          },
+          "M30": {
+            "type": "string"
+          },
+          "H1": {
+            "type": "string"
+          },
+          "H4": {
+            "type": "string"
+          },
+          "D1": {
+            "type": "string"
+          },
+          "W1": {
+            "type": "string"
+          },
+          "MN": {
+            "type": "string"
           },
           "comment": {
             "type": "string"
           },
-          "order": {
+          "trade": {
             "required": [
               "id"
             ],
@@ -552,47 +573,50 @@
               "id": {
                 "type": "string"
               },
-              "ticket": {
-                "type": "string"
-              },
-              "openTime": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string"
-              },
-              "size": {
-                "type": "number"
-              },
-              "openPrice": {
-                "type": "number"
-              },
-              "stopLoss": {
-                "type": "number"
-              },
-              "takeProfit": {
-                "type": "number"
-              },
-              "closeTime": {
-                "type": "string"
-              },
-              "profit": {
-                "type": "number"
-              },
-              "order_changes": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
               "product": {
+                "type": "string"
+              },
+              "M1": {
+                "type": "string"
+              },
+              "M5": {
+                "type": "string"
+              },
+              "M15": {
+                "type": "string"
+              },
+              "M30": {
+                "type": "string"
+              },
+              "H1": {
+                "type": "string"
+              },
+              "H4": {
+                "type": "string"
+              },
+              "D1": {
+                "type": "string"
+              },
+              "W1": {
+                "type": "string"
+              },
+              "MN": {
                 "type": "string"
               },
               "comment": {
                 "type": "string"
               },
-              "trade": {
-                "type": "string"
+              "trading_updates": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "orders": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               },
               "created_by": {
                 "type": "string"
@@ -604,18 +628,39 @@
           }
         }
       },
-      "NewOrder-change": {
+      "NewTrading-update": {
         "properties": {
-          "stopLoss": {
-            "type": "number"
+          "M1": {
+            "type": "string"
           },
-          "takeProfit": {
-            "type": "number"
+          "M5": {
+            "type": "string"
+          },
+          "M15": {
+            "type": "string"
+          },
+          "M30": {
+            "type": "string"
+          },
+          "H1": {
+            "type": "string"
+          },
+          "H4": {
+            "type": "string"
+          },
+          "D1": {
+            "type": "string"
+          },
+          "W1": {
+            "type": "string"
+          },
+          "MN": {
+            "type": "string"
           },
           "comment": {
             "type": "string"
           },
-          "order": {
+          "trade": {
             "type": "string"
           },
           "created_by": {

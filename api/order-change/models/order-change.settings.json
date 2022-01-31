@@ -18,35 +18,12 @@
     "takeProfit": {
       "type": "float"
     },
-    "M1": {
-      "type": "string"
-    },
-    "M5": {
-      "type": "string"
-    },
-    "M15": {
-      "type": "string"
-    },
-    "M30": {
-      "type": "string"
-    },
-    "H1": {
-      "type": "string"
-    },
-    "H4": {
-      "type": "string"
-    },
-    "D1": {
-      "type": "string"
-    },
-    "W1": {
-      "type": "string"
-    },
-    "MN": {
-      "type": "string"
-    },
     "comment": {
       "type": "text"
+    },
+    "order": {
+      "via": "order_changes",
+      "model": "orders"
     }
   }
 }

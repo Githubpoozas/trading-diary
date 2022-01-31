@@ -37,51 +37,22 @@
     "closeTime": {
       "type": "datetime"
     },
-    "swap": {
-      "type": "decimal"
-    },
     "profit": {
       "type": "decimal"
     },
-    "status": {
-      "type": "string",
-      "regex": "\\b(open|close|cancelled)\\b"
-    },
     "order_changes": {
-      "collection": "order-change"
+      "collection": "order-change",
+      "via": "order"
     },
     "product": {
       "model": "product"
     },
-    "M1": {
-      "type": "string"
-    },
-    "M5": {
-      "type": "string"
-    },
-    "M15": {
-      "type": "string"
-    },
-    "M30": {
-      "type": "string"
-    },
-    "H1": {
-      "type": "string"
-    },
-    "H4": {
-      "type": "string"
-    },
-    "D1": {
-      "type": "string"
-    },
-    "W1": {
-      "type": "string"
-    },
-    "MN": {
-      "type": "string"
-    },
     "comment": {
       "type": "text"
+    },
+    "trade": {
+      "via": "orders",
+      "model": "trade"
     }
   }
 }

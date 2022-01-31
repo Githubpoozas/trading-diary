@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/trading-updates",
+      "handler": "trading-update.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/trading-updates/count",
+      "handler": "trading-update.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/trading-updates/:id",
+      "handler": "trading-update.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/trading-updates",
+      "handler": "trading-update.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/trading-updates/:id",
+      "handler": "trading-update.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/trading-updates/:id",
+      "handler": "trading-update.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "kind": "collectionType",
+  "collectionName": "trading_update",
+  "info": {
+    "name": "TradingUpdate"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "M1": {
+      "type": "string"
+    },
+    "M5": {
+      "type": "string"
+    },
+    "M15": {
+      "type": "string"
+    },
+    "M30": {
+      "type": "string"
+    },
+    "H1": {
+      "type": "string"
+    },
+    "H4": {
+      "type": "string"
+    },
+    "D1": {
+      "type": "string"
+    },
+    "W1": {
+      "type": "string"
+    },
+    "MN": {
+      "type": "string"
+    },
+    "comment": {
+      "type": "text"
+    },
+    "trade": {
+      "via": "trading_updates",
+      "model": "trade"
+    }
+  }
+}

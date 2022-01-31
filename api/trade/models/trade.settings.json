@@ -1,0 +1,57 @@
+{
+  "kind": "collectionType",
+  "collectionName": "trade",
+  "info": {
+    "name": "trade",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "product": {
+      "model": "product"
+    },
+    "M1": {
+      "type": "string"
+    },
+    "M5": {
+      "type": "string"
+    },
+    "M15": {
+      "type": "string"
+    },
+    "M30": {
+      "type": "string"
+    },
+    "H1": {
+      "type": "string"
+    },
+    "H4": {
+      "type": "string"
+    },
+    "D1": {
+      "type": "string"
+    },
+    "W1": {
+      "type": "string"
+    },
+    "MN": {
+      "type": "string"
+    },
+    "comment": {
+      "type": "text"
+    },
+    "trading_updates": {
+      "collection": "trading-update",
+      "via": "trade"
+    },
+    "orders": {
+      "via": "trade",
+      "collection": "orders"
+    }
+  }
+}

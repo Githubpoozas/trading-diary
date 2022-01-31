@@ -52,6 +52,10 @@
     "orders": {
       "via": "trade",
       "collection": "orders"
+    },
+    "type": {
+      "type": "string",
+      "regex": "\\b(sell|buy)\\b"
     }
   }
 }

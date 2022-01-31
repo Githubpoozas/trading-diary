@@ -618,6 +618,9 @@
                   "type": "string"
                 }
               },
+              "type": {
+                "type": "string"
+              },
               "created_by": {
                 "type": "string"
               },

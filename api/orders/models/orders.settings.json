@@ -20,7 +20,7 @@
     },
     "type": {
       "type": "string",
-      "regex": "\\b(sell|buy|sellLimit|buyLimit|sellStop|buyStop|balance)\\b"
+      "regex": "\\b(sell|buy|sellLimit|buyLimit|sellStop|buyStop)\\b"
     },
     "size": {
       "type": "decimal"

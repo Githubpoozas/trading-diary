@@ -45,6 +45,25 @@ export const tokenDecrypt = async (token) => {
   return res.data;
 };
 
+export const deleteMedia = async (id) => {
+  const res = await instance.delete(`/upload/files/${id}`, {
+    headers: {
+      authorization: `Bearer ${localStorage.getItem("str_token")}`,
+    },
+  });
+  return res.data;
+};
+
+export const uploadMedia = async (formData) => {
+  const res = await instance.post(`/upload`, formData, {
+    headers: {
+      authorization: `Bearer ${localStorage.getItem("str_token")}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return res.data;
+};
+
 export const GET_OPEN_ORDERS = gql`
   query GET_OPEN_ORDERS {
     orders(where: { type_in: ["buy", "sell"], closeTime_null: true }) {

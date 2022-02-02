@@ -1,9 +1,8 @@
 import axios from "axios";
 import { gql } from "@apollo/client";
-import { getApiUrl } from "../utils/urlFactory";
 
 const instance = axios.create({
-  baseURL: getApiUrl(),
+  baseURL: API_URI,
   timeout: 600000,
   headers: {
     "Content-Type": "application/json",

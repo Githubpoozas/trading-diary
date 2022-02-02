@@ -33,11 +33,10 @@ import theme from "../../theme";
 import MainLayout from "../../component/MainLayout/index";
 
 import { getToken, tokenDecrypt } from "../../services";
-import { getApiUrl } from "../../utils/urlFactory";
 
 /* ---------- Apollo Client ---------- */
 const httpLink = createHttpLink({
-  uri: `${getApiUrl()}/graphql`,
+  uri: `${API_URI}/graphql`,
 });
 
 const authLink = setContext(async (_, { headers }) => {
@@ -83,7 +82,10 @@ const App = () => {
   };
 
   useEffect(() => {
-    console.log("getApiUrl", getApiUrl());
+    console.log("API_URI", API_URI);
+  }, [API_URI]);
+
+  useEffect(() => {
     const verifyToken = async () => {
       const jwt = localStorage.getItem("str_token");
       if (!_.isNull(jwt)) {

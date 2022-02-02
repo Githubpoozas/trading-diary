@@ -7,6 +7,7 @@ const instance = axios.create({
   timeout: 600000,
   headers: {
     "Content-Type": "application/json",
+    authorization: `Bearer ${localStorage.getItem("str_token")}`,
   },
 });
 
@@ -42,6 +43,30 @@ export const tokenDecrypt = async (token) => {
     token: token,
   });
 
+  return res.data;
+};
+
+export const deleteMedia = async (id) => {
+  const res = await instance.delete(`/upload/files/${id}`, {
+    headers: {
+      // authorization: `Bearer ${localStorage.getItem("str_token")}`,
+    },
+  });
+  return res.data;
+};
+
+export const uploadMedia = async (formData) => {
+  const res = await instance.post(`/upload`, formData, {
+    headers: {
+      // authorization: `Bearer ${localStorage.getItem("str_token")}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return res.data;
+};
+
+export const createTrade = async () => {
+  const res = await instance.post("/trading-diary/create-trade", data);
   return res.data;
 };
 

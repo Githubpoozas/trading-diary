@@ -7,12 +7,16 @@ const instance = axios.create({
   timeout: 600000,
   headers: {
     "Content-Type": "application/json",
-    authorization: `Bearer ${localStorage.getItem("str_token")}`,
   },
 });
 
 instance.interceptors.request.use(
   (request) => {
+    if (!["/auth/local", "/auth/decrypt"].includes(request.url)) {
+      request.headers["authorization"] = `Bearer ${localStorage.getItem(
+        "str_token"
+      )}`;
+    }
     return request;
   },
   (error) => {
@@ -47,18 +51,13 @@ export const tokenDecrypt = async (token) => {
 };
 
 export const deleteMedia = async (id) => {
-  const res = await instance.delete(`/upload/files/${id}`, {
-    headers: {
-      // authorization: `Bearer ${localStorage.getItem("str_token")}`,
-    },
-  });
+  const res = await instance.delete(`/upload/files/${id}`);
   return res.data;
 };
 
 export const uploadMedia = async (formData) => {
   const res = await instance.post(`/upload`, formData, {
     headers: {
-      // authorization: `Bearer ${localStorage.getItem("str_token")}`,
       "Content-Type": "multipart/form-data",
     },
   });

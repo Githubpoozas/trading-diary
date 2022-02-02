@@ -12,6 +12,11 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   (request) => {
+    if (!["/auth/local", "/auth/decrypt"].includes(request.url)) {
+      request.headers["authorization"] = `Bearer ${localStorage.getItem(
+        "str_token"
+      )}`;
+    }
     return request;
   },
   (error) => {
@@ -42,6 +47,25 @@ export const tokenDecrypt = async (token) => {
     token: token,
   });
 
+  return res.data;
+};
+
+export const deleteMedia = async (id) => {
+  const res = await instance.delete(`/upload/files/${id}`);
+  return res.data;
+};
+
+export const uploadMedia = async (formData) => {
+  const res = await instance.post(`/upload`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return res.data;
+};
+
+export const createTrade = async (data) => {
+  const res = await instance.post("/trading-diary/create-trade", data);
   return res.data;
 };
 

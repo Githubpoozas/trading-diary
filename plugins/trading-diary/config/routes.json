@@ -7,6 +7,14 @@
       "config": {
         "policies": []
       }
+    },
+    {
+      "method": "POST",
+      "path": "/create-trade",
+      "handler": "trading-diary.createTrade",
+      "config": {
+        "policies": []
+      }
     }
   ]
 }

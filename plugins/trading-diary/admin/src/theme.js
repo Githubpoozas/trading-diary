@@ -9,7 +9,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    // fontSize: 16,
+    fontSize: 20,
     // htmlFontSize: 16,
   },
   components: {},

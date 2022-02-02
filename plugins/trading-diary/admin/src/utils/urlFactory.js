@@ -1,5 +1,5 @@
 export const getApiUrl = () => {
   //   return strapi.baseURL;
-  // return "http://localhost:1337";
-  return ''
+  return "http://localhost:1337";
+  return "";
 };

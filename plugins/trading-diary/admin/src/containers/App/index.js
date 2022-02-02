@@ -8,7 +8,7 @@
 import React, { useEffect, useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import { NotFound } from "strapi-helper-plugin";
-import dayjs from "dayjs";
+import moment from "moment";
 import _ from "lodash";
 import { ThemeProvider } from "@mui/material/styles";
 import {
@@ -91,7 +91,7 @@ const App = () => {
           const res = await tokenDecrypt(jwt);
 
           // check token expired date
-          if (dayjs(res.exp * 1000).isAfter(dayjs(), "date")) {
+          if (moment(res.exp * 1000).isAfter(moment(), "date")) {
             setValidToken(true);
           }
         } catch (error) {

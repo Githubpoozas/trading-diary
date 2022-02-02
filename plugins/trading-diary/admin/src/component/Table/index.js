@@ -1,5 +1,5 @@
 import React, { memo, useEffect } from "react";
-import dayjs from "dayjs";
+import moment from "moment";
 import _ from "lodash";
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
@@ -102,7 +102,7 @@ const Row = memo((props) => {
                       </TableCell>
                       <TableCell align="center">
                         <Text>
-                          {dayjs(order.openTime).format("YYYY.MM.DD HH:mm")}
+                          {moment(order.openTime).format("YYYY.MM.DD HH:mm")}
                         </Text>
                       </TableCell>
                       <TableCell align="center">

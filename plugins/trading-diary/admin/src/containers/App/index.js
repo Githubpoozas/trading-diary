@@ -26,6 +26,8 @@ import LinearProgress from "@mui/material/LinearProgress";
 import pluginId from "../../pluginId";
 // Containers
 import HomePage from "../HomePage";
+import Add from "../Add";
+import History from "../History";
 
 // Theme
 import theme from "../../theme";
@@ -115,6 +117,12 @@ const App = () => {
           {validToken ? (
             <Switch>
               <Route path={`/plugins/${pluginId}`} component={HomePage} exact />
+              <Route path={`/plugins/${pluginId}/add`} component={Add} exact />
+              <Route
+                path={`/plugins/${pluginId}/history`}
+                component={History}
+                exact
+              />
               <Route component={NotFound} />
             </Switch>
           ) : (

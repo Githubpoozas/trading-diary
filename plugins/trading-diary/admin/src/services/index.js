@@ -64,30 +64,11 @@ export const uploadMedia = async (formData) => {
 };
 
 export const createTrade = async (data) => {
-  const res = await instance.post("/trading-diary/create-trade", data);
-  return res.data;
+  const res = await instance.post("/trades", data);
+  return res;
 };
 
-export const GET_OPEN_ORDERS = gql`
-  query GET_OPEN_ORDERS {
-    orders(where: { type_in: ["buy", "sell"], closeTime_null: true }) {
-      id
-      ticket
-      openTime
-      type
-      openPrice
-      size
-      product {
-        name
-        digits
-      }
-      stopLoss
-      takeProfit
-      swap
-      profit
-    }
-  }
-`;
+
 
 export const GET_PENDING_ORDERS = gql`
   query GET_PENDING_ORDERS {
@@ -119,6 +100,14 @@ export const GET_PRODUCTS = gql`
       id
       name
       digits
+    }
+  }
+`;
+
+export const GET_OPEN_TRADE = gql`
+  query GET_OPEN_TRADE {
+    trades {
+      id
     }
   }
 `;

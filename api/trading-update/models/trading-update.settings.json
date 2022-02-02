@@ -2,7 +2,8 @@
   "kind": "collectionType",
   "collectionName": "trading_update",
   "info": {
-    "name": "TradingUpdate"
+    "name": "TradingUpdate",
+    "description": ""
   },
   "options": {
     "increments": true,
@@ -11,39 +12,103 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "M1": {
-      "type": "string"
-    },
-    "M5": {
-      "type": "string"
-    },
-    "M15": {
-      "type": "string"
-    },
-    "M30": {
-      "type": "string"
-    },
-    "H1": {
-      "type": "string"
-    },
-    "H4": {
-      "type": "string"
-    },
-    "D1": {
-      "type": "string"
-    },
-    "W1": {
-      "type": "string"
-    },
-    "MN": {
-      "type": "string"
-    },
     "comment": {
-      "type": "text"
+      "type": "text",
+      "required": true
     },
     "trade": {
       "via": "trading_updates",
       "model": "trade"
+    },
+    "M1": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "M5": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "M15": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "M30": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "H1": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "H4": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "D1": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "W1": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "MN": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
     }
   }
 }

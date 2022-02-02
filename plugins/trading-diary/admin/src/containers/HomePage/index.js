@@ -22,6 +22,7 @@ import {
   GET_PENDING_ORDERS,
   GET_PRODUCTS,
   uploadMedia,
+  createTrade,
 } from "../../services";
 
 import { formatOrders } from "../../utils/format";
@@ -107,8 +108,6 @@ const HomePage = () => {
     const name = e.target.name;
     const value = e.target.value;
 
-    console.log(name, value);
-
     setInputValue({
       ...inputValue,
       [name]: value,
@@ -121,8 +120,6 @@ const HomePage = () => {
     if (e.target.files.length === 0) return;
     const name = e.target.name;
     const file = e.target.files[0];
-
-    console.log("file", file);
 
     const objectUrl = URL.createObjectURL(file);
 
@@ -180,19 +177,29 @@ const HomePage = () => {
     setErrors(newError);
     if (!_.isEmpty(newError)) return;
 
-    const imageUploadRes = await Promise.all(
-      imageArr.map(async (i) => {
-        const formData = new FormData();
-        formData.append("files", i.file);
-        formData.append("ref", "trade");
-        formData.append("refId", getDoctorData.staff.user.id);
-        formData.append("field", i.tf);
+    // const imageUploadRes = await Promise.all(
+    //   imageArr.map(async (i) => {
+    //     const formData = new FormData();
+    //     formData.append("files", i.file);
+    //     formData.append("ref", "trade");
+    //     formData.append("refId", getDoctorData.staff.user.id);
+    //     formData.append("field", i.tf);
 
-        return await uploadMedia(formData);
-      })
-    );
+    //     return await uploadMedia(formData);
+    //   })
+    // );
 
-    console.log("imageUploadRes", imageUploadRes);
+    // console.log("imageUploadRes", imageUploadRes);
+    try {
+      const res = await createTrade({
+        ...inputValue,
+        imageArr: imageArr,
+      });
+
+      console.log("res", res);
+    } catch (error) {
+      console.log("error", error);
+    }
   };
 
   const {

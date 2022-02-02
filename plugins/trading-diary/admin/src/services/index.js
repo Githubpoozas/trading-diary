@@ -64,7 +64,7 @@ export const uploadMedia = async (formData) => {
   return res.data;
 };
 
-export const createTrade = async () => {
+export const createTrade = async (data) => {
   const res = await instance.post("/trading-diary/create-trade", data);
   return res.data;
 };

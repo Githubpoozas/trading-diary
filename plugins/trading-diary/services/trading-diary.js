@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /**
  * trading-diary.js service
@@ -7,5 +7,10 @@
  */
 
 module.exports = {
+  index: async () => {
+    // Add your own logic here.
 
+    // Send 200 `ok`
+    return "message from plugin services";
+  },
 };

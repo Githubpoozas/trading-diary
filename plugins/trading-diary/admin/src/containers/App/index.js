@@ -84,10 +84,6 @@ const App = () => {
   };
 
   useEffect(() => {
-    console.log("API_URI", API_URI);
-  }, [API_URI]);
-
-  useEffect(() => {
     const verifyToken = async () => {
       const jwt = localStorage.getItem("str_token");
       if (!_.isNull(jwt)) {

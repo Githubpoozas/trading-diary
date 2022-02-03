@@ -68,8 +68,6 @@ export const createTrade = async (data) => {
   return res;
 };
 
-
-
 export const GET_PENDING_ORDERS = gql`
   query GET_PENDING_ORDERS {
     orders(
@@ -100,13 +98,14 @@ export const GET_PRODUCTS = gql`
       id
       name
       digits
+      type
     }
   }
 `;
 
 export const GET_OPEN_TRADE = gql`
   query GET_OPEN_TRADE {
-    trades {
+    trades(where: { open: true }) {
       id
     }
   }

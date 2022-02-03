@@ -69,8 +69,13 @@ const HomePage = () => {
   return (
     <div style={{ display: "flex", flexDirection: "column", rowGap: "20px" }}>
       <div>
-        <Text fontSize="20px" bold="true">
-          Open Orders
+        <Text
+          bold="true"
+          color="blue"
+          fontSize="25px"
+          sx={{ marginBottom: "10px" }}
+        >
+          Open Trade
         </Text>
         <Card>
           <CardContent>

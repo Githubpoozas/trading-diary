@@ -9,7 +9,7 @@ export const StyleMainLayout = styled("div")(({ theme }) => ({
 export const StyledBottomNavigation = styled(BottomNavigation)(({ theme }) => ({
   position: "fixed",
   bottom: "10px",
-  borderRadius: "5px",
+  borderRadius: "10px",
   zIndex: "1000",
   overflow: "hidden",
   border: `1px solid ${theme.palette.primary.main}`,

@@ -1,68 +1,34 @@
 import React, { memo, useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
+import _ from "lodash";
 
 import { styled } from "@mui/system";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import Autocomplete from "@mui/material/Autocomplete";
-import FormHelperText from "@mui/material/FormHelperText";
-import Button from "@mui/material/Button";
 
-import { Text, OrdersTable } from "../../component/index";
+import pluginId from "../../pluginId";
+import {
+  Text,
+  Button,
+  Autocomplete,
+  HelperText,
+  Select,
+  TextField,
+} from "../../component/index";
 
 import { GET_PRODUCTS, uploadMedia, createTrade } from "../../services";
-
-const Input = styled("input")({
-  display: "none",
-});
-
-const ImageUploader = styled("div")({
-  width: "auto",
-  display: "flex",
-  rowGap: "10px",
-  flexDirection: "column",
-  justifyContent: "center",
-  alignItems: "center",
-});
-
-const ImageContainer = styled("div")({});
-
-const Label = styled("label")({
-  margin: 0,
-  width: "100%",
-});
-
-const Image = styled("img")({
-  width: "100%",
-});
-const StyledButton = styled(Button)({
-  width: "100%",
-});
-const ButtonContainer = styled("div")({
-  width: "100%",
-  display: "flex",
-});
-
-const StyledAutocomplete = styled(Autocomplete)(({ theme, error }) => ({
-  [`& .MuiOutlinedInput-notchedOutline`]: {
-    borderColor: error && "red",
-  },
-}));
 
 const timeFrame = ["M1", "M5", "M15", "M30", "H1", "H4", "D1", "W1", "MN"];
 
 const Add = ({ history }) => {
   const [errors, setErrors] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [imageArr, setImageArr] = useState([]);
   const [inputValue, setInputValue] = useState({
     product: null,
-    type: "",
+    type: "buy",
     comment: "",
   });
 
@@ -100,6 +66,7 @@ const Add = ({ history }) => {
 
     setErrors(errors.filter((error) => error.property !== "image"));
 
+    e.target.value = null;
     return () => URL.revokeObjectURL(objectUrl);
   };
 
@@ -113,9 +80,8 @@ const Add = ({ history }) => {
   };
 
   const handleCreate = async () => {
+    setLoading(true);
     const newError = [];
-
-    console.log("inputValue", inputValue);
 
     if (!inputValue.product) {
       newError.push({
@@ -146,7 +112,10 @@ const Add = ({ history }) => {
     }
 
     setErrors(newError);
-    if (!_.isEmpty(newError)) return;
+    if (!_.isEmpty(newError)) {
+      setLoading(false);
+      return;
+    }
 
     try {
       const res = await createTrade({
@@ -183,7 +152,7 @@ const Add = ({ history }) => {
   const {
     data: productsData,
     error: productsError,
-    loading: productsLoading,
+    loading: productLoading,
   } = useQuery(GET_PRODUCTS);
 
   useEffect(() => {
@@ -192,18 +161,32 @@ const Add = ({ history }) => {
     }
     if (productsData && !_.isEmpty(productsData.products)) {
       setProducts(
-        productsData.products.map((p) => ({ ...p, value: p.id, label: p.name }))
+        _.sortBy(
+          productsData.products.map((p) => ({
+            ...p,
+            value: p.id,
+            label: p.name,
+          })),
+          ["type", "name"]
+        )
       );
     }
   }, [productsData, productsError]);
 
   return (
-    <div>
+    <Box sx={{ position: "relative" }}>
+      <Text
+        bold="true"
+        color="blue"
+        fontSize="25px"
+        sx={{ marginBottom: "10px" }}
+      >
+        Create Trade
+      </Text>
       <Card>
         <CardContent
           sx={{ display: "flex", flexDirection: "column", rowGap: "20px" }}
         >
-          <Text bold="true">Create Trade</Text>
           <Box
             sx={{
               display: "flex",
@@ -227,26 +210,33 @@ const Add = ({ history }) => {
                           name={tf}
                           onChange={onImageChange}
                         />
-                        <StyledButton variant="contained" component="span">
+                        <Button
+                          variant="contained"
+                          component="span"
+                          disabled={loading || productLoading}
+                          sx={{ width: "100%" }}
+                        >
                           {tf}
-                        </StyledButton>
+                        </Button>
                       </Label>
                       {imageArr.find((i) => i.tf === tf) && (
-                        <StyledButton
+                        <Button
                           variant="contained"
                           color="error"
                           component="span"
                           onClick={() => handleDeleteImage(tf)}
+                          disabled={loading || productLoading}
+                          sx={{ width: "100%" }}
                         >
                           Delete
-                        </StyledButton>
+                        </Button>
                       )}
                     </ButtonContainer>
                   </ImageUploader>
                   {errors.find((e) => e.property === "image") && (
-                    <FormHelperText error>
+                    <HelperText>
                       {errors.find((e) => e.property === "image").message}
-                    </FormHelperText>
+                    </HelperText>
                   )}
                 </CardContent>
               </Card>
@@ -262,76 +252,93 @@ const Add = ({ history }) => {
                     flexDirection: "column",
                   }}
                 >
-                  <FormControl fullWidth>
-                    <StyledAutocomplete
-                      required
-                      id="product"
-                      options={products}
-                      disabled={_.isEmpty(products)}
-                      name="product"
-                      onChange={(_, newValue) => {
-                        handleProductChange(newValue);
-                      }}
-                      renderInput={(params) => (
-                        <TextField {...params} label="Product" />
-                      )}
-                      error={errors.find((e) => e.property === "product")}
-                    />
-                    {errors.find((e) => e.property === "product") && (
-                      <FormHelperText error>
-                        {errors.find((e) => e.property === "product").message}
-                      </FormHelperText>
-                    )}
-                  </FormControl>
-                  <FormControl fullWidth>
-                    <InputLabel id="type">Type</InputLabel>
-                    <Select
-                      required
-                      labelId="type"
-                      id="type"
-                      value={inputValue.type}
-                      label="Type"
-                      name="type"
-                      onChange={handleChange}
-                      error={errors.find((e) => e.property === "type")}
-                    >
-                      <MenuItem value="buy">Buy</MenuItem>
-                      <MenuItem value="sell">Sell</MenuItem>
-                    </Select>
-                    {errors.find((e) => e.property === "type") && (
-                      <FormHelperText error>
-                        {errors.find((e) => e.property === "type").message}
-                      </FormHelperText>
-                    )}
-                  </FormControl>
-                  <FormControl fullWidth>
-                    <TextField
-                      required
-                      autoComplete="off"
-                      id="tradeComment"
-                      name="comment"
-                      label="Comment"
-                      helperText={
-                        errors.find((e) => e.property === "comment")?.message
-                      }
-                      error={errors.find((e) => e.property === "comment")}
-                      multiline
-                      fullWidth
-                      value={inputValue.comment}
-                      onChange={handleChange}
-                    />
-                  </FormControl>
+                  <Autocomplete
+                    required
+                    id="product"
+                    options={products}
+                    disabled={_.isEmpty(products)}
+                    name="product"
+                    onChange={(_, newValue) => {
+                      handleProductChange(newValue);
+                    }}
+                    label="Product"
+                    disabled={loading || productLoading}
+                    error={
+                      errors.find((e) => e.property === "product")?.message
+                    }
+                  />
+                  <Select
+                    required
+                    labelId="type"
+                    id="type"
+                    label="Type"
+                    name="type"
+                    value={inputValue.type}
+                    onChange={handleChange}
+                    error={errors.find((e) => e.property === "type")?.message}
+                    disabled={loading || productLoading}
+                    options={[
+                      { value: "buy", label: "Buy" },
+                      { value: "sell", label: "Sell" },
+                    ]}
+                  />
+
+                  <TextField
+                    required
+                    id="tradeComment"
+                    name="comment"
+                    label="Comment"
+                    error={
+                      errors.find((e) => e.property === "comment")?.message
+                    }
+                    value={inputValue.comment}
+                    onChange={handleChange}
+                    disabled={loading || productLoading}
+                  />
                 </Box>
               </CardContent>
             </Card>
           </Box>
-          <Button variant="contained" onClick={handleCreate}>
+          <Button
+            variant="contained"
+            onClick={handleCreate}
+            loading={loading || productLoading}
+          >
             Create
           </Button>
         </CardContent>
       </Card>
-    </div>
+    </Box>
   );
 };
 
 export default memo(Add);
+
+const Input = styled("input")({
+  display: "none",
+});
+
+const ImageUploader = styled("div")({
+  width: "auto",
+  display: "flex",
+  rowGap: "10px",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+});
+
+const ImageContainer = styled("div")({});
+
+const Label = styled("label")({
+  margin: 0,
+  width: "100%",
+});
+
+const Image = styled("img")({
+  width: "100%",
+});
+
+const ButtonContainer = styled("div")({
+  width: "100%",
+  display: "flex",
+});

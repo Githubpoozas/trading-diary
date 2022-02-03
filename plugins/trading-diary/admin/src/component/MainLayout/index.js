@@ -1,5 +1,5 @@
 import React, { memo, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import ListAltIcon from "@mui/icons-material/ListAlt";
@@ -33,7 +33,10 @@ const routes = [
 
 const MainLayout = (props) => {
   const history = useHistory();
-  const [value, setValue] = useState(0);
+  const location = useLocation();
+  const [value, setValue] = useState(
+    routes.findIndex((r) => r.path === location.pathname)
+  );
 
   const handleRouteChange = (value) => {
     setValue(value);

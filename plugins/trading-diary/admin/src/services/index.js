@@ -107,6 +107,53 @@ export const GET_OPEN_TRADE = gql`
   query GET_OPEN_TRADE {
     trades(where: { open: true }) {
       id
+      open
+      product {
+        id
+        name
+        digits
+      }
+      type
+      comment
+      M1 {
+        url
+      }
+      M5 {
+        url
+      }
+      M15 {
+        url
+      }
+      M30 {
+        url
+      }
+      H1 {
+        url
+      }
+      H4 {
+        url
+      }
+      D1 {
+        url
+      }
+      W1 {
+        url
+      }
+      MN {
+        url
+      }
+      orders {
+        id
+        ticket
+        type
+        size
+        openTime
+        stopLoss
+        takeProfit
+        swap
+        profit
+        comment
+      }
     }
   }
 `;

@@ -6,7 +6,12 @@ import { StyledButton } from "./style";
 
 export const Button = ({ onClick, children, loading, disabled, ...rest }) => {
   return (
-    <StyledButton disabled={disabled || loading} onClick={onClick} {...rest}>
+    <StyledButton
+      disabled={disabled || loading}
+      onClick={onClick}
+      {...rest}
+      variant="contained"
+    >
       {loading ? (
         <CircularProgress
           sx={{ width: "20px !important", height: "20px !important" }}

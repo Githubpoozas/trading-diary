@@ -33,7 +33,7 @@
       "required": true
     },
     "M1": {
-      "collection": "file",
+      "model": "file",
       "via": "related",
       "allowedTypes": [
         "images"
@@ -43,7 +43,7 @@
       "pluginOptions": {}
     },
     "M5": {
-      "collection": "file",
+      "model": "file",
       "via": "related",
       "allowedTypes": [
         "images"
@@ -53,7 +53,7 @@
       "pluginOptions": {}
     },
     "M15": {
-      "collection": "file",
+      "model": "file",
       "via": "related",
       "allowedTypes": [
         "images"
@@ -63,7 +63,7 @@
       "pluginOptions": {}
     },
     "M30": {
-      "collection": "file",
+      "model": "file",
       "via": "related",
       "allowedTypes": [
         "images"
@@ -73,7 +73,7 @@
       "pluginOptions": {}
     },
     "H1": {
-      "collection": "file",
+      "model": "file",
       "via": "related",
       "allowedTypes": [
         "images"
@@ -83,7 +83,7 @@
       "pluginOptions": {}
     },
     "H4": {
-      "collection": "file",
+      "model": "file",
       "via": "related",
       "allowedTypes": [
         "images"
@@ -93,7 +93,7 @@
       "pluginOptions": {}
     },
     "D1": {
-      "collection": "file",
+      "model": "file",
       "via": "related",
       "allowedTypes": [
         "images"
@@ -103,7 +103,7 @@
       "pluginOptions": {}
     },
     "W1": {
-      "collection": "file",
+      "model": "file",
       "via": "related",
       "allowedTypes": [
         "images"
@@ -113,7 +113,7 @@
       "pluginOptions": {}
     },
     "MN": {
-      "collection": "file",
+      "model": "file",
       "via": "related",
       "allowedTypes": [
         "images"

@@ -21,6 +21,8 @@ import {
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import LinearProgress from "@mui/material/LinearProgress";
+import DateAdapter from "@mui/lab/AdapterMoment";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
 
 // Utils
 import pluginId from "../../pluginId";
@@ -109,22 +111,32 @@ const App = () => {
   return (
     <ApolloProvider client={apolloClient}>
       <ThemeProvider theme={theme}>
-        <MainLayout>
-          {validToken ? (
-            <Switch>
-              <Route path={`/plugins/${pluginId}`} component={HomePage} exact />
-              <Route path={`/plugins/${pluginId}/add`} component={Add} exact />
-              <Route
-                path={`/plugins/${pluginId}/history`}
-                component={History}
-                exact
-              />
-              <Route component={NotFound} />
-            </Switch>
-          ) : (
-            <LinearProgress />
-          )}
-        </MainLayout>
+        <LocalizationProvider dateAdapter={DateAdapter}>
+          <MainLayout>
+            {validToken ? (
+              <Switch>
+                <Route
+                  path={`/plugins/${pluginId}`}
+                  component={HomePage}
+                  exact
+                />
+                <Route
+                  path={`/plugins/${pluginId}/add`}
+                  component={Add}
+                  exact
+                />
+                <Route
+                  path={`/plugins/${pluginId}/history`}
+                  component={History}
+                  exact
+                />
+                <Route component={NotFound} />
+              </Switch>
+            ) : (
+              <LinearProgress />
+            )}
+          </MainLayout>
+        </LocalizationProvider>
       </ThemeProvider>
     </ApolloProvider>
   );

@@ -15,7 +15,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import FormHelperText from "@mui/material/FormHelperText";
 import Button from "@mui/material/Button";
 
-import { Text, OrdersTable } from "../../component/index";
+import { Text, TradesTable } from "../../component/index";
 
 import {
   GET_PENDING_ORDERS,
@@ -40,12 +40,8 @@ const HomePage = () => {
       console.log("openTradeError", openTradeError);
     }
 
-    if (openTradeData) {
-      console.log("openTradeData", openTradeData);
-    }
-
     if (openTradeData && !_.isEmpty(openTradeData.trades)) {
-      console.log("openTradeData.trade", openTradeData.trades);
+      setOpenTrades(openTradeData.trades);
     }
   }, [openTradeData, openTradeError]);
 
@@ -66,6 +62,39 @@ const HomePage = () => {
   //   }
   // }, [pendingOrdersData, pendingOrdersError]);
 
+  const handleAddOrder = (id) => {
+    let newOpenTrades = JSON.parse(JSON.stringify(openTrades));
+    const tradeIndex = newOpenTrades.findIndex((t) => t.id === id);
+    newOpenTrades[tradeIndex].orders.push({
+      ticket: "",
+      type: newOpenTrades[tradeIndex].type,
+      size: 0,
+      openTime: null,
+      closeTime: null,
+      openPrice: 0,
+      closePrice: 0,
+      stopLoss: 0,
+      takeProfit: 0,
+      swap: 0,
+      profit: 0,
+      comment: "",
+      isEdit: true,
+    });
+    setOpenTrades(newOpenTrades);
+  };
+
+  useEffect(() => {
+    console.log("openTrades", openTrades);
+  }, [openTrades]);
+
+  const handleSaveOrder = (id, value) => {
+    console.log("handleSaveOrder", id, value);
+  };
+
+  const handleCloseTrade = (id, value) => {
+    console.log("handleCloseTrade", id, value);
+  };
+
   return (
     <div style={{ display: "flex", flexDirection: "column", rowGap: "20px" }}>
       <div>
@@ -79,7 +108,12 @@ const HomePage = () => {
         </Text>
         <Card>
           <CardContent>
-            <OrdersTable orders={openTrades} />
+            <TradesTable
+              data={openTrades}
+              onAddOrder={handleAddOrder}
+              onSaveOrder={handleSaveOrder}
+              onCloseTrade={handleCloseTrade}
+            />
           </CardContent>
         </Card>
       </div>
@@ -91,7 +125,7 @@ const HomePage = () => {
         </Text>
         <Card>
           <CardContent>
-            <OrdersTable orders={pendingOrders} />
+            <TradesTable orders={pendingOrders} />
           </CardContent>
         </Card>
       </div> */}

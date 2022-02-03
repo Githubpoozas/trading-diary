@@ -540,67 +540,70 @@
           "contractSize": {
             "type": "integer"
           },
-          "order": {
-            "required": [
-              "id"
-            ],
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "ticket": {
-                "type": "string"
-              },
-              "openTime": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string"
-              },
-              "size": {
-                "type": "number"
-              },
-              "openPrice": {
-                "type": "number"
-              },
-              "stopLoss": {
-                "type": "number"
-              },
-              "takeProfit": {
-                "type": "number"
-              },
-              "closeTime": {
-                "type": "string"
-              },
-              "profit": {
-                "type": "number"
-              },
-              "order_changes": {
-                "type": "array",
-                "items": {
+          "orders": {
+            "type": "array",
+            "items": {
+              "required": [
+                "id"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "ticket": {
+                  "type": "string"
+                },
+                "openTime": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "size": {
+                  "type": "number"
+                },
+                "openPrice": {
+                  "type": "number"
+                },
+                "stopLoss": {
+                  "type": "number"
+                },
+                "takeProfit": {
+                  "type": "number"
+                },
+                "closeTime": {
+                  "type": "string"
+                },
+                "profit": {
+                  "type": "number"
+                },
+                "order_changes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "trade": {
+                  "type": "string"
+                },
+                "closePrice": {
+                  "type": "number"
+                },
+                "swap": {
+                  "type": "number"
+                },
+                "product": {
+                  "type": "string"
+                },
+                "created_by": {
+                  "type": "string"
+                },
+                "updated_by": {
                   "type": "string"
                 }
-              },
-              "products": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "comment": {
-                "type": "string"
-              },
-              "trade": {
-                "type": "string"
-              },
-              "closePrice": {
-                "type": "number"
-              },
-              "created_by": {
-                "type": "string"
-              },
-              "updated_by": {
-                "type": "string"
               }
             }
           }
@@ -628,8 +631,11 @@
           "contractSize": {
             "type": "integer"
           },
-          "order": {
-            "type": "string"
+          "orders": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "created_by": {
             "type": "string"

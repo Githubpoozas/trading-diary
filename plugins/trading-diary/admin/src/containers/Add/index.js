@@ -20,7 +20,7 @@ import {
 
 import { GET_PRODUCTS, uploadMedia, createTrade } from "../../services";
 
-const timeFrame = ["M1", "M5", "M15", "M30", "H1", "H4", "D1", "W1", "MN"];
+import { timeFrame } from "../../instance";
 
 const Add = ({ history }) => {
   const [errors, setErrors] = useState([]);

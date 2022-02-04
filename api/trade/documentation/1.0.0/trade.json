@@ -518,7 +518,6 @@
         "required": [
           "id",
           "comment",
-          "type",
           "open"
         ],
         "properties": {
@@ -687,9 +686,6 @@
                 }
               }
             }
-          },
-          "type": {
-            "type": "string"
           },
           "M1": {
             "required": [
@@ -1303,7 +1299,6 @@
       "NewTrade": {
         "required": [
           "comment",
-          "type",
           "open"
         ],
         "properties": {
@@ -1324,9 +1319,6 @@
             "items": {
               "type": "string"
             }
-          },
-          "type": {
-            "type": "string"
           },
           "open": {
             "type": "boolean",

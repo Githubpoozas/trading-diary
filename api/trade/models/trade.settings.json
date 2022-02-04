@@ -27,11 +27,6 @@
       "via": "trade",
       "collection": "orders"
     },
-    "type": {
-      "type": "string",
-      "regex": "\\b(sell|buy)\\b",
-      "required": true
-    },
     "M1": {
       "model": "file",
       "via": "related",

@@ -2,7 +2,6 @@ import React, { memo, useEffect, useState } from "react";
 import moment from "moment";
 import _ from "lodash";
 import Box from "@mui/material/Box";
-import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -11,28 +10,37 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Dialog from "@mui/material/Dialog";
 import Stack from "@mui/material/Stack";
 import Avatar from "@mui/material/Avatar";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import CancelIcon from "@mui/icons-material/Cancel";
 import TextField from "@mui/material/TextField";
 import DateTimePicker from "@mui/lab/DateTimePicker";
+import AddTaskIcon from "@mui/icons-material/AddTask";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import SaveAsIcon from "@mui/icons-material/SaveAs";
+import ArchiveIcon from "@mui/icons-material/Archive";
+import CancelIcon from "@mui/icons-material/Cancel";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import HistoryIcon from "@mui/icons-material/History";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 import { averagePrice } from "../../utils/format";
 
-import { Text, Button, ConfirmDialog } from "../index";
+import { Text, Button, ConfirmDialog, Select } from "../index";
 
 import { timeFrame } from "../../instance";
 
-import { StyledTableCell, StyledTableRow, StyledSubTableCell } from "./style";
+import {
+  StyledTableCell,
+  StyledTableRow,
+  StyledSubTableCell,
+  OrderTableCell,
+} from "./style";
 
-const OrderRow = ({ data, onSaveOrder, onCloseOrder }) => {
+const OrderRow = ({ data, onSaveOrder, onCloseOrder, onClickDeleteOrder }) => {
+  const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState({
     ticket: "",
-    type: "",
     size: 0,
     openTime: null,
     closeTime: null,
@@ -43,17 +51,26 @@ const OrderRow = ({ data, onSaveOrder, onCloseOrder }) => {
     swap: 0,
     profit: 0,
     comment: "",
+    type: "buy",
     isEdit: false,
   });
 
   useEffect(() => {
-    console.log("data", data);
     setInputValue(data);
   }, [data]);
 
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
+
+    if (
+      ["size", "openPrice", "closePrice", "stopLoss", "takeProfit"].includes(
+        name
+      ) &&
+      parseFloat(value) < 0
+    ) {
+      return;
+    }
     setInputValue({
       ...inputValue,
       [name]: value,
@@ -69,6 +86,7 @@ const OrderRow = ({ data, onSaveOrder, onCloseOrder }) => {
   };
 
   const onClickSave = () => {
+    console.log("onClickSave", inputValue);
     onSaveOrder(inputValue);
     setInputValue({ ...inputValue, isEdit: false });
   };
@@ -77,9 +95,19 @@ const OrderRow = ({ data, onSaveOrder, onCloseOrder }) => {
     setInputValue({ ...inputValue, isEdit: false });
   };
 
+  const onClickConfirm = () => {
+    onClickDeleteOrder(data.id);
+  };
+
   return (
     <StyledTableRow>
-      <TableCell component="th" scope="row" sx={{ padding: "10px 5px" }}>
+      <ConfirmDialog
+        open={open}
+        title={`Confirm close order`}
+        onClose={() => setOpen(false)}
+        onConfirm={onClickConfirm}
+      />
+      <OrderTableCell>
         {inputValue.isEdit ? (
           <TextField
             id="orderTicket"
@@ -87,22 +115,19 @@ const OrderRow = ({ data, onSaveOrder, onCloseOrder }) => {
             variant="outlined"
             name="ticket"
             type="number"
+            InputProps={{ inputProps: { min: 0 } }}
             value={inputValue.ticket}
             onChange={handleChange}
           />
         ) : (
           <Text>{inputValue.ticket}</Text>
         )}
-      </TableCell>
+      </OrderTableCell>
 
-      <TableCell
-        align="center"
-        component="th"
-        scope="row"
-        sx={{ padding: "10px 5px" }}
-      >
+      <OrderTableCell>
         {inputValue.isEdit ? (
           <DateTimePicker
+            ampm={false}
             label="Open Time"
             renderInput={(props) => <TextField {...props} />}
             value={inputValue.openTime}
@@ -116,13 +141,27 @@ const OrderRow = ({ data, onSaveOrder, onCloseOrder }) => {
         ) : (
           <Text>{moment(inputValue.openTime).format("YYYY.MM.DD HH:mm")}</Text>
         )}
-      </TableCell>
-      <TableCell
-        align="center"
-        component="th"
-        scope="row"
-        sx={{ padding: "10px 5px" }}
-      >
+      </OrderTableCell>
+      <OrderTableCell>
+        {inputValue.isEdit ? (
+          <Select
+            required
+            labelId="type"
+            id="type"
+            label="Type"
+            name="type"
+            value={inputValue.type}
+            onChange={handleChange}
+            options={[
+              { value: "buy", label: "Buy" },
+              { value: "sell", label: "Sell" },
+            ]}
+          />
+        ) : (
+          <Text>{inputValue.type}</Text>
+        )}
+      </OrderTableCell>
+      <OrderTableCell>
         {inputValue.isEdit ? (
           <TextField
             id="orderSize"
@@ -130,19 +169,15 @@ const OrderRow = ({ data, onSaveOrder, onCloseOrder }) => {
             variant="outlined"
             name="size"
             type="number"
+            InputProps={{ inputProps: { min: 0.01, step: 0.01 } }}
             value={inputValue.size}
             onChange={handleChange}
           />
         ) : (
           <Text>{inputValue.size}</Text>
         )}
-      </TableCell>
-      <TableCell
-        align="center"
-        component="th"
-        scope="row"
-        sx={{ padding: "10px 5px" }}
-      >
+      </OrderTableCell>
+      <OrderTableCell>
         {inputValue.isEdit ? (
           <TextField
             id="orderOpenPrice"
@@ -150,19 +185,15 @@ const OrderRow = ({ data, onSaveOrder, onCloseOrder }) => {
             variant="outlined"
             name="openPrice"
             type="number"
+            InputProps={{ inputProps: { min: 0 } }}
             value={inputValue.openPrice}
             onChange={handleChange}
           />
         ) : (
           <Text>{inputValue.openPrice}</Text>
         )}
-      </TableCell>
-      <TableCell
-        align="center"
-        component="th"
-        scope="row"
-        sx={{ padding: "10px 5px" }}
-      >
+      </OrderTableCell>
+      <OrderTableCell>
         {inputValue.isEdit ? (
           <TextField
             id="orderStopLoss"
@@ -170,19 +201,15 @@ const OrderRow = ({ data, onSaveOrder, onCloseOrder }) => {
             variant="outlined"
             name="stopLoss"
             type="number"
+            InputProps={{ inputProps: { min: 0 } }}
             value={inputValue.stopLoss}
             onChange={handleChange}
           />
         ) : (
           <Text>{inputValue.stopLoss}</Text>
         )}
-      </TableCell>
-      <TableCell
-        align="center"
-        component="th"
-        scope="row"
-        sx={{ padding: "10px 5px" }}
-      >
+      </OrderTableCell>
+      <OrderTableCell>
         {inputValue.isEdit ? (
           <TextField
             id="orderTakeProfit"
@@ -190,21 +217,18 @@ const OrderRow = ({ data, onSaveOrder, onCloseOrder }) => {
             variant="outlined"
             name="takeProfit"
             type="number"
+            InputProps={{ inputProps: { min: 0 } }}
             value={inputValue.takeProfit}
             onChange={handleChange}
           />
         ) : (
           <Text>{inputValue.takeProfit}</Text>
         )}
-      </TableCell>
-      <TableCell
-        align="center"
-        component="th"
-        scope="row"
-        sx={{ padding: "10px 5px" }}
-      >
+      </OrderTableCell>
+      <OrderTableCell>
         {inputValue.isEdit ? (
           <DateTimePicker
+            ampm={false}
             renderInput={(props) => <TextField {...props} />}
             label="Close Time"
             value={inputValue.closeTime}
@@ -218,13 +242,8 @@ const OrderRow = ({ data, onSaveOrder, onCloseOrder }) => {
         ) : (
           <Text>{moment(inputValue.closeTime).format("YYYY.MM.DD HH:mm")}</Text>
         )}
-      </TableCell>
-      <TableCell
-        align="center"
-        component="th"
-        scope="row"
-        sx={{ padding: "10px 5px" }}
-      >
+      </OrderTableCell>
+      <OrderTableCell>
         {inputValue.isEdit ? (
           <TextField
             id="orderClosePrice"
@@ -232,19 +251,15 @@ const OrderRow = ({ data, onSaveOrder, onCloseOrder }) => {
             variant="outlined"
             name="closePrice"
             type="number"
+            InputProps={{ inputProps: { min: 0 } }}
             value={inputValue.closePrice}
             onChange={handleChange}
           />
         ) : (
           <Text>{inputValue.closePrice}</Text>
         )}
-      </TableCell>
-      <TableCell
-        align="center"
-        component="th"
-        scope="row"
-        sx={{ padding: "10px 5px" }}
-      >
+      </OrderTableCell>
+      <OrderTableCell>
         {inputValue.isEdit ? (
           <TextField
             id="orderSwap"
@@ -258,13 +273,8 @@ const OrderRow = ({ data, onSaveOrder, onCloseOrder }) => {
         ) : (
           <Text>{inputValue.swap}</Text>
         )}
-      </TableCell>
-      <TableCell
-        align="center"
-        component="th"
-        scope="row"
-        sx={{ padding: "10px 5px" }}
-      >
+      </OrderTableCell>
+      <OrderTableCell>
         {inputValue.isEdit ? (
           <TextField
             id="orderProfit"
@@ -278,15 +288,16 @@ const OrderRow = ({ data, onSaveOrder, onCloseOrder }) => {
         ) : (
           <Text>{inputValue.profit}</Text>
         )}
-      </TableCell>
-      <TableCell
-        align="center"
-        component="th"
-        scope="row"
-        sx={{ padding: "10px 5px" }}
+      </OrderTableCell>
+      <OrderTableCell
+        sx={{
+          overflowWrap: "break-word",
+          maxWidth: "400px",
+        }}
       >
         {inputValue.isEdit ? (
           <TextField
+            multiline
             id="orderComment"
             label="Comment"
             variant="outlined"
@@ -295,15 +306,10 @@ const OrderRow = ({ data, onSaveOrder, onCloseOrder }) => {
             onChange={handleChange}
           />
         ) : (
-          <Text>{inputValue.comment}</Text>
+          <Text sx={{ textAlign: "justify" }}>{inputValue.comment}</Text>
         )}
-      </TableCell>
-      <TableCell
-        align="center"
-        component="th"
-        scope="row"
-        sx={{ padding: "10px 5px" }}
-      >
+      </OrderTableCell>
+      <OrderTableCell>
         <Stack
           direction="row"
           justifyContent="center"
@@ -312,29 +318,42 @@ const OrderRow = ({ data, onSaveOrder, onCloseOrder }) => {
         >
           {inputValue.isEdit ? (
             <>
-              <Button onClick={onClickSave}>
-                <Text bold="true">Save</Text>
-              </Button>
-              <Button color="warning" onClick={onClickClose}>
-                <Text bold="true">Close</Text>
-              </Button>
-              <Button color="info" onClick={handleCancel}>
-                <Text bold="true">Cancel</Text>
-              </Button>
+              <IconButton color="primary" onClick={onClickSave}>
+                <SaveAsIcon />
+              </IconButton>
+              {/* <IconButton color="primary" onClick={onClickClose}>
+                <ArchiveIcon />
+              </IconButton> */}
+              <IconButton color="info" onClick={handleCancel}>
+                <HistoryIcon />
+              </IconButton>
             </>
           ) : (
-            <Button onClick={handleEditOrder}>
-              <Text bold="true">Edit</Text>
-            </Button>
+            <>
+              <IconButton color="info" onClick={handleEditOrder}>
+                <ModeEditIcon />
+              </IconButton>
+              <IconButton color="error" onClick={() => setOpen(true)}>
+                <DeleteForeverIcon />
+              </IconButton>
+            </>
           )}
         </Stack>
-      </TableCell>
+      </OrderTableCell>
     </StyledTableRow>
   );
 };
 
 const Row = memo(
-  ({ data, isOdd, onAddOrder, onCloseTrade, onSaveOrder, onCloseOrder }) => {
+  ({
+    data,
+    isOdd,
+    onAddOrder,
+    onCloseTrade,
+    onSaveOrder,
+    onCloseOrder,
+    onClickDeleteOrder,
+  }) => {
     const [selectedImage, setSelectedImage] = useState(false);
 
     return (
@@ -344,7 +363,7 @@ const Row = memo(
           open={selectedImage ? true : false}
           maxWidth="xl"
         >
-          <img src={selectedImage} />
+          <img src={selectedImage || null} />
         </Dialog>
 
         <StyledTableRow
@@ -353,9 +372,6 @@ const Row = memo(
         >
           <TableCell component="th" scope="row">
             <Text bold={open ? 1 : 0}>{data.product.name}</Text>
-          </TableCell>
-          <TableCell align="center">
-            <Text bold={open ? 1 : 0}>{data.type}</Text>
           </TableCell>
           {timeFrame.map((tf) => (
             <TableCell align="center" key={tf}>
@@ -384,20 +400,18 @@ const Row = memo(
               alignItems="center"
               spacing={1}
             >
-              <Button onClick={onAddOrder}>
-                <Text bold="true">Add Order</Text>
-              </Button>
-              <Button color="error">
-                <Text bold="true" onClick={onCloseTrade}>
-                  Close Trade
-                </Text>
-              </Button>
+              <IconButton color="primary" onClick={onAddOrder}>
+                <AddTaskIcon />
+              </IconButton>
+              <IconButton color="error" onClick={onCloseTrade}>
+                <HighlightOffIcon />
+              </IconButton>
             </Stack>
           </TableCell>
         </StyledTableRow>
         {!_.isEmpty(data.orders) && (
           <TableRow>
-            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={13}>
+            <TableCell style={{ padding: 0 }} colSpan={13}>
               <Box sx={{ margin: 1 }}>
                 <Table aria-label="opentrades">
                   <TableHead>
@@ -407,6 +421,9 @@ const Row = memo(
                       </StyledSubTableCell>
                       <StyledSubTableCell align="center">
                         <Text bold="true">Open Time</Text>
+                      </StyledSubTableCell>
+                      <StyledSubTableCell align="center">
+                        <Text bold="true">Type</Text>
                       </StyledSubTableCell>
                       <StyledSubTableCell align="center">
                         <Text bold="true">Size</Text>
@@ -432,6 +449,9 @@ const Row = memo(
                       <StyledSubTableCell align="center">
                         <Text bold="true">Profit</Text>
                       </StyledSubTableCell>
+                      <StyledSubTableCell align="center">
+                        <Text bold="true">Comment</Text>
+                      </StyledSubTableCell>
                       <StyledSubTableCell align="center"></StyledSubTableCell>
                     </TableRow>
                   </TableHead>
@@ -440,8 +460,9 @@ const Row = memo(
                       <OrderRow
                         data={order}
                         key={`orderRow${index}`}
-                        onSaveOrder={() => onSaveOrder(index)}
-                        onCloseOrder={() => onCloseOrder(index)}
+                        onSaveOrder={onSaveOrder}
+                        onCloseOrder={onCloseOrder}
+                        onClickDeleteOrder={onClickDeleteOrder}
                       />
                     ))}
                   </TableBody>
@@ -461,6 +482,7 @@ export const TradesTable = ({
   onCloseTrade,
   onSaveOrder,
   onCloseOrder,
+  onClickDeleteOrder,
 }) => {
   const [selectedTrade, setSelectedTrade] = useState(false);
 
@@ -468,7 +490,7 @@ export const TradesTable = ({
     setSelectedTrade(false);
   };
   const handleConfirm = () => {
-    onCloseTrade(selectedTrade.id);
+    onCloseTrade(selectedTrade);
     setSelectedTrade(false);
   };
 
@@ -480,15 +502,13 @@ export const TradesTable = ({
         onClose={handleCloseConfirmDialog}
         onConfirm={handleConfirm}
       />
+
       <TableContainer component={Paper}>
         <Table aria-label="collapsible table">
           <TableHead>
             <TableRow>
               <StyledTableCell>
                 <Text bold="true">Product</Text>
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <Text bold="true">Type</Text>
               </StyledTableCell>
               {timeFrame.map((tf) => (
                 <StyledTableCell align="center" key={tf}>
@@ -509,6 +529,7 @@ export const TradesTable = ({
                   onCloseTrade={() => setSelectedTrade(trade)}
                   onSaveOrder={onSaveOrder}
                   onCloseOrder={onCloseOrder}
+                  onClickDeleteOrder={onClickDeleteOrder}
                 />
               ))}
           </TableBody>

@@ -1,9 +1,11 @@
-import React, { memo, useState } from "react";
+import React, { memo, useState, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+import { useSnackbar } from "notistack";
 
 import pluginId from "../../pluginId";
 
@@ -32,8 +34,12 @@ const routes = [
 ];
 
 const MainLayout = (props) => {
+  const { enqueueSnackbar } = useSnackbar();
+
   const history = useHistory();
   const location = useLocation();
+  const alert = useSelector((state) => state.alert);
+
   const [value, setValue] = useState(
     routes.findIndex((r) => r.path === location.pathname)
   );
@@ -42,6 +48,12 @@ const MainLayout = (props) => {
     setValue(value);
     history.push(routes[value].path);
   };
+
+  useEffect(() => {
+    if (alert.content !== "") {
+      enqueueSnackbar(alert.content, { variant: alert.variant });
+    }
+  }, [alert]);
 
   return (
     <StyleMainLayout>

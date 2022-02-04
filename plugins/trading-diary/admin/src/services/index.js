@@ -1,5 +1,7 @@
 import axios from "axios";
 import { gql } from "@apollo/client";
+// import store from "../redux/store";
+// import { alertSuccess, alertError } from "../redux/alertSlice";
 
 const instance = axios.create({
   baseURL: API_URI,
@@ -28,6 +30,7 @@ instance.interceptors.response.use(
     return response;
   },
   (error) => {
+    // store.dispatch(alertError(error.response.data.message));
     return Promise.reject(error);
   }
 );
@@ -65,6 +68,26 @@ export const uploadMedia = async (formData) => {
 
 export const createTrade = async (data) => {
   const res = await instance.post("/trades", data);
+  return res;
+};
+
+export const closeTrade = async (id) => {
+  const res = await instance.put(`/trades/${id}`, { open: false });
+  return res;
+};
+
+export const createOrders = async (data) => {
+  const res = await instance.post("/Orders", data);
+  return res;
+};
+
+export const deleteOrders = async (id) => {
+  const res = await instance.delete(`/orders/${id}`);
+  return res;
+};
+
+export const updateOrders = async (id, data) => {
+  const res = await instance.put(`/orders/${id}`, data);
   return res;
 };
 
@@ -113,7 +136,6 @@ export const GET_OPEN_TRADE = gql`
         name
         digits
       }
-      type
       comment
       M1 {
         url
@@ -148,6 +170,9 @@ export const GET_OPEN_TRADE = gql`
         type
         size
         openTime
+        closeTime
+        openPrice
+        closePrice
         stopLoss
         takeProfit
         swap

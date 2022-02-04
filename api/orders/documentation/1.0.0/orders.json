@@ -589,7 +589,6 @@
             "required": [
               "id",
               "comment",
-              "type",
               "open"
             ],
             "properties": {
@@ -613,9 +612,6 @@
                 "items": {
                   "type": "string"
                 }
-              },
-              "type": {
-                "type": "string"
               },
               "M1": {
                 "type": "string"

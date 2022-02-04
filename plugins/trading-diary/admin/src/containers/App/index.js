@@ -18,14 +18,23 @@ import {
   ApolloProvider,
   from,
 } from "@apollo/client";
+import { Provider } from "react-redux";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import LinearProgress from "@mui/material/LinearProgress";
+import DateAdapter from "@mui/lab/AdapterMoment";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import { SnackbarProvider } from "notistack";
+
+import store from "../../redux/store";
+import { resetAlert } from "../../redux/alertSlice";
 
 // Utils
 import pluginId from "../../pluginId";
 // Containers
 import HomePage from "../HomePage";
+import Add from "../Add";
+import History from "../History";
 
 // Theme
 import theme from "../../theme";
@@ -82,10 +91,6 @@ const App = () => {
   };
 
   useEffect(() => {
-    console.log("API_URI", API_URI);
-  }, [API_URI]);
-
-  useEffect(() => {
     const verifyToken = async () => {
       const jwt = localStorage.getItem("str_token");
       if (!_.isNull(jwt)) {
@@ -108,21 +113,45 @@ const App = () => {
     verifyToken();
   }, []);
 
+  const handleResetAlert = () => {
+    store.dispatch(resetAlert());
+  };
+
   return (
-    <ApolloProvider client={apolloClient}>
-      <ThemeProvider theme={theme}>
-        <MainLayout>
-          {validToken ? (
-            <Switch>
-              <Route path={`/plugins/${pluginId}`} component={HomePage} exact />
-              <Route component={NotFound} />
-            </Switch>
-          ) : (
-            <LinearProgress />
-          )}
-        </MainLayout>
-      </ThemeProvider>
-    </ApolloProvider>
+    <Provider store={store}>
+      <ApolloProvider client={apolloClient}>
+        <ThemeProvider theme={theme}>
+          <LocalizationProvider dateAdapter={DateAdapter}>
+            <SnackbarProvider maxSnack={3} onClose={handleResetAlert}>
+              <MainLayout>
+                {validToken ? (
+                  <Switch>
+                    <Route
+                      path={`/plugins/${pluginId}`}
+                      component={HomePage}
+                      exact
+                    />
+                    <Route
+                      path={`/plugins/${pluginId}/add`}
+                      component={Add}
+                      exact
+                    />
+                    <Route
+                      path={`/plugins/${pluginId}/history`}
+                      component={History}
+                      exact
+                    />
+                    <Route component={NotFound} />
+                  </Switch>
+                ) : (
+                  <LinearProgress />
+                )}
+              </MainLayout>
+            </SnackbarProvider>
+          </LocalizationProvider>
+        </ThemeProvider>
+      </ApolloProvider>
+    </Provider>
   );
 };
 

@@ -582,52 +582,14 @@
               }
             }
           },
-          "products": {
-            "type": "array",
-            "items": {
-              "required": [
-                "id",
-                "name",
-                "provider",
-                "type"
-              ],
-              "properties": {
-                "id": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "provider": {
-                  "type": "string"
-                },
-                "type": {
-                  "type": "string"
-                },
-                "digits": {
-                  "type": "integer"
-                },
-                "contractSize": {
-                  "type": "integer"
-                },
-                "order": {
-                  "type": "string"
-                },
-                "created_by": {
-                  "type": "string"
-                },
-                "updated_by": {
-                  "type": "string"
-                }
-              }
-            }
-          },
           "comment": {
             "type": "string"
           },
           "trade": {
             "required": [
-              "id"
+              "id",
+              "comment",
+              "open"
             ],
             "properties": {
               "id": {
@@ -635,6 +597,21 @@
               },
               "product": {
                 "type": "string"
+              },
+              "comment": {
+                "type": "string"
+              },
+              "trading_updates": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "orders": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               },
               "M1": {
                 "type": "string"
@@ -663,23 +640,8 @@
               "MN": {
                 "type": "string"
               },
-              "comment": {
-                "type": "string"
-              },
-              "trading_updates": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "orders": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "type": {
-                "type": "string"
+              "open": {
+                "type": "boolean"
               },
               "created_by": {
                 "type": "string"
@@ -691,6 +653,49 @@
           },
           "closePrice": {
             "type": "number"
+          },
+          "swap": {
+            "type": "number"
+          },
+          "product": {
+            "required": [
+              "id",
+              "name",
+              "provider",
+              "type"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "provider": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "digits": {
+                "type": "integer"
+              },
+              "contractSize": {
+                "type": "integer"
+              },
+              "orders": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "created_by": {
+                "type": "string"
+              },
+              "updated_by": {
+                "type": "string"
+              }
+            }
           }
         }
       },
@@ -731,12 +736,6 @@
               "type": "string"
             }
           },
-          "products": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
           "comment": {
             "type": "string"
           },
@@ -745,6 +744,12 @@
           },
           "closePrice": {
             "type": "number"
+          },
+          "swap": {
+            "type": "number"
+          },
+          "product": {
+            "type": "string"
           },
           "created_by": {
             "type": "string"

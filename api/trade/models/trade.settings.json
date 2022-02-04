@@ -15,47 +15,112 @@
     "product": {
       "model": "product"
     },
-    "M1": {
-      "type": "string"
-    },
-    "M5": {
-      "type": "string"
-    },
-    "M15": {
-      "type": "string"
-    },
-    "M30": {
-      "type": "string"
-    },
-    "H1": {
-      "type": "string"
-    },
-    "H4": {
-      "type": "string"
-    },
-    "D1": {
-      "type": "string"
-    },
-    "W1": {
-      "type": "string"
-    },
-    "MN": {
-      "type": "string"
-    },
     "comment": {
-      "type": "text"
+      "type": "text",
+      "required": true
     },
     "trading_updates": {
-      "collection": "trading-update",
-      "via": "trade"
+      "via": "trade",
+      "collection": "trading-update"
     },
     "orders": {
       "via": "trade",
       "collection": "orders"
     },
-    "type": {
-      "type": "string",
-      "regex": "\\b(sell|buy)\\b"
+    "M1": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "M5": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "M15": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "M30": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "H1": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "H4": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "D1": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "W1": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "MN": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "open": {
+      "type": "boolean",
+      "default": true,
+      "required": true
     }
   }
 }

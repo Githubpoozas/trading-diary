@@ -1,5 +1,7 @@
 import axios from "axios";
 import { gql } from "@apollo/client";
+// import store from "../redux/store";
+// import { alertSuccess, alertError } from "../redux/alertSlice";
 
 const instance = axios.create({
   baseURL: API_URI,
@@ -28,6 +30,7 @@ instance.interceptors.response.use(
     return response;
   },
   (error) => {
+    // store.dispatch(alertError(error.response.data.message));
     return Promise.reject(error);
   }
 );
@@ -64,30 +67,29 @@ export const uploadMedia = async (formData) => {
 };
 
 export const createTrade = async (data) => {
-  const res = await instance.post("/trading-diary/create-trade", data);
-  return res.data;
+  const res = await instance.post("/trades", data);
+  return res;
 };
 
-export const GET_OPEN_ORDERS = gql`
-  query GET_OPEN_ORDERS {
-    orders(where: { type_in: ["buy", "sell"], closeTime_null: true }) {
-      id
-      ticket
-      openTime
-      type
-      openPrice
-      size
-      product {
-        name
-        digits
-      }
-      stopLoss
-      takeProfit
-      swap
-      profit
-    }
-  }
-`;
+export const closeTrade = async (id) => {
+  const res = await instance.put(`/trades/${id}`, { open: false });
+  return res;
+};
+
+export const createOrders = async (data) => {
+  const res = await instance.post("/Orders", data);
+  return res;
+};
+
+export const deleteOrders = async (id) => {
+  const res = await instance.delete(`/orders/${id}`);
+  return res;
+};
+
+export const updateOrders = async (id, data) => {
+  const res = await instance.put(`/orders/${id}`, data);
+  return res;
+};
 
 export const GET_PENDING_ORDERS = gql`
   query GET_PENDING_ORDERS {
@@ -119,6 +121,64 @@ export const GET_PRODUCTS = gql`
       id
       name
       digits
+      type
+    }
+  }
+`;
+
+export const GET_OPEN_TRADE = gql`
+  query GET_OPEN_TRADE {
+    trades(where: { open: true }) {
+      id
+      open
+      product {
+        id
+        name
+        digits
+      }
+      comment
+      M1 {
+        url
+      }
+      M5 {
+        url
+      }
+      M15 {
+        url
+      }
+      M30 {
+        url
+      }
+      H1 {
+        url
+      }
+      H4 {
+        url
+      }
+      D1 {
+        url
+      }
+      W1 {
+        url
+      }
+      MN {
+        url
+      }
+      orders {
+        id
+        ticket
+        type
+        size
+        openTime
+        closeTime
+        openPrice
+        closePrice
+        stopLoss
+        takeProfit
+        swap
+        profit
+        comment
+      }
     }
   }
 `;

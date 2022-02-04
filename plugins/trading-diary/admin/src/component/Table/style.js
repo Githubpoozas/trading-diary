@@ -26,3 +26,7 @@ export const StyledSubTableCell = styled(TableCell)(({ theme }) => ({
     color: theme.palette.common.white,
   },
 }));
+export const OrderTableCell = styled(TableCell)(({ theme }) => ({
+  padding: "10px 5px",
+  textAlign: "center",
+}));

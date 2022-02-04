@@ -32,9 +32,9 @@
     "contractSize": {
       "type": "integer"
     },
-    "order": {
-      "via": "products",
-      "model": "orders"
+    "orders": {
+      "via": "product",
+      "collection": "orders"
     }
   }
 }

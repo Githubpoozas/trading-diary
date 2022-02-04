@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
 import _ from "lodash";
+import { useSelector, useDispatch } from "react-redux";
 
 import { styled } from "@mui/system";
 import Card from "@mui/material/Card";
@@ -14,391 +15,205 @@ import Select from "@mui/material/Select";
 import Autocomplete from "@mui/material/Autocomplete";
 import FormHelperText from "@mui/material/FormHelperText";
 import Button from "@mui/material/Button";
+import { useSnackbar } from "notistack";
 
-import { Text, OrdersTable } from "../../component/index";
+import { Text, TradesTable, ConfirmDialog } from "../../component/index";
+
+import { alertSuccess, alertError } from "../../redux/alertSlice";
 
 import {
-  GET_OPEN_ORDERS,
   GET_PENDING_ORDERS,
-  GET_PRODUCTS,
-  uploadMedia,
-  createTrade,
+  GET_OPEN_TRADE,
+  createOrders,
+  deleteOrders,
+  updateOrders,
+  closeTrade,
 } from "../../services";
 
 import { formatOrders } from "../../utils/format";
 
-const Input = styled("input")({
-  display: "none",
-});
-
-const StyledCard = styled(Card)({
-  // width: "300px",
-  // height: "300px",
-});
-
-const StyledCardContent = styled(CardContent)({});
-
-const ImageUploaderContainer = styled("div")({
-  display: "flex",
-  columnGap: "20px",
-  rowGap: "20px",
-  // flexWrap: "wrap",
-  flexDirection: "column",
-});
-
-const ImageUploader = styled("div")({
-  width: "auto",
-  display: "flex",
-  rowGap: "10px",
-  flexDirection: "column",
-  justifyContent: "center",
-  alignItems: "center",
-});
-
-const ImageContainer = styled("div")({});
-
-const Label = styled("label")({
-  margin: 0,
-  width: "100%",
-});
-
-const Image = styled("img")({
-  width: "100%",
-});
-const StyledButton = styled(Button)({
-  width: "100%",
-});
-const ButtonContainer = styled("div")({
-  width: "100%",
-  display: "flex",
-});
-
-const StyledAutocomplete = styled(Autocomplete)(({ theme, error }) => ({
-  [`& .MuiOutlinedInput-notchedOutline`]: {
-    borderColor: error && "red",
-  },
-}));
-
-const timeFrame = ["M1", "M5", "M15", "M30", "H1", "H4", "D1", "W1", "MN"];
-
 const HomePage = () => {
-  const [errors, setErrors] = useState([]);
-  const [inputValue, setInputValue] = useState({
-    product: null,
-    type: "",
-    comment: "",
-  });
+  const { enqueueSnackbar } = useSnackbar();
 
-  const [imageArr, setImageArr] = useState([]);
-
-  const [openOrders, setOpenOrders] = useState([]);
-  const [pendingOrders, setPendingOrders] = useState([]);
-  const [products, setProducts] = useState([]);
-
-  const handleProductChange = (value) => {
-    setInputValue({
-      ...inputValue,
-      product: value,
-    });
-
-    setErrors(errors.filter((error) => error.property !== "product"));
-  };
-
-  const handleChange = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-
-    setInputValue({
-      ...inputValue,
-      [name]: value,
-    });
-
-    setErrors(errors.filter((error) => error.property !== name));
-  };
-
-  const onImageChange = async (e) => {
-    if (e.target.files.length === 0) return;
-    const name = e.target.name;
-    const file = e.target.files[0];
-
-    const objectUrl = URL.createObjectURL(file);
-
-    const newImageArr = imageArr.slice();
-    newImageArr.push({ tf: name, file: objectUrl });
-    setImageArr(newImageArr);
-
-    setErrors(errors.filter((error) => error.property !== "image"));
-
-    return () => URL.revokeObjectURL(objectUrl);
-  };
-
-  const handleDeleteImage = (tf) => {
-    const newImageArr = imageArr.slice();
-    newImageArr.splice(
-      newImageArr.findIndex((i) => i.tf === tf),
-      1
-    );
-    setImageArr(newImageArr);
-  };
-
-  const handleCreate = async () => {
-    const newError = [];
-
-    console.log("inputValue", inputValue);
-
-    if (!inputValue.product) {
-      newError.push({
-        property: "product",
-        message: "Please provide a product",
-      });
-    }
-
-    if (!inputValue.type) {
-      newError.push({
-        property: "type",
-        message: "Please provide a type",
-      });
-    }
-
-    if (!inputValue.comment) {
-      newError.push({
-        property: "comment",
-        message: "Please provide a comment",
-      });
-    }
-
-    if (_.isEmpty(imageArr)) {
-      newError.push({
-        property: "image",
-        message: "Please provide a image",
-      });
-    }
-
-    setErrors(newError);
-    if (!_.isEmpty(newError)) return;
-
-    // const imageUploadRes = await Promise.all(
-    //   imageArr.map(async (i) => {
-    //     const formData = new FormData();
-    //     formData.append("files", i.file);
-    //     formData.append("ref", "trade");
-    //     formData.append("refId", getDoctorData.staff.user.id);
-    //     formData.append("field", i.tf);
-
-    //     return await uploadMedia(formData);
-    //   })
-    // );
-
-    // console.log("imageUploadRes", imageUploadRes);
-    try {
-      const res = await createTrade({
-        ...inputValue,
-        imageArr: imageArr,
-      });
-
-      console.log("res", res);
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
+  const [openTrades, setOpenTrades] = useState([]);
+  const [newOrder, setNewOrder] = useState({});
 
   const {
-    data: productsData,
-    error: productsError,
-    loading: productsLoading,
-  } = useQuery(GET_PRODUCTS);
+    data: openTradeData,
+    error: openTradeError,
+    refetch: openTradeRefetch,
+  } = useQuery(GET_OPEN_TRADE);
 
   useEffect(() => {
-    if (productsError) {
-      console.log("productsError", productsError);
+    if (openTradeError) {
+      enqueueSnackbar(openTradeError, { variant: "error" });
     }
-    if (productsData && !_.isEmpty(productsData.products)) {
-      setProducts(
-        productsData.products.map((p) => ({ ...p, value: p.id, label: p.name }))
+
+    if (openTradeData && !_.isEmpty(openTradeData.trades)) {
+      if (_.isEmpty(newOrder)) {
+        setOpenTrades(openTradeData.trades);
+      } else {
+        const newTrade = JSON.parse(JSON.stringify(openTradeData.trades));
+        console.log("newTrade", newTrade);
+        const findTradeIndex = newTrade.findIndex(
+          (trade) => trade.id === newOrder.trade
+        );
+        console.log("findTradeIndex", findTradeIndex);
+        const findOrderIndex = openTradeData.trades[
+          findTradeIndex
+        ].orders.findIndex((order) => order.id === newOrder.order);
+        console.log("findOrderIndex", findOrderIndex);
+        newTrade[findTradeIndex].orders[findOrderIndex] = {
+          ...newTrade[findTradeIndex].orders[findOrderIndex],
+          isEdit: true,
+        };
+        setOpenTrades(newTrade);
+      }
+    }
+  }, [openTradeData, openTradeError]);
+
+  const handleAddOrder = async (id) => {
+    try {
+      const res = await createOrders({
+        trade: id,
+        ticket: "",
+        size: 0,
+        openTime: null,
+        closeTime: null,
+        openPrice: 0,
+        closePrice: 0,
+        stopLoss: 0,
+        takeProfit: 0,
+        swap: 0,
+        profit: 0,
+        comment: "",
+        type: "buy",
+      });
+      if (res.status === 200) {
+        setNewOrder({ trade: id, order: res.data.id });
+        openTradeRefetch();
+      } else {
+        throw new Error(res);
+      }
+    } catch (error) {
+      console.log("Add order:", error.message);
+      enqueueSnackbar(error.message, { variant: "error" });
+    }
+  };
+
+  const handleSaveOrder = async (value) => {
+    try {
+      const res = await updateOrders(value.id, {
+        ticket: value.ticket,
+        type: value.type,
+        size: value.size,
+        openTime: value.openTime,
+        closeTime: value.closeTime,
+        openPrice: value.openPrice,
+        closePrice: value.closePrice,
+        stopLoss: value.stopLoss,
+        takeProfit: value.takeProfit,
+        swap: value.swap,
+        profit: value.profit,
+        comment: value.comment,
+      });
+      if (res.status === 200) {
+        enqueueSnackbar("Order Updated", { variant: "success" });
+        openTradeRefetch();
+      }
+    } catch (error) {
+      console.log("Update Order error", error.response);
+      enqueueSnackbar(error.response.data.message, { variant: "error" });
+    }
+  };
+
+  const handleCloseTrade = async (trade) => {
+    const orders = trade.orders;
+    if (
+      _.some(orders, { ticket: "" }) ||
+      _.some(orders, { size: 0 }) ||
+      _.some(orders, { openTime: null }) ||
+      _.some(orders, { closeTime: null }) ||
+      _.some(orders, { openPrice: 0 }) ||
+      _.some(orders, { closePrice: 0 }) ||
+      _.some(orders, { stopLoss: 0 }) ||
+      _.some(orders, { takeProfit: 0 })
+    ) {
+      enqueueSnackbar(
+        `Cannot close trade, order ${
+          (_.find(orders, { ticket: "" }) && "undefined") ||
+          _.find(orders, { size: 0 }).ticket ||
+          _.find(orders, { openTime: null }).ticket ||
+          _.find(orders, { closeTime: null }).ticket ||
+          _.find(orders, { openPrice: 0 }).ticket ||
+          _.find(orders, { closePrice: 0 }).ticket ||
+          _.find(orders, { stopLoss: 0 }).ticket ||
+          _.find(orders, { takeProfit: 0 }).ticket
+        } still open`,
+        {
+          variant: "error",
+        }
       );
+      return;
     }
-  }, [productsData, productsError]);
 
-  // const { data: openOrdersData, error: openOrdersError } =
-  //   useQuery(GET_OPEN_ORDERS);
+    try {
+      const res = await closeTrade(trade.id);
 
-  // useEffect(() => {
-  //   if (openOrdersError) {
-  //     console.log("openOrdersError", openOrdersError);
-  //   }
-  //   if (openOrdersData && !_.isEmpty(openOrdersData.orders)) {
-  //     const newOpenOrders = formatOrders(openOrdersData.orders);
-  //     setOpenOrders(newOpenOrders);
-  //   }
-  // }, [openOrdersData, openOrdersError]);
+      if (res.status === 200) {
+        enqueueSnackbar("Trade Closed", { variant: "success" });
+        openTradeRefetch();
+      }
+    } catch (error) {
+      console.log("Close Trade error", error.response);
+      enqueueSnackbar(error.response.data.message, { variant: "error" });
+    }
+  };
 
-  // const {
-  //   data: pendingOrdersData,
-  //   error: pendingOrdersError,
-  //   loading: pendingOrdersLoading,
-  // } = useQuery(GET_PENDING_ORDERS);
-
-  // useEffect(() => {
-  //   if (pendingOrdersError) {
-  //     console.log("pendingOrdersError", pendingOrdersError);
-  //   }
-  //   if (pendingOrdersData && !_.isEmpty(pendingOrdersData.orders)) {
-  //     const newPendingOrders = formatOrders(pendingOrdersData.orders);
-  //     console.log("pendingOrdersData", pendingOrdersData.orders);
-  //     setPendingOrders(newPendingOrders);
-  //   }
-  // }, [pendingOrdersData, pendingOrdersError]);
+  const handleDeleteOrder = async (id) => {
+    try {
+      const res = await deleteOrders(id);
+      if (res.status === 200) {
+        enqueueSnackbar("Order Deleted", { variant: "success" });
+        openTradeRefetch();
+      }
+    } catch (error) {
+      console.log("Delete Order error", error.response);
+      enqueueSnackbar(error.response.data.message, { variant: "error" });
+    }
+  };
 
   return (
     <div style={{ display: "flex", flexDirection: "column", rowGap: "20px" }}>
-      <Card>
-        <CardContent
-          sx={{ display: "flex", flexDirection: "column", rowGap: "20px" }}
+      <div>
+        <Text
+          bold="true"
+          color="blue"
+          fontSize="25px"
+          sx={{ marginBottom: "10px" }}
         >
-          <Text bold="true">Create Trade</Text>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              rowGap: "20px",
-            }}
-          >
-            {timeFrame.map((tf) => (
-              <StyledCard key={`imageUploader${tf}`}>
-                <StyledCardContent>
-                  <ImageUploader component="form">
-                    <ImageContainer>
-                      <Image src={imageArr.find((i) => i.tf === tf)?.file} />
-                    </ImageContainer>
-                    <ButtonContainer>
-                      <Label htmlFor={`${tf}-input`} alt={tf}>
-                        <Input
-                          accept="image/*"
-                          id={`${tf}-input`}
-                          type="file"
-                          name={tf}
-                          onChange={onImageChange}
-                        />
-                        <StyledButton variant="contained" component="span">
-                          {tf}
-                        </StyledButton>
-                      </Label>
-                      {imageArr.find((i) => i.tf === tf) && (
-                        <StyledButton
-                          variant="contained"
-                          color="error"
-                          component="span"
-                          onClick={() => handleDeleteImage(tf)}
-                        >
-                          Delete
-                        </StyledButton>
-                      )}
-                    </ButtonContainer>
-                  </ImageUploader>
-                  {errors.find((e) => e.property === "image") && (
-                    <FormHelperText error>
-                      {errors.find((e) => e.property === "image").message}
-                    </FormHelperText>
-                  )}
-                </StyledCardContent>
-              </StyledCard>
-            ))}
-            <StyledCard>
-              <StyledCardContent>
-                <Box
-                  component="form"
-                  autoComplete="off"
-                  sx={{
-                    display: "flex",
-                    rowGap: "20px",
-                    flexDirection: "column",
-                  }}
-                >
-                  <FormControl fullWidth>
-                    <StyledAutocomplete
-                      required
-                      id="product"
-                      options={products}
-                      name="product"
-                      onChange={(_, newValue) => {
-                        handleProductChange(newValue);
-                      }}
-                      renderInput={(params) => (
-                        <TextField {...params} label="Product" />
-                      )}
-                      error={errors.find((e) => e.property === "product")}
-                    />
-                    {errors.find((e) => e.property === "product") && (
-                      <FormHelperText error>
-                        {errors.find((e) => e.property === "product").message}
-                      </FormHelperText>
-                    )}
-                  </FormControl>
-                  <FormControl fullWidth>
-                    <InputLabel id="type">Type</InputLabel>
-                    <Select
-                      required
-                      labelId="type"
-                      id="type"
-                      value={inputValue.type}
-                      label="Type"
-                      name="type"
-                      onChange={handleChange}
-                      error={errors.find((e) => e.property === "type")}
-                    >
-                      <MenuItem value="buy">Buy</MenuItem>
-                      <MenuItem value="sell">Sell</MenuItem>
-                    </Select>
-                    {errors.find((e) => e.property === "type") && (
-                      <FormHelperText error>
-                        {errors.find((e) => e.property === "type").message}
-                      </FormHelperText>
-                    )}
-                  </FormControl>
-                  <FormControl fullWidth>
-                    <TextField
-                      required
-                      autoComplete="off"
-                      id="tradeComment"
-                      name="comment"
-                      label="Comment"
-                      helperText={
-                        errors.find((e) => e.property === "comment")?.message
-                      }
-                      error={errors.find((e) => e.property === "comment")}
-                      multiline
-                      fullWidth
-                      value={inputValue.comment}
-                      onChange={handleChange}
-                    />
-                  </FormControl>
-                </Box>
-              </StyledCardContent>
-            </StyledCard>
-          </Box>
-          <Button variant="contained" onClick={handleCreate}>
-            Create
-          </Button>
-        </CardContent>
-      </Card>
-      {/* <div>
-        <Text fontSize="20px" bold="true">
-          Open Orders
+          Open Trade
         </Text>
         <Card>
           <CardContent>
-            <OrdersTable orders={openOrders} />
+            <TradesTable
+              data={openTrades}
+              onAddOrder={handleAddOrder}
+              onSaveOrder={handleSaveOrder}
+              onCloseTrade={handleCloseTrade}
+              onClickDeleteOrder={handleDeleteOrder}
+            />
           </CardContent>
         </Card>
       </div>
-
+      {/* 
       <div>
         <Text fontSize="20px" bold="true">
           Pending Orders
         </Text>
         <Card>
           <CardContent>
-            <OrdersTable orders={pendingOrders} />
+            <TradesTable orders={pendingOrders} />
           </CardContent>
         </Card>
       </div> */}

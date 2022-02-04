@@ -585,12 +585,6 @@
                   "type": "string"
                 }
               },
-              "products": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
               "comment": {
                 "type": "string"
               },
@@ -599,6 +593,12 @@
               },
               "closePrice": {
                 "type": "number"
+              },
+              "swap": {
+                "type": "number"
+              },
+              "product": {
+                "type": "string"
               },
               "created_by": {
                 "type": "string"

@@ -6,6 +6,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
+import { Text } from "../index";
 
 export const ConfirmDialog = ({
   open,
@@ -21,15 +22,19 @@ export const ConfirmDialog = ({
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
+      <DialogTitle id="alert-dialog-title">
+        <Text bold="true">{title}</Text>
+      </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
           {description}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={onConfirm} autoFocus>
+        <Button onClick={onClose} variant="contained">
+          Cancel
+        </Button>
+        <Button onClick={onConfirm} autoFocus variant="contained" color="error">
           Confirm
         </Button>
       </DialogActions>

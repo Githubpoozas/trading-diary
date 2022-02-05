@@ -696,6 +696,10 @@
                 "type": "string"
               }
             }
+          },
+          "open": {
+            "type": "boolean",
+            "default": true
           }
         }
       },
@@ -750,6 +754,10 @@
           },
           "product": {
             "type": "string"
+          },
+          "open": {
+            "type": "boolean",
+            "default": true
           },
           "created_by": {
             "type": "string"

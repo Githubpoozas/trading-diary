@@ -598,6 +598,9 @@
                 "product": {
                   "type": "string"
                 },
+                "open": {
+                  "type": "boolean"
+                },
                 "created_by": {
                   "type": "string"
                 },

@@ -76,6 +76,16 @@ export const closeTrade = async (id) => {
   return res;
 };
 
+export const reOpenCloseTrade = async (id) => {
+  const res = await instance.put(`/trades/${id}`, { open: true });
+  return res;
+};
+
+export const deleteTrade = async (id) => {
+  const res = await instance.delete(`/trades/${id}`);
+  return res;
+};
+
 export const createOrders = async (data) => {
   const res = await instance.post("/Orders", data);
   return res;
@@ -88,6 +98,21 @@ export const deleteOrders = async (id) => {
 
 export const updateOrders = async (id, data) => {
   const res = await instance.put(`/orders/${id}`, data);
+  return res;
+};
+
+export const createOrderChange = async (data) => {
+  const res = await instance.post(`/order-changes`, data);
+  return res;
+};
+
+export const updateOrderChange = async (id, data) => {
+  const res = await instance.put(`/order-changes/${id}`, data);
+  return res;
+};
+
+export const deleteOrderChange = async (id) => {
+  const res = await instance.delete(`/order-changes/${id}`);
   return res;
 };
 
@@ -126,9 +151,9 @@ export const GET_PRODUCTS = gql`
   }
 `;
 
-export const GET_OPEN_TRADE = gql`
-  query GET_OPEN_TRADE {
-    trades(where: { open: true }) {
+export const GET_TRADE = gql`
+  query GET_TRADE($open: Boolean!) {
+    trades(where: { open: $open }) {
       id
       open
       product {
@@ -178,6 +203,13 @@ export const GET_OPEN_TRADE = gql`
         swap
         profit
         comment
+        open
+        order_changes {
+          id
+          stopLoss
+          takeProfit
+          comment
+        }
       }
     }
   }

@@ -13,7 +13,8 @@
   "pluginOptions": {},
   "attributes": {
     "ticket": {
-      "type": "string"
+      "type": "string",
+      "unique": false
     },
     "openTime": {
       "type": "datetime"
@@ -60,6 +61,10 @@
     "product": {
       "model": "product",
       "via": "orders"
+    },
+    "open": {
+      "type": "boolean",
+      "default": true
     }
   }
 }

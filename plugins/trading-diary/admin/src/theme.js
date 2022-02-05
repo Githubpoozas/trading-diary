@@ -4,7 +4,8 @@ const theme = createTheme({
   palette: {
     common: {
       red: "#ef5350",
-      gray: "rgba(0, 0, 0, 0.04)",
+      gray: "#F0F0F0",
+      darkGray: "#E8E8E8",
       white: "#FFFFFF",
       blue: "#1976d2",
       lightBlue: "#1976d2",

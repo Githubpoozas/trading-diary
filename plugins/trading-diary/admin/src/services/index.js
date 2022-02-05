@@ -189,6 +189,37 @@ export const GET_TRADE = gql`
       MN {
         url
       }
+      trading_updates {
+        id
+        comment
+        M1 {
+          url
+        }
+        M5 {
+          url
+        }
+        M15 {
+          url
+        }
+        M30 {
+          url
+        }
+        H1 {
+          url
+        }
+        H4 {
+          url
+        }
+        D1 {
+          url
+        }
+        W1 {
+          url
+        }
+        MN {
+          url
+        }
+      }
       orders {
         id
         ticket
@@ -208,7 +239,6 @@ export const GET_TRADE = gql`
           id
           stopLoss
           takeProfit
-          comment
         }
       }
     }

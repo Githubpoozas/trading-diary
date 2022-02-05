@@ -18,12 +18,12 @@
     "takeProfit": {
       "type": "float"
     },
-    "comment": {
-      "type": "text"
-    },
     "order": {
       "via": "order_changes",
       "model": "orders"
+    },
+    "trading_update": {
+      "model": "trading-update"
     }
   }
 }

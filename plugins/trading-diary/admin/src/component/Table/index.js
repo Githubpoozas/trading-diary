@@ -29,6 +29,8 @@ import PriceCheckIcon from "@mui/icons-material/PriceCheck";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
+import Tooltip from "@mui/material/Tooltip";
+import AddchartIcon from "@mui/icons-material/Addchart";
 
 import { averagePrice } from "../../utils/format";
 
@@ -56,9 +58,9 @@ const OrderChangeRow = ({
   const [errors, setErrors] = useState([]);
   const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState({
-    stopLoss: undefined,
-    takeProfit: undefined,
-    comment: "",
+    tradeUpdateId: "",
+    stopLoss: "",
+    takeProfit: "",
     isEdit: false,
   });
 
@@ -133,13 +135,13 @@ const OrderChangeRow = ({
             name="stopLoss"
             type="number"
             InputProps={{ inputProps: { min: 0 } }}
-            value={inputValue.stopLoss}
+            // value={inputValue.stopLoss}
             onChange={handleChange}
             error={errors.find((e) => e.property === "stopLoss") ? true : false}
             helperText={errors.find((e) => e.property === "stopLoss")?.message}
           />
         ) : (
-          <Text>{inputValue.stopLoss}</Text>
+          <Text>{/* {inputValue.stopLoss} */}</Text>
         )}
       </OrderTableCell>
       <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
@@ -152,7 +154,7 @@ const OrderChangeRow = ({
             name="takeProfit"
             type="number"
             InputProps={{ inputProps: { min: 0 } }}
-            value={inputValue.takeProfit}
+            // value={inputValue.takeProfit}
             onChange={handleChange}
             error={
               errors.find((e) => e.property === "takeProfit") ? true : false
@@ -162,7 +164,7 @@ const OrderChangeRow = ({
             }
           />
         ) : (
-          <Text>{inputValue.takeProfit}</Text>
+          <Text>{/* {inputValue.takeProfit} */}</Text>
         )}
       </OrderTableCell>
       <OrderTableCell />
@@ -207,21 +209,31 @@ const OrderChangeRow = ({
           >
             {inputValue.isEdit ? (
               <>
-                <IconButton color="primary" onClick={onClickSave}>
-                  <SaveAsIcon />
-                </IconButton>
-                <IconButton color="info" onClick={handleCancel}>
-                  <HistoryIcon />
-                </IconButton>
+                <Tooltip placement="top" arrow title="Save">
+                  <IconButton color="primary" onClick={onClickSave}>
+                    <SaveAsIcon />
+                  </IconButton>
+                </Tooltip>
+
+                <Tooltip placement="top" arrow title="Cancel">
+                  <IconButton color="info" onClick={handleCancel}>
+                    <HistoryIcon />
+                  </IconButton>
+                </Tooltip>
               </>
             ) : (
               <>
-                <IconButton color="info" onClick={onClickEditOrderChange}>
-                  <ModeEditIcon />
-                </IconButton>
-                <IconButton color="error" onClick={() => setOpen(true)}>
-                  <DeleteForeverIcon />
-                </IconButton>
+                <Tooltip placement="top" arrow title="Edit Order Change">
+                  <IconButton color="info" onClick={onClickEditOrderChange}>
+                    <ModeEditIcon />
+                  </IconButton>
+                </Tooltip>
+
+                <Tooltip placement="top" arrow title="Delete Order Change">
+                  <IconButton color="error" onClick={() => setOpen(true)}>
+                    <DeleteForeverIcon />
+                  </IconButton>
+                </Tooltip>
               </>
             )}
           </Stack>
@@ -248,23 +260,62 @@ const OrderRow = ({
   const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState({
     ticket: "",
-    size: undefined,
+    size: "",
     openTime: null,
     closeTime: null,
-    openPrice: undefined,
-    closePrice: undefined,
-    stopLoss: undefined,
-    takeProfit: undefined,
-    swap: undefined,
-    profit: undefined,
+    openPrice: "",
+    closePrice: "",
+    stopLoss: "",
+    takeProfit: "",
+    swap: "",
+    profit: "",
     comment: "",
     type: "buy",
     open: true,
     isEdit: false,
   });
 
+  const reset = () => {
+    const {
+      id,
+      ticket,
+      size,
+      openTime,
+      closeTime,
+      openPrice,
+      closePrice,
+      takeProfit,
+      stopLoss,
+      swap,
+      profit,
+      comment,
+      type,
+      open,
+      isEdit,
+    } = data;
+    setInputValue({
+      tradeId: tradeId,
+      id: id,
+      ticket: ticket || "",
+      size: size || "",
+      openTime: openTime || null,
+      closeTime: closeTime || null,
+      openPrice: openPrice || "",
+      closePrice: closePrice || "",
+      stopLoss: stopLoss || "",
+      takeProfit: takeProfit || "",
+      swap: swap || "",
+      profit: profit || "",
+      comment: comment || "",
+      type: type,
+      open: open,
+      isEdit: isEdit,
+    });
+  };
+
   useEffect(() => {
-    setInputValue(data);
+    console.log("data", data);
+    reset();
   }, [data]);
 
   const handleChange = (e) => {
@@ -313,7 +364,7 @@ const OrderRow = ({
       });
     }
 
-    if (inputValue.size === 0) {
+    if (inputValue.size === "") {
       newErrors.push({
         property: "size",
         message: "Please provide a size",
@@ -334,21 +385,21 @@ const OrderRow = ({
       });
     }
 
-    if (inputValue.openPrice === 0) {
+    if (inputValue.openPrice === "") {
       newErrors.push({
         property: "openPrice",
         message: "Please provide a open price",
       });
     }
 
-    if (inputValue.closePrice === 0) {
+    if (inputValue.closePrice === "") {
       newErrors.push({
         property: "closePrice",
         message: "Please provide a close price",
       });
     }
 
-    if (inputValue.profit === 0) {
+    if (inputValue.profit === "") {
       newErrors.push({
         property: "profit",
         message: "Please provide a profit",
@@ -388,6 +439,7 @@ const OrderRow = ({
         <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
           {inputValue.isEdit ? (
             <TextField
+              autoComplete="off"
               id="orderTicket"
               label="Ticket"
               variant="outlined"
@@ -408,7 +460,9 @@ const OrderRow = ({
           {inputValue.isEdit ? (
             <>
               <DateTimePicker
+                autoComplete="off"
                 ampm={false}
+                disableFuture
                 label="Open Time"
                 renderInput={(props) => <TextField {...props} />}
                 value={inputValue.openTime}
@@ -456,6 +510,7 @@ const OrderRow = ({
         <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
           {inputValue.isEdit ? (
             <TextField
+              autoComplete="off"
               id="orderSize"
               label="Size"
               variant="outlined"
@@ -474,6 +529,7 @@ const OrderRow = ({
         <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
           {inputValue.isEdit ? (
             <TextField
+              autoComplete="off"
               id="orderOpenPrice"
               label="OpenPrice"
               variant="outlined"
@@ -496,6 +552,7 @@ const OrderRow = ({
         <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
           {inputValue.isEdit ? (
             <TextField
+              autoComplete="off"
               id="orderStopLoss"
               label="Stop Loss"
               variant="outlined"
@@ -518,6 +575,7 @@ const OrderRow = ({
         <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
           {inputValue.isEdit ? (
             <TextField
+              autoComplete="off"
               id="orderTakeProfit"
               label="Take Profit"
               variant="outlined"
@@ -541,7 +599,9 @@ const OrderRow = ({
           {inputValue.isEdit ? (
             <>
               <DateTimePicker
+                autoComplete="off"
                 ampm={false}
+                disableFuture
                 renderInput={(props) => <TextField {...props} />}
                 label="Close Time"
                 value={inputValue.closeTime}
@@ -570,6 +630,7 @@ const OrderRow = ({
         <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
           {inputValue.isEdit ? (
             <TextField
+              autoComplete="off"
               id="orderClosePrice"
               label="Close Price"
               variant="outlined"
@@ -592,6 +653,7 @@ const OrderRow = ({
         <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
           {inputValue.isEdit ? (
             <TextField
+              autoComplete="off"
               id="orderSwap"
               label="Swap"
               variant="outlined"
@@ -607,6 +669,7 @@ const OrderRow = ({
         <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
           {inputValue.isEdit ? (
             <TextField
+              autoComplete="off"
               id="orderProfit"
               label="Profit"
               variant="outlined"
@@ -636,6 +699,7 @@ const OrderRow = ({
                 width: "400px",
                 maxWidth: "400px",
               }}
+              autoComplete="off"
               multiline
               id="orderComment"
               label="Comment"
@@ -662,45 +726,60 @@ const OrderRow = ({
             >
               {inputValue.isEdit ? (
                 <>
-                  <IconButton color="primary" onClick={onClickSave}>
-                    <SaveAsIcon />
-                  </IconButton>
-                  <IconButton color="info" onClick={handleCancel}>
-                    <HistoryIcon />
-                  </IconButton>
+                  <Tooltip placement="top" arrow title="Save">
+                    <IconButton color="primary" onClick={onClickSave}>
+                      <SaveAsIcon />
+                    </IconButton>
+                  </Tooltip>
+
+                  <Tooltip placement="top" arrow title="Cancel">
+                    <IconButton color="info" onClick={handleCancel}>
+                      <HistoryIcon />
+                    </IconButton>
+                  </Tooltip>
                 </>
               ) : (
                 <>
                   {inputValue.open && (
                     <>
-                      <IconButton
+                      {/* <IconButton
                         color="info"
                         onClick={() => onClickAddOrderChange(tradeId, data.id)}
                       >
                         <PriceCheckIcon />
-                      </IconButton>
-                      <IconButton color="info" onClick={onClickEditOrder}>
-                        <ModeEditIcon />
-                      </IconButton>
-                      <IconButton color="error" onClick={() => setOpen(true)}>
-                        <DeleteForeverIcon />
-                      </IconButton>
+                      </IconButton> */}
+                      <Tooltip placement="top" arrow title="Edit Order">
+                        <IconButton color="info" onClick={onClickEditOrder}>
+                          <ModeEditIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip placement="top" arrow title="Delete Order">
+                        <IconButton color="error" onClick={() => setOpen(true)}>
+                          <DeleteForeverIcon />
+                        </IconButton>
+                      </Tooltip>
                     </>
                   )}
-                  <IconButton color="primary" onClick={onClickClose}>
-                    {inputValue.open ? (
-                      <MeetingRoomIcon />
-                    ) : (
-                      <NoMeetingRoomIcon />
-                    )}
-                  </IconButton>
+                  <Tooltip
+                    placement="top"
+                    arrow
+                    title={inputValue.open ? "Close Order" : "Open Order"}
+                  >
+                    <IconButton color="primary" onClick={onClickClose}>
+                      {inputValue.open ? (
+                        <MeetingRoomIcon />
+                      ) : (
+                        <NoMeetingRoomIcon />
+                      )}
+                    </IconButton>
+                  </Tooltip>
                 </>
               )}
             </Stack>
           </OrderTableCell>
         )}
       </StyledTableRow>
-      {!_.isEmpty(data.order_changes) &&
+      {/* {!_.isEmpty(data.order_changes) &&
         data.order_changes.map((change, index) => (
           <OrderChangeRow
             canEdit={canEdit}
@@ -713,15 +792,190 @@ const OrderRow = ({
             onSaveOrderChange={onSaveOrderChange}
             onDeleteOrderChange={onDeleteOrderChange}
           />
-        ))}
+        ))} */}
     </>
   );
 };
+
+const TradeUpdateRow = memo(
+  ({ tradeId, data, index, onSaveUpdateTrade, onCancelUpdateTrade }) => {
+    const [errors, setErrors] = useState([]);
+    const [imageArr, setImageArr] = useState([]);
+    const [comment, setComment] = useState("");
+    const [isEdit, setIsEdit] = useState(false);
+
+    useEffect(() => {
+      console.log("TradeUpdateRow", data);
+      setImageArr(data.imageArr);
+      setComment(data.comment);
+      setIsEdit(data.isEdit);
+    }, [data]);
+
+    const handleChange = (e) => {
+      const name = e.target.name;
+      const value = e.target.value;
+
+      setInputValue({
+        ...inputValue,
+        [name]: value,
+      });
+
+      setErrors(errors.filter((error) => error.property !== name));
+    };
+
+    const onImageChange = async (e) => {
+      if (e.target.files.length === 0) return;
+      const name = e.target.name;
+      const file = e.target.files[0];
+
+      const objectUrl = URL.createObjectURL(file);
+
+      const newImageArr = imageArr.slice();
+      newImageArr.push({ tf: name, file: file, preview: objectUrl });
+      setImageArr(newImageArr);
+
+      setErrors(errors.filter((error) => error.property !== "image"));
+
+      e.target.value = null;
+      return () => URL.revokeObjectURL(objectUrl);
+    };
+
+    const handleDeleteImage = (tf) => {
+      const newImageArr = imageArr.slice();
+      newImageArr.splice(
+        newImageArr.findIndex((i) => i.tf === tf),
+        1
+      );
+      setImageArr(newImageArr);
+    };
+
+    const onClickSave = async () => {
+      const newError = [];
+
+      if (!comment) {
+        newError.push({
+          property: "comment",
+          message: "Please provide a comment",
+        });
+      }
+
+      if (_.isEmpty(imageArr)) {
+        newError.push({
+          property: "image",
+          message: "Please provide a image",
+        });
+      }
+
+      setErrors(newError);
+      if (!_.isEmpty(newError)) {
+        setLoading(false);
+        return;
+      }
+      onSaveUpdateTrade({ tradeId, id: data.id, comment, index, imageArr });
+    };
+
+    const onClickCancel = () => {
+      onCancelUpdateTrade({ tradeId, index });
+    };
+
+    return (
+      <>
+        <TableRow>
+          <OrderTableCell isedit={isEdit ? 1 : 0}>
+            <Text>{data?.id}</Text>
+          </OrderTableCell>
+          {timeFrame.map((tf) => (
+            <OrderTableCell align="center" key={tf}>
+              <Box component="form">
+                <Box>
+                  <img
+                    src={imageArr.find((i) => i.tf === tf)?.preview}
+                    style={{ maxWidth: "100px" }}
+                  />
+                </Box>
+                <Box>
+                  <label htmlFor={`${tf}-input`} alt={tf}>
+                    <input
+                      accept="image/*"
+                      id={`${tf}-input`}
+                      type="file"
+                      name={tf}
+                      onChange={onImageChange}
+                      style={{ display: "none" }}
+                    />
+                    <Button variant="contained" component="span">
+                      {tf}
+                    </Button>
+                  </label>
+                  {imageArr.find((i) => i.tf === tf) && (
+                    <Button
+                      variant="contained"
+                      color="error"
+                      component="span"
+                      onClick={() => handleDeleteImage(tf)}
+                    >
+                      Delete
+                    </Button>
+                  )}
+                </Box>
+              </Box>
+              {errors.find((e) => e.property === "image") && (
+                <HelperText>
+                  {errors.find((e) => e.property === "image").message}
+                </HelperText>
+              )}
+            </OrderTableCell>
+          ))}
+          <OrderTableCell>
+            <Stack
+              direction="row"
+              justifyContent="flex-end"
+              alignItems="center"
+              spacing={1}
+            >
+              <Tooltip placement="top" arrow title="Save">
+                <IconButton color="primary" onClick={onClickSave}>
+                  <SaveAsIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip placement="top" arrow title="Cancel">
+                <IconButton color="info" onClick={onClickCancel}>
+                  <HistoryIcon />
+                </IconButton>
+              </Tooltip>
+            </Stack>
+          </OrderTableCell>
+        </TableRow>
+        <TableCell style={{ padding: "15px" }} colSpan={13}>
+          {isEdit ? (
+            <TextField
+              required
+              multiline
+              fullWidth
+              autoComplete="off"
+              id="tradeComment"
+              name="comment"
+              label="Comment"
+              error={errors.find((e) => e.property === "comment")?.message}
+              value={comment}
+              onChange={handleChange}
+            />
+          ) : (
+            <Text bold="true">{comment}</Text>
+          )}
+        </TableCell>
+      </>
+    );
+  }
+);
 
 const TradeRow = memo(
   ({
     canEdit,
     data,
+    onAddUpdateTrade,
+    onSaveUpdateTrade,
+    onCancelUpdateTrade,
     onAddOrder,
     onCloseTrade,
     onDeleteTrade,
@@ -752,11 +1006,11 @@ const TradeRow = memo(
           }}
           backgroundcolor="gray"
         >
-          <TableCell component="th" scope="row">
-            <Text bold={open ? 1 : 0}>{data.product.name}</Text>
-          </TableCell>
+          <OrderTableCell component="th" scope="row">
+            <Text bold="true">{data.product.name}</Text>
+          </OrderTableCell>
           {timeFrame.map((tf) => (
-            <TableCell align="center" key={tf}>
+            <OrderTableCell align="center" key={tf}>
               <Avatar
                 alt={tf}
                 src={data[tf] ? API_URI + data[tf].url : null}
@@ -774,9 +1028,8 @@ const TradeRow = memo(
               >
                 {tf}
               </Avatar>
-            </TableCell>
+            </OrderTableCell>
           ))}
-
           <TableCell align="center">
             <Stack
               direction="row"
@@ -786,22 +1039,79 @@ const TradeRow = memo(
             >
               {canEdit ? (
                 <>
-                  <IconButton color="primary" onClick={onAddOrder}>
-                    <AddCircleOutlineIcon />
-                  </IconButton>
-                  <IconButton color="error" onClick={onCloseTrade}>
-                    <HighlightOffIcon />
-                  </IconButton>
-                  <IconButton color="error" onClick={onDeleteTrade}>
-                    <DeleteSweepIcon />
-                  </IconButton>
+                  <Tooltip placement="top" arrow title="Add Update Trade">
+                    <IconButton color="info" onClick={onAddUpdateTrade}>
+                      <AddchartIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip placement="top" arrow title="Add Order">
+                    <IconButton color="primary" onClick={onAddOrder}>
+                      <AddCircleOutlineIcon />
+                    </IconButton>
+                  </Tooltip>
+
+                  <Tooltip placement="top" arrow title="Close Trade">
+                    <IconButton color="success" onClick={onCloseTrade}>
+                      <ArchiveIcon />
+                    </IconButton>
+                  </Tooltip>
+
+                  <Tooltip placement="top" arrow title="Delete Trade">
+                    <IconButton color="error" onClick={onDeleteTrade}>
+                      <DeleteSweepIcon />
+                    </IconButton>
+                  </Tooltip>
                 </>
               ) : (
-                <IconButton color="primary" onClick={onReOpenTrade}>
-                  <CheckCircleOutlineIcon />
-                </IconButton>
+                <Tooltip placement="top" arrow title="Re-Open Trade">
+                  <IconButton color="primary" onClick={onReOpenTrade}>
+                    <CheckCircleOutlineIcon />
+                  </IconButton>
+                </Tooltip>
               )}
             </Stack>
+          </TableCell>
+        </StyledTableRow>
+        <TableRow>
+          <TableCell style={{ padding: "15px" }} colSpan={13}>
+            <Text bold="true">{data.comment}</Text>
+          </TableCell>
+        </TableRow>
+        <StyledTableRow>
+          <TableCell style={{ padding: "15px" }} colSpan={13}>
+            <Box>
+              <Table aria-label="opentrades">
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell backgroundcolor="lineGreen">
+                      <Text bold="true">Update ID</Text>
+                    </StyledTableCell>
+                    {timeFrame.map((tf) => (
+                      <StyledTableCell
+                        backgroundcolor="lineGreen"
+                        align="center"
+                        key={tf}
+                      >
+                        <Text bold="true">{tf}</Text>
+                      </StyledTableCell>
+                    ))}
+                    <StyledTableCell backgroundcolor="lineGreen" />
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {data.trading_updates.map((update, index) => (
+                    <TradeUpdateRow
+                      tradeId={data.id}
+                      data={update}
+                      key={`tradeUpdate${index}`}
+                      index={index}
+                      onSaveUpdateTrade={onSaveUpdateTrade}
+                      onCancelUpdateTrade={onCancelUpdateTrade}
+                    />
+                  ))}
+                </TableBody>
+              </Table>
+            </Box>
           </TableCell>
         </StyledTableRow>
         {!_.isEmpty(data.orders) && (
@@ -884,6 +1194,9 @@ const TradeRow = memo(
 
 export const TradesTable = ({
   data,
+  onAddUpdateTrade,
+  onSaveUpdateTrade,
+  onCancelUpdateTrade,
   onAddOrder,
   onCloseTrade,
   onDeleteTrade,
@@ -913,7 +1226,7 @@ export const TradesTable = ({
   };
 
   const handleDeleteConfirmDialog = () => {
-    setSelectedTrade(false);
+    setSelectedDeleteTrade(false);
   };
   const handleConfirmDelete = () => {
     onDeleteTrade(selectedDeleteTrade);
@@ -932,9 +1245,7 @@ export const TradesTable = ({
       />
       <ConfirmDialog
         open={selectedDeleteTrade ? true : false}
-        title={`Confirm ${selectedTrade.open ? "close" : "re-open"} trade ${
-          selectedDeleteTrade?.product?.name
-        }`}
+        title={`Confirm delete trade`}
         onClose={handleDeleteConfirmDialog}
         onConfirm={handleConfirmDelete}
       />
@@ -943,24 +1254,31 @@ export const TradesTable = ({
         <Table aria-label="collapsible table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>
+              <StyledTableCell backgroundcolor="black">
                 <Text bold="true">Product</Text>
               </StyledTableCell>
               {timeFrame.map((tf) => (
-                <StyledTableCell align="center" key={tf}>
+                <StyledTableCell
+                  backgroundcolor="black"
+                  align="center"
+                  key={tf}
+                >
                   <Text bold="true">{tf}</Text>
                 </StyledTableCell>
               ))}
-              <StyledTableCell align="center"></StyledTableCell>
+              <StyledTableCell backgroundcolor="black" />
             </TableRow>
           </TableHead>
           <TableBody>
             {!_.isEmpty(data) &&
-              data.map((trade, index) => (
+              data.map((trade) => (
                 <TradeRow
                   canEdit={trade.open}
                   key={trade.id}
                   data={trade}
+                  onAddUpdateTrade={() => onAddUpdateTrade(trade.id)}
+                  onSaveUpdateTrade={onSaveUpdateTrade}
+                  onCancelUpdateTrade={onCancelUpdateTrade}
                   onAddOrder={() => onAddOrder(trade.id)}
                   onCloseTrade={() => setSelectedTrade(trade)}
                   onReOpenTrade={() => setSelectedTrade(trade)}

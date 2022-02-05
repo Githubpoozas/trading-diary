@@ -541,9 +541,6 @@
           "takeProfit": {
             "type": "number"
           },
-          "comment": {
-            "type": "string"
-          },
           "order": {
             "required": [
               "id"
@@ -565,12 +562,6 @@
                 "type": "number"
               },
               "openPrice": {
-                "type": "number"
-              },
-              "stopLoss": {
-                "type": "number"
-              },
-              "takeProfit": {
                 "type": "number"
               },
               "closeTime": {
@@ -603,6 +594,62 @@
               "open": {
                 "type": "boolean"
               },
+              "stopLoss": {
+                "type": "number"
+              },
+              "takeProfit": {
+                "type": "number"
+              },
+              "created_by": {
+                "type": "string"
+              },
+              "updated_by": {
+                "type": "string"
+              }
+            }
+          },
+          "trading_update": {
+            "required": [
+              "id",
+              "comment"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "comment": {
+                "type": "string"
+              },
+              "trade": {
+                "type": "string"
+              },
+              "M1": {
+                "type": "string"
+              },
+              "M5": {
+                "type": "string"
+              },
+              "M15": {
+                "type": "string"
+              },
+              "M30": {
+                "type": "string"
+              },
+              "H1": {
+                "type": "string"
+              },
+              "H4": {
+                "type": "string"
+              },
+              "D1": {
+                "type": "string"
+              },
+              "W1": {
+                "type": "string"
+              },
+              "MN": {
+                "type": "string"
+              },
               "created_by": {
                 "type": "string"
               },
@@ -621,10 +668,10 @@
           "takeProfit": {
             "type": "number"
           },
-          "comment": {
+          "order": {
             "type": "string"
           },
-          "order": {
+          "trading_update": {
             "type": "string"
           },
           "created_by": {

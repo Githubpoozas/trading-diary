@@ -645,12 +645,6 @@
                 "openPrice": {
                   "type": "number"
                 },
-                "stopLoss": {
-                  "type": "number"
-                },
-                "takeProfit": {
-                  "type": "number"
-                },
                 "closeTime": {
                   "type": "string"
                 },
@@ -680,6 +674,12 @@
                 },
                 "open": {
                   "type": "boolean"
+                },
+                "stopLoss": {
+                  "type": "number"
+                },
+                "takeProfit": {
+                  "type": "number"
                 },
                 "created_by": {
                   "type": "string"

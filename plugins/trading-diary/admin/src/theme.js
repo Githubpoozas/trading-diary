@@ -10,6 +10,7 @@ const theme = createTheme({
       blue: "#1976d2",
       lightBlue: "#1976d2",
       darkBlue: "#1565c0",
+      lineGreen: "#32CD32",
     },
   },
   typography: {

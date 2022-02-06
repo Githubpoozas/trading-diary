@@ -10,11 +10,16 @@ import { Text, TradesTable, ConfirmDialog } from "../../component/index";
 
 import {
   GET_TRADE,
+  deleteMedia,
+  uploadMedia,
   createOrders,
   deleteOrders,
   updateOrders,
   closeTrade,
   deleteTrade,
+  createTradingUpdate,
+  updateTradingUpdate,
+  deleteTradingUpdate,
   createOrderChange,
   updateOrderChange,
   deleteOrderChange,
@@ -40,7 +45,7 @@ const HomePage = () => {
 
     if (openTradeData) {
       let newTrades = JSON.parse(JSON.stringify(openTradeData.trades));
-
+      console.log("newTrades", newTrades);
       setOpenTrades(newTrades);
     }
   }, [openTradeData, openTradeError]);
@@ -48,84 +53,6 @@ const HomePage = () => {
   useEffect(() => {
     openTradeRefetch();
   }, []);
-
-  const handleAddOrder = async (id) => {
-    let newTrades = JSON.parse(JSON.stringify(openTradeData.trades));
-
-    const findTradeIndex = newTrades.findIndex((trade) => trade.id === id);
-
-    newTrades[findTradeIndex].orders.push({
-      tradeId: id,
-      ticket: "",
-      size: undefined,
-      openTime: null,
-      closeTime: null,
-      openPrice: undefined,
-      closePrice: undefined,
-      stopLoss: undefined,
-      takeProfit: undefined,
-      swap: undefined,
-      profit: undefined,
-      comment: "",
-      type: "buy",
-      open: true,
-      isEdit: true,
-    });
-
-    setOpenTrades(newTrades);
-  };
-
-  const handleRemoveNewOrder = (tradeId, orderIndex) => {
-    let newTrades = JSON.parse(JSON.stringify(openTradeData.trades));
-
-    const findTradeIndex = newTrades.findIndex((trade) => trade.id === tradeId);
-
-    newTrades[findTradeIndex].orders.splice(orderIndex, 1);
-
-    setOpenTrades(newTrades);
-  };
-
-  const handleSaveOrder = async (value) => {
-    const variables = {
-      ticket: value.ticket,
-      type: value.type,
-      size: value.size,
-      openTime: value.openTime,
-      closeTime: value.closeTime,
-      openPrice: value.openPrice,
-      closePrice: value.closePrice,
-      stopLoss: value.stopLoss,
-      takeProfit: value.takeProfit,
-      swap: value.swap,
-      profit: value.profit,
-      comment: value.comment,
-      open: value.open,
-    };
-    try {
-      let res;
-      if (value.id) {
-        res = await updateOrders(value.id, variables);
-      } else {
-        res = await createOrders({ ...variables, trade: value.tradeId });
-      }
-
-      if (res.status === 200) {
-        enqueueSnackbar(`Order ${value.id ? "Updated" : "Created"}`, {
-          variant: "success",
-        });
-        openTradeRefetch();
-      }
-    } catch (error) {
-      enqueueSnackbar(
-        `${value.id ? "Update" : "Create"} Order error: ${
-          error.response.data.message
-        }`,
-        {
-          variant: "error",
-        }
-      );
-    }
-  };
 
   const handleCloseTrade = async (trade) => {
     const orders = trade.orders;
@@ -185,6 +112,258 @@ const HomePage = () => {
     }
   };
 
+  const handleAddTradingUpdate = (id) => {
+    let newTrades = JSON.parse(JSON.stringify(openTradeData.trades));
+    const findTradeIndex = newTrades.findIndex((trade) => trade.id === id);
+    newTrades[findTradeIndex].trading_updates.push({
+      comment: "",
+      imageArr: [],
+      isEdit: true,
+    });
+    setOpenTrades(newTrades);
+  };
+
+  const handleCancelTradingUpdate = (data) => {
+    console.log("handleCancelTradingUpdate", data);
+    let newTrades = JSON.parse(JSON.stringify(openTradeData.trades));
+    const findTradeIndex = newTrades.findIndex(
+      (trade) => trade.id === data.tradeId
+    );
+    newTrades[findTradeIndex].trading_updates.splice(data.index, 1);
+    setOpenTrades(newTrades);
+  };
+
+  const handleSaveTradingUpdate = async (data) => {
+    console.log("handleSaveTradingUpdate", data.deleteImage);
+
+    const deleteImageObj = {};
+    const deleteImageArr = [];
+
+    data.deleteImage.forEach((item) => {
+      for (const property in item) {
+        deleteImageObj[property] = null;
+        deleteImageArr.push(item[property]);
+      }
+    });
+
+    console.log("deleteImageObj", deleteImageObj);
+    console.log("deleteImageArr", deleteImageArr);
+
+    try {
+      let res;
+
+      if (data.id) {
+        console.log("update");
+        res = await updateTradingUpdate(data.id, {
+          trade: data.tradeId,
+          comment: data.comment,
+          ...deleteImageObj,
+        });
+      } else {
+        console.log("create");
+        res = await createTradingUpdate({
+          trade: data.tradeId,
+          comment: data.comment,
+        });
+      }
+
+      console.log("res", res);
+
+      if (res.status !== 200) {
+        throw new Error(res);
+      }
+
+      if (res.status === 200) {
+        enqueueSnackbar(`Trading Update ${data.id ? "updated" : "created"}`, {
+          variant: "success",
+        });
+
+        await Promise.all(
+          data.imageArr.map(async (i) => {
+            if (i.hasOwnProperty("id")) return;
+            const formData = new FormData();
+            formData.append("files", i.file);
+            formData.append("ref", "trading-update");
+            formData.append("refId", res.data.id);
+            formData.append("field", i.tf);
+
+            await uploadMedia(formData);
+          })
+        );
+
+        await Promise.all(
+          deleteImageArr.map(async (i) => {
+            await deleteMedia(i);
+          })
+        );
+
+        openTradeRefetch();
+      }
+    } catch (error) {
+      enqueueSnackbar(
+        `Update Trading Update error: ${error.response.data.message}`,
+        {
+          variant: "error",
+        }
+      );
+    }
+  };
+
+  const handleDeleteTradingUpdate = async (id) => {
+    try {
+      const res = await deleteTradingUpdate(id);
+
+      if (res.status === 200) {
+        enqueueSnackbar(`Trading Update Deleted`, {
+          variant: "success",
+        });
+      }
+      openTradeRefetch();
+    } catch (error) {
+      enqueueSnackbar(
+        `Delete Trading Update error: ${error.response.data.message}`,
+        {
+          variant: "error",
+        }
+      );
+    }
+  };
+
+  const handleAddOrder = async (id) => {
+    let newTrades = JSON.parse(JSON.stringify(openTradeData.trades));
+    const findTradeIndex = newTrades.findIndex((trade) => trade.id === id);
+
+    newTrades[findTradeIndex].orders.push({
+      tradeId: id,
+      ticket: "",
+      size: "",
+      openTime: null,
+      closeTime: null,
+      openPrice: "",
+      closePrice: "",
+      stopLoss: "",
+      takeProfit: "",
+      swap: "",
+      profit: "",
+      comment: "",
+      type: "buy",
+      open: true,
+      isEdit: true,
+    });
+
+    setOpenTrades(newTrades);
+  };
+
+  const handleRemoveNewOrder = (tradeId, orderIndex) => {
+    let newTrades = JSON.parse(JSON.stringify(openTradeData.trades));
+
+    const findTradeIndex = newTrades.findIndex((trade) => trade.id === tradeId);
+
+    newTrades[findTradeIndex].orders.splice(orderIndex, 1);
+
+    setOpenTrades(newTrades);
+  };
+
+  const handleSaveOrder = async ({
+    tradeId,
+    id,
+    ticket,
+    type,
+    size,
+    openTime,
+    closeTime,
+    openPrice,
+    closePrice,
+    swap,
+    profit,
+    comment,
+    open,
+    stopLoss,
+    takeProfit,
+  }) => {
+    let canCreateOrderChange = true;
+    if (id) {
+      let newTrades = JSON.parse(JSON.stringify(openTradeData.trades));
+      const findTradeIndex = newTrades.findIndex(
+        (trade) => trade.id === tradeId
+      );
+      const { oldStopLoss, oldTakeProfit } = newTrades[
+        findTradeIndex
+      ].orders.find((order) => order.id === id);
+
+      if (stopLoss === oldStopLoss && takeProfit === oldTakeProfit) {
+        canCreateOrderChange = false;
+      }
+    }
+
+    let orderVariables = {
+      ticket: ticket,
+      type: type,
+      size: size,
+      openTime: openTime,
+      closeTime: closeTime,
+      openPrice: openPrice,
+      closePrice: closePrice !== "" ? closePrice : null,
+      swap: swap !== "" ? swap : null,
+      profit: profit !== "" ? profit : null,
+      comment: comment,
+      open: open,
+    };
+    const orderChangeVariables = {
+      stopLoss: stopLoss !== "" ? stopLoss : null,
+      takeProfit: takeProfit !== "" ? takeProfit : null,
+    };
+
+    if (canCreateOrderChange) {
+      orderVariables = { ...orderVariables, ...orderChangeVariables };
+    }
+
+    try {
+      let res;
+      if (id) {
+        res = await updateOrders(id, orderVariables);
+      } else {
+        res = await createOrders({ ...orderVariables, trade: tradeId });
+      }
+
+      if (res.status === 200) {
+        enqueueSnackbar(`Order ${id ? "Updated" : "Created"}`, {
+          variant: "success",
+        });
+
+        if (!canCreateOrderChange) return;
+
+        let orderChangeRes;
+        if (id) {
+          orderChangeRes = await createOrderChange({
+            ...orderChangeVariables,
+            order: res.data.id,
+          });
+        } else {
+          if (stopLoss || takeProfit) {
+            orderChangeRes = await createOrderChange({
+              ...orderChangeVariables,
+              order: res.data.id,
+            });
+          }
+        }
+        if (orderChangeRes.status === 200) {
+          enqueueSnackbar("Order change created", { variant: "success" });
+        }
+      }
+      openTradeRefetch();
+    } catch (error) {
+      enqueueSnackbar(
+        `${id ? "Update" : "Create"} Order error: ${
+          error.response.data.message
+        }`,
+        {
+          variant: "error",
+        }
+      );
+    }
+  };
+
   const handleDeleteOrder = async (id) => {
     try {
       const res = await deleteOrders(id);
@@ -229,9 +408,9 @@ const HomePage = () => {
 
     newTrades[findTradeIndex].orders[findOrderIndex].order_changes.push({
       orderId: orderId,
-      takeProfit: undefined,
-      stopLoss: undefined,
-      comment: "",
+      tradeUpdateId: "",
+      takeProfit: "",
+      stopLoss: "",
       isEdit: true,
     });
 
@@ -314,6 +493,10 @@ const HomePage = () => {
           <CardContent>
             <TradesTable
               data={openTrades}
+              onAddTradingUpdate={handleAddTradingUpdate}
+              onSaveTradingUpdate={handleSaveTradingUpdate}
+              onCancelTradingUpdate={handleCancelTradingUpdate}
+              onDeleteTradingUpdate={handleDeleteTradingUpdate}
               onAddOrder={handleAddOrder}
               onRemoveNewOrder={handleRemoveNewOrder}
               onSaveOrder={handleSaveOrder}

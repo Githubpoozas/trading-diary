@@ -29,12 +29,6 @@
     "openPrice": {
       "type": "float"
     },
-    "stopLoss": {
-      "type": "float"
-    },
-    "takeProfit": {
-      "type": "float"
-    },
     "closeTime": {
       "type": "datetime"
     },
@@ -42,8 +36,8 @@
       "type": "decimal"
     },
     "order_changes": {
-      "collection": "order-change",
-      "via": "order"
+      "via": "order",
+      "collection": "order-change"
     },
     "comment": {
       "type": "text"
@@ -65,6 +59,12 @@
     "open": {
       "type": "boolean",
       "default": true
+    },
+    "stopLoss": {
+      "type": "float"
+    },
+    "takeProfit": {
+      "type": "float"
     }
   }
 }

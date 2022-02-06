@@ -109,6 +109,34 @@
       "plugin": "upload",
       "required": false,
       "pluginOptions": {}
+    },
+    "support": {
+      "type": "boolean",
+      "default": false
+    },
+    "resistant": {
+      "type": "boolean",
+      "default": false
+    },
+    "srFlip": {
+      "type": "boolean",
+      "default": false
+    },
+    "demand": {
+      "type": "boolean",
+      "default": false
+    },
+    "supply": {
+      "type": "boolean",
+      "default": false
+    },
+    "fakeout": {
+      "type": "boolean",
+      "default": false
+    },
+    "fibo": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

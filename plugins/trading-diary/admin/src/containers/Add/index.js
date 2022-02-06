@@ -6,7 +6,6 @@ import { styled } from "@mui/system";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Box from "@mui/material/Box";
-import FormControl from "@mui/material/FormControl";
 
 import pluginId from "../../pluginId";
 import {
@@ -16,11 +15,12 @@ import {
   HelperText,
   Select,
   TextField,
+  StrategyCheckbox,
 } from "../../component/index";
 
 import { GET_PRODUCTS, uploadMedia, createTrade } from "../../services";
 
-import { timeFrame } from "../../instance";
+import { timeFrame } from "../../constant";
 
 const Add = ({ history }) => {
   const [errors, setErrors] = useState([]);
@@ -30,6 +30,13 @@ const Add = ({ history }) => {
     product: null,
     type: "buy",
     comment: "",
+    support: false,
+    resistant: false,
+    srFlip: false,
+    demand: false,
+    supply: false,
+    fakeout: false,
+    fibo: false,
   });
 
   const handleProductChange = (value) => {
@@ -43,12 +50,26 @@ const Add = ({ history }) => {
 
   const handleChange = (e) => {
     const name = e.target.name;
-    const value = e.target.value;
 
-    setInputValue({
-      ...inputValue,
-      [name]: value,
-    });
+    const newInputValue = { ...inputValue };
+
+    if (
+      [
+        "support",
+        "resistant",
+        "srFlip",
+        "demand",
+        "supply",
+        "fakeout",
+        "fibo",
+      ].includes(name)
+    ) {
+      newInputValue[name] = event.target.checked;
+    } else {
+      newInputValue[name] = e.target.value;
+    }
+
+    setInputValue(newInputValue);
 
     setErrors(errors.filter((error) => error.property !== name));
   };
@@ -119,9 +140,8 @@ const Add = ({ history }) => {
 
     try {
       const res = await createTrade({
+        ...inputValue,
         product: inputValue.product.id,
-        comment: inputValue.comment,
-        type: inputValue.type,
         open: true,
       });
 
@@ -282,7 +302,11 @@ const Add = ({ history }) => {
                       { value: "sell", label: "Sell" },
                     ]}
                   />
-
+                  <StrategyCheckbox
+                    onChange={handleChange}
+                    data={inputValue}
+                    disabled={loading || productLoading}
+                  />
                   <TextField
                     required
                     id="tradeComment"

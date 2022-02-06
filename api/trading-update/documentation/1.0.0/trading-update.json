@@ -597,6 +597,27 @@
               "open": {
                 "type": "boolean"
               },
+              "support": {
+                "type": "boolean"
+              },
+              "resistant": {
+                "type": "boolean"
+              },
+              "srFlip": {
+                "type": "boolean"
+              },
+              "demand": {
+                "type": "boolean"
+              },
+              "supply": {
+                "type": "boolean"
+              },
+              "fakeout": {
+                "type": "boolean"
+              },
+              "fibo": {
+                "type": "boolean"
+              },
               "created_by": {
                 "type": "string"
               },
@@ -1207,6 +1228,34 @@
                 "type": "string"
               }
             }
+          },
+          "support": {
+            "type": "boolean",
+            "default": false
+          },
+          "resistant": {
+            "type": "boolean",
+            "default": false
+          },
+          "srFlip": {
+            "type": "boolean",
+            "default": false
+          },
+          "demand": {
+            "type": "boolean",
+            "default": false
+          },
+          "supply": {
+            "type": "boolean",
+            "default": false
+          },
+          "fakeout": {
+            "type": "boolean",
+            "default": false
+          },
+          "fibo": {
+            "type": "boolean",
+            "default": false
           }
         }
       },
@@ -1220,6 +1269,34 @@
           },
           "trade": {
             "type": "string"
+          },
+          "support": {
+            "type": "boolean",
+            "default": false
+          },
+          "resistant": {
+            "type": "boolean",
+            "default": false
+          },
+          "srFlip": {
+            "type": "boolean",
+            "default": false
+          },
+          "demand": {
+            "type": "boolean",
+            "default": false
+          },
+          "supply": {
+            "type": "boolean",
+            "default": false
+          },
+          "fakeout": {
+            "type": "boolean",
+            "default": false
+          },
+          "fibo": {
+            "type": "boolean",
+            "default": false
           },
           "created_by": {
             "type": "string"

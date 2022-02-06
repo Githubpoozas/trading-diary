@@ -606,6 +606,27 @@
               "open": {
                 "type": "boolean"
               },
+              "support": {
+                "type": "boolean"
+              },
+              "resistant": {
+                "type": "boolean"
+              },
+              "srFlip": {
+                "type": "boolean"
+              },
+              "demand": {
+                "type": "boolean"
+              },
+              "supply": {
+                "type": "boolean"
+              },
+              "fakeout": {
+                "type": "boolean"
+              },
+              "fibo": {
+                "type": "boolean"
+              },
               "created_by": {
                 "type": "string"
               },

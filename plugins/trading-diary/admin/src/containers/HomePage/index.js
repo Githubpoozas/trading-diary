@@ -10,11 +10,16 @@ import { Text, TradesTable, ConfirmDialog } from "../../component/index";
 
 import {
   GET_TRADE,
+  deleteMedia,
+  uploadMedia,
   createOrders,
   deleteOrders,
   updateOrders,
   closeTrade,
   deleteTrade,
+  createTradingUpdate,
+  updateTradingUpdate,
+  deleteTradingUpdate,
   createOrderChange,
   updateOrderChange,
   deleteOrderChange,
@@ -107,7 +112,7 @@ const HomePage = () => {
     }
   };
 
-  const handleAddUpdateTrade = (id) => {
+  const handleAddTradingUpdate = (id) => {
     let newTrades = JSON.parse(JSON.stringify(openTradeData.trades));
     const findTradeIndex = newTrades.findIndex((trade) => trade.id === id);
     newTrades[findTradeIndex].trading_updates.push({
@@ -118,11 +123,110 @@ const HomePage = () => {
     setOpenTrades(newTrades);
   };
 
-  const handleCancelUpdateTrade = (data) => {
-    console.log("handleCancelUpdateTrade", data);
+  const handleCancelTradingUpdate = (data) => {
+    console.log("handleCancelTradingUpdate", data);
+    let newTrades = JSON.parse(JSON.stringify(openTradeData.trades));
+    const findTradeIndex = newTrades.findIndex(
+      (trade) => trade.id === data.tradeId
+    );
+    newTrades[findTradeIndex].trading_updates.splice(data.index, 1);
+    setOpenTrades(newTrades);
   };
-  const handleSaveUpdateTrade = (data) => {
-    console.log("handleSaveUpdateTrade", data);
+
+  const handleSaveTradingUpdate = async (data) => {
+    console.log("handleSaveTradingUpdate", data.deleteImage);
+
+    const deleteImageObj = {};
+    const deleteImageArr = [];
+
+    data.deleteImage.forEach((item) => {
+      for (const property in item) {
+        deleteImageObj[property] = null;
+        deleteImageArr.push(item[property]);
+      }
+    });
+
+    console.log("deleteImageObj", deleteImageObj);
+    console.log("deleteImageArr", deleteImageArr);
+
+    try {
+      let res;
+
+      if (data.id) {
+        console.log("update");
+        res = await updateTradingUpdate(data.id, {
+          trade: data.tradeId,
+          comment: data.comment,
+          ...deleteImageObj,
+        });
+      } else {
+        console.log("create");
+        res = await createTradingUpdate({
+          trade: data.tradeId,
+          comment: data.comment,
+        });
+      }
+
+      console.log("res", res);
+
+      if (res.status !== 200) {
+        throw new Error(res);
+      }
+
+      if (res.status === 200) {
+        enqueueSnackbar(`Trading Update ${data.id ? "updated" : "created"}`, {
+          variant: "success",
+        });
+
+        await Promise.all(
+          data.imageArr.map(async (i) => {
+            if (i.hasOwnProperty("id")) return;
+            const formData = new FormData();
+            formData.append("files", i.file);
+            formData.append("ref", "trading-update");
+            formData.append("refId", res.data.id);
+            formData.append("field", i.tf);
+
+            await uploadMedia(formData);
+          })
+        );
+
+        await Promise.all(
+          deleteImageArr.map(async (i) => {
+            await deleteMedia(i);
+          })
+        );
+
+        openTradeRefetch();
+      }
+    } catch (error) {
+      enqueueSnackbar(
+        `Update Trading Update error: ${error.response.data.message}`,
+        {
+          variant: "error",
+        }
+      );
+    }
+  };
+
+  const handleDeleteTradingUpdate = async (id) => {
+    try {
+      const res = await deleteTradingUpdate(id);
+
+      if (res.status === 200) {
+        enqueueSnackbar(`Trading Update Deleted`, {
+          variant: "success",
+        });
+      }
+      openTradeRefetch();
+    } catch (error) {
+      enqueueSnackbar(
+        `Delete Trading Update error: ${error.response.data.message}`,
+        {
+          variant: "error",
+        }
+      );
+    }
   };
 
   const handleAddOrder = async (id) => {
@@ -389,7 +493,10 @@ const HomePage = () => {
           <CardContent>
             <TradesTable
               data={openTrades}
-              onAddUpdateTrade={handleAddUpdateTrade}
+              onAddTradingUpdate={handleAddTradingUpdate}
+              onSaveTradingUpdate={handleSaveTradingUpdate}
+              onCancelTradingUpdate={handleCancelTradingUpdate}
+              onDeleteTradingUpdate={handleDeleteTradingUpdate}
               onAddOrder={handleAddOrder}
               onRemoveNewOrder={handleRemoveNewOrder}
               onSaveOrder={handleSaveOrder}
@@ -401,8 +508,6 @@ const HomePage = () => {
               onRemoveNewOrderChange={handleRemoveNewOrderChange}
               onSaveOrderChange={handleSaveOrderChange}
               onDeleteOrderChange={handleDeleteOrderChange}
-              onSaveUpdateTrade={handleSaveUpdateTrade}
-              onCancelUpdateTrade={handleCancelUpdateTrade}
             />
           </CardContent>
         </Card>

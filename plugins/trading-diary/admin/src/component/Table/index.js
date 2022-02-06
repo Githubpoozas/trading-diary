@@ -314,7 +314,6 @@ const OrderRow = ({
   };
 
   useEffect(() => {
-    console.log("data", data);
     reset();
   }, [data]);
 
@@ -798,28 +797,53 @@ const OrderRow = ({
 };
 
 const TradeUpdateRow = memo(
-  ({ tradeId, data, index, onSaveUpdateTrade, onCancelUpdateTrade }) => {
+  ({
+    tradeId,
+    data,
+    index,
+    onSaveTradingUpdate,
+    onCancelTradingUpdate,
+    onDeleteTradingUpdate,
+  }) => {
     const [errors, setErrors] = useState([]);
+    const [selectedImage, setSelectedImage] = useState(false);
+    const [open, setOpen] = useState(false);
     const [imageArr, setImageArr] = useState([]);
     const [comment, setComment] = useState("");
     const [isEdit, setIsEdit] = useState(false);
+    const [deleteImage, setDeleteImage] = useState([]);
 
-    useEffect(() => {
-      console.log("TradeUpdateRow", data);
-      setImageArr(data.imageArr);
+    const reset = () => {
+      const newImageArr = [];
+      if (data.id) {
+        for (const key in data) {
+          if (timeFrame.includes(key)) {
+            if (data[key]) {
+              newImageArr.push({
+                tf: key,
+                preview: API_URI + data[key].url,
+                id: data[key].id,
+              });
+            }
+          }
+        }
+        setImageArr(newImageArr);
+      } else {
+        setImageArr(data.imageArr);
+      }
+
       setComment(data.comment);
       setIsEdit(data.isEdit);
+    };
+
+    useEffect(() => {
+      console.log("data", data);
+      reset();
     }, [data]);
 
     const handleChange = (e) => {
-      const name = e.target.name;
       const value = e.target.value;
-
-      setInputValue({
-        ...inputValue,
-        [name]: value,
-      });
-
+      setComment(value);
       setErrors(errors.filter((error) => error.property !== name));
     };
 
@@ -831,6 +855,19 @@ const TradeUpdateRow = memo(
       const objectUrl = URL.createObjectURL(file);
 
       const newImageArr = imageArr.slice();
+
+      const imageIndex = newImageArr.findIndex((i) => i.tf === name);
+
+      if (imageIndex !== -1 && newImageArr[imageIndex].hasOwnProperty("id")) {
+        const newDeleteImage = deleteImage.slice();
+        newDeleteImage.push({ [name]: newImageArr[imageIndex].id });
+        setDeleteImage(newDeleteImage);
+      }
+
+      if (imageIndex !== -1) {
+        newImageArr.splice(imageIndex, 1);
+      }
+
       newImageArr.push({ tf: name, file: file, preview: objectUrl });
       setImageArr(newImageArr);
 
@@ -842,10 +879,15 @@ const TradeUpdateRow = memo(
 
     const handleDeleteImage = (tf) => {
       const newImageArr = imageArr.slice();
-      newImageArr.splice(
-        newImageArr.findIndex((i) => i.tf === tf),
-        1
-      );
+
+      const imageIndex = newImageArr.findIndex((i) => i.tf === tf);
+      if (imageIndex !== -1 && newImageArr[imageIndex].hasOwnProperty("id")) {
+        const newDeleteImage = deleteImage.slice();
+        newDeleteImage.push({ [tf]: newImageArr[imageIndex].id });
+        setDeleteImage(newDeleteImage);
+      }
+
+      newImageArr.splice(imageIndex, 1);
       setImageArr(newImageArr);
     };
 
@@ -868,21 +910,54 @@ const TradeUpdateRow = memo(
 
       setErrors(newError);
       if (!_.isEmpty(newError)) {
-        setLoading(false);
         return;
       }
-      onSaveUpdateTrade({ tradeId, id: data.id, comment, index, imageArr });
+      setIsEdit(false);
+      onSaveTradingUpdate({
+        tradeId,
+        id: data.id,
+        comment,
+        index,
+        imageArr,
+        deleteImage,
+      });
     };
 
     const onClickCancel = () => {
-      onCancelUpdateTrade({ tradeId, index });
+      if (data.id) {
+        reset();
+      } else {
+        onCancelTradingUpdate({ tradeId, index });
+      }
+    };
+
+    const onClickEdit = () => {
+      setIsEdit(true);
+    };
+
+    const onClickConfirm = () => {
+      onDeleteTradingUpdate(data.id);
+      setOpen(false);
     };
 
     return (
       <>
+        <Dialog
+          onClose={() => setSelectedImage(false)}
+          open={selectedImage ? true : false}
+          maxWidth="xl"
+        >
+          <img src={selectedImage || null} />
+        </Dialog>
+        <ConfirmDialog
+          open={open}
+          title={`Confirm delete Trading Update`}
+          onClose={() => setOpen(false)}
+          onConfirm={onClickConfirm}
+        />
         <TableRow>
           <OrderTableCell isedit={isEdit ? 1 : 0}>
-            <Text>{data?.id}</Text>
+            <Text sx={{ textAlign: "left" }}>{data?.id}</Text>
           </OrderTableCell>
           {timeFrame.map((tf) => (
             <OrderTableCell align="center" key={tf}>
@@ -890,34 +965,41 @@ const TradeUpdateRow = memo(
                 <Box>
                   <img
                     src={imageArr.find((i) => i.tf === tf)?.preview}
-                    style={{ maxWidth: "100px" }}
+                    style={{ maxWidth: "100px", cursor: "pointer" }}
+                    onClick={() =>
+                      setSelectedImage(
+                        imageArr.find((i) => i.tf === tf)?.preview
+                      )
+                    }
                   />
                 </Box>
-                <Box>
-                  <label htmlFor={`${tf}-input`} alt={tf}>
-                    <input
-                      accept="image/*"
-                      id={`${tf}-input`}
-                      type="file"
-                      name={tf}
-                      onChange={onImageChange}
-                      style={{ display: "none" }}
-                    />
-                    <Button variant="contained" component="span">
-                      {tf}
-                    </Button>
-                  </label>
-                  {imageArr.find((i) => i.tf === tf) && (
-                    <Button
-                      variant="contained"
-                      color="error"
-                      component="span"
-                      onClick={() => handleDeleteImage(tf)}
-                    >
-                      Delete
-                    </Button>
-                  )}
-                </Box>
+                {isEdit && (
+                  <Box>
+                    <label htmlFor={`${tf}-input`} alt={tf}>
+                      <input
+                        accept="image/*"
+                        id={`${tf}-input`}
+                        type="file"
+                        name={tf}
+                        onChange={onImageChange}
+                        style={{ display: "none" }}
+                      />
+                      <Button variant="contained" component="span">
+                        {tf}
+                      </Button>
+                    </label>
+                    {imageArr.find((i) => i.tf === tf) && (
+                      <Button
+                        variant="contained"
+                        color="error"
+                        component="span"
+                        onClick={() => handleDeleteImage(tf)}
+                      >
+                        Delete
+                      </Button>
+                    )}
+                  </Box>
+                )}
               </Box>
               {errors.find((e) => e.property === "image") && (
                 <HelperText>
@@ -933,37 +1015,62 @@ const TradeUpdateRow = memo(
               alignItems="center"
               spacing={1}
             >
-              <Tooltip placement="top" arrow title="Save">
-                <IconButton color="primary" onClick={onClickSave}>
-                  <SaveAsIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip placement="top" arrow title="Cancel">
-                <IconButton color="info" onClick={onClickCancel}>
-                  <HistoryIcon />
-                </IconButton>
-              </Tooltip>
+              {isEdit ? (
+                <>
+                  <Tooltip placement="top" arrow title="Save">
+                    <IconButton color="primary" onClick={onClickSave}>
+                      <SaveAsIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip placement="top" arrow title="Cancel">
+                    <IconButton color="info" onClick={onClickCancel}>
+                      <HistoryIcon />
+                    </IconButton>
+                  </Tooltip>
+                </>
+              ) : (
+                <>
+                  <Tooltip placement="top" arrow title="Edit Trading Update">
+                    <IconButton color="info" onClick={onClickEdit}>
+                      <ModeEditIcon />
+                    </IconButton>
+                  </Tooltip>
+                  {data.id && (
+                    <Tooltip
+                      placement="top"
+                      arrow
+                      title="Delete Trading Update"
+                    >
+                      <IconButton color="error" onClick={() => setOpen(true)}>
+                        <DeleteForeverIcon />
+                      </IconButton>
+                    </Tooltip>
+                  )}
+                </>
+              )}
             </Stack>
           </OrderTableCell>
         </TableRow>
-        <TableCell style={{ padding: "15px" }} colSpan={13}>
-          {isEdit ? (
-            <TextField
-              required
-              multiline
-              fullWidth
-              autoComplete="off"
-              id="tradeComment"
-              name="comment"
-              label="Comment"
-              error={errors.find((e) => e.property === "comment")?.message}
-              value={comment}
-              onChange={handleChange}
-            />
-          ) : (
-            <Text bold="true">{comment}</Text>
-          )}
-        </TableCell>
+        <TableRow>
+          <TableCell style={{ padding: "15px" }} colSpan={13}>
+            {isEdit ? (
+              <TextField
+                required
+                multiline
+                fullWidth
+                autoComplete="off"
+                id="tradeComment"
+                name="comment"
+                label="Comment"
+                error={errors.find((e) => e.property === "comment")?.message}
+                value={comment}
+                onChange={handleChange}
+              />
+            ) : (
+              <Text bold="true">{comment}</Text>
+            )}
+          </TableCell>
+        </TableRow>
       </>
     );
   }
@@ -973,9 +1080,10 @@ const TradeRow = memo(
   ({
     canEdit,
     data,
-    onAddUpdateTrade,
-    onSaveUpdateTrade,
-    onCancelUpdateTrade,
+    onAddTradingUpdate,
+    onSaveTradingUpdate,
+    onCancelTradingUpdate,
+    onDeleteTradingUpdate,
     onAddOrder,
     onCloseTrade,
     onDeleteTrade,
@@ -1040,7 +1148,7 @@ const TradeRow = memo(
               {canEdit ? (
                 <>
                   <Tooltip placement="top" arrow title="Add Update Trade">
-                    <IconButton color="info" onClick={onAddUpdateTrade}>
+                    <IconButton color="info" onClick={onAddTradingUpdate}>
                       <AddchartIcon />
                     </IconButton>
                   </Tooltip>
@@ -1105,8 +1213,9 @@ const TradeRow = memo(
                       data={update}
                       key={`tradeUpdate${index}`}
                       index={index}
-                      onSaveUpdateTrade={onSaveUpdateTrade}
-                      onCancelUpdateTrade={onCancelUpdateTrade}
+                      onSaveTradingUpdate={onSaveTradingUpdate}
+                      onCancelTradingUpdate={onCancelTradingUpdate}
+                      onDeleteTradingUpdate={onDeleteTradingUpdate}
                     />
                   ))}
                 </TableBody>
@@ -1194,9 +1303,10 @@ const TradeRow = memo(
 
 export const TradesTable = ({
   data,
-  onAddUpdateTrade,
-  onSaveUpdateTrade,
-  onCancelUpdateTrade,
+  onAddTradingUpdate,
+  onSaveTradingUpdate,
+  onCancelTradingUpdate,
+  onDeleteTradingUpdate,
   onAddOrder,
   onCloseTrade,
   onDeleteTrade,
@@ -1276,9 +1386,10 @@ export const TradesTable = ({
                   canEdit={trade.open}
                   key={trade.id}
                   data={trade}
-                  onAddUpdateTrade={() => onAddUpdateTrade(trade.id)}
-                  onSaveUpdateTrade={onSaveUpdateTrade}
-                  onCancelUpdateTrade={onCancelUpdateTrade}
+                  onAddTradingUpdate={() => onAddTradingUpdate(trade.id)}
+                  onSaveTradingUpdate={onSaveTradingUpdate}
+                  onCancelTradingUpdate={onCancelTradingUpdate}
+                  onDeleteTradingUpdate={onDeleteTradingUpdate}
                   onAddOrder={() => onAddOrder(trade.id)}
                   onCloseTrade={() => setSelectedTrade(trade)}
                   onReOpenTrade={() => setSelectedTrade(trade)}

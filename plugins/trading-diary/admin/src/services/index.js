@@ -86,6 +86,19 @@ export const deleteTrade = async (id) => {
   return res;
 };
 
+export const createTradingUpdate = async (data) => {
+  const res = await instance.post(`/trading-updates`, data);
+  return res;
+};
+export const updateTradingUpdate = async (id, data) => {
+  const res = await instance.put(`/trading-updates/${id}`, data);
+  return res;
+};
+export const deleteTradingUpdate = async (id) => {
+  const res = await instance.delete(`/trading-updates/${id}`);
+  return res;
+};
+
 export const createOrders = async (data) => {
   const res = await instance.post("/Orders", data);
   return res;
@@ -163,60 +176,78 @@ export const GET_TRADE = gql`
       }
       comment
       M1 {
+        id
         url
       }
       M5 {
+        id
         url
       }
       M15 {
+        id
         url
       }
       M30 {
+        id
         url
       }
       H1 {
+        id
         url
       }
       H4 {
+        id
         url
       }
       D1 {
+        id
         url
       }
       W1 {
+        id
         url
       }
       MN {
+        id
         url
       }
       trading_updates {
         id
         comment
         M1 {
+          id
           url
         }
         M5 {
+          id
           url
         }
         M15 {
+          id
           url
         }
         M30 {
+          id
           url
         }
         H1 {
+          id
           url
         }
         H4 {
+          id
           url
         }
         D1 {
+          id
           url
         }
         W1 {
+          id
           url
         }
         MN {
+          id
           url
         }
       }

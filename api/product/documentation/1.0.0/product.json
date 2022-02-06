@@ -571,12 +571,6 @@
                 "profit": {
                   "type": "number"
                 },
-                "order_changes": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
                 "comment": {
                   "type": "string"
                 },

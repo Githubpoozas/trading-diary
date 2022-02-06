@@ -45,204 +45,6 @@ import {
   OrderTableCell,
 } from "./style";
 
-const OrderChangeRow = ({
-  canEdit,
-  data,
-  tradeId,
-  orderId,
-  orderChangeIndex,
-  onRemoveNewOrderChange,
-  onSaveOrderChange,
-  onDeleteOrderChange,
-}) => {
-  const [errors, setErrors] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [inputValue, setInputValue] = useState({
-    tradeUpdateId: "",
-    stopLoss: "",
-    takeProfit: "",
-    isEdit: false,
-  });
-
-  useEffect(() => {
-    setInputValue(data);
-  }, [data]);
-
-  const handleChange = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-
-    if (parseFloat(value) < 0) {
-      return;
-    }
-    setInputValue({
-      ...inputValue,
-      [name]: value,
-    });
-
-    setErrors(errors.filter((error) => error.property !== name));
-  };
-
-  const onClickSave = () => {
-    onSaveOrderChange(inputValue);
-    setInputValue({ ...inputValue, isEdit: false });
-  };
-
-  const handleCancel = () => {
-    if (data.orderId) {
-      onRemoveNewOrderChange(tradeId, orderId, orderChangeIndex);
-    } else {
-      setInputValue({
-        ...data,
-        isEdit: false,
-      });
-    }
-  };
-
-  const onClickEditOrderChange = () => {
-    setInputValue({
-      ...inputValue,
-      isEdit: true,
-    });
-  };
-
-  const onClickConfirm = () => {
-    onDeleteOrderChange(data.id);
-    setInputValue({ ...inputValue, isEdit: false });
-    setOpen(false);
-  };
-
-  return (
-    <StyledTableRow>
-      <ConfirmDialog
-        open={open}
-        title={`Confirm delete order change`}
-        onClose={() => setOpen(false)}
-        onConfirm={onClickConfirm}
-      />
-      <OrderTableCell />
-      <OrderTableCell />
-      <OrderTableCell />
-      <OrderTableCell />
-      <OrderTableCell />
-      <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
-        {inputValue.isEdit ? (
-          <TextField
-            autoComplete="off"
-            id="orderStopLoss"
-            label="Stop Loss"
-            variant="outlined"
-            name="stopLoss"
-            type="number"
-            InputProps={{ inputProps: { min: 0 } }}
-            // value={inputValue.stopLoss}
-            onChange={handleChange}
-            error={errors.find((e) => e.property === "stopLoss") ? true : false}
-            helperText={errors.find((e) => e.property === "stopLoss")?.message}
-          />
-        ) : (
-          <Text>{/* {inputValue.stopLoss} */}</Text>
-        )}
-      </OrderTableCell>
-      <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
-        {inputValue.isEdit ? (
-          <TextField
-            autoComplete="off"
-            id="orderTakeProfit"
-            label="Take Profit"
-            variant="outlined"
-            name="takeProfit"
-            type="number"
-            InputProps={{ inputProps: { min: 0 } }}
-            // value={inputValue.takeProfit}
-            onChange={handleChange}
-            error={
-              errors.find((e) => e.property === "takeProfit") ? true : false
-            }
-            helperText={
-              errors.find((e) => e.property === "takeProfit")?.message
-            }
-          />
-        ) : (
-          <Text>{/* {inputValue.takeProfit} */}</Text>
-        )}
-      </OrderTableCell>
-      <OrderTableCell />
-      <OrderTableCell />
-      <OrderTableCell />
-      <OrderTableCell />
-      <OrderTableCell
-        isedit={inputValue.isEdit ? 1 : 0}
-        sx={{
-          overflowWrap: "break-word",
-          width: "400px",
-          maxWidth: "400px",
-        }}
-      >
-        {inputValue.isEdit ? (
-          <TextField
-            sx={{
-              width: "400px",
-              maxWidth: "400px",
-            }}
-            multiline
-            id="orderComment"
-            label="Comment"
-            variant="outlined"
-            name="comment"
-            value={inputValue.comment}
-            onChange={handleChange}
-            error={errors.find((e) => e.property === "comment") ? true : false}
-            helperText={errors.find((e) => e.property === "comment")?.message}
-          />
-        ) : (
-          <Text sx={{ textAlign: "justify" }}>{inputValue.comment}</Text>
-        )}
-      </OrderTableCell>
-      {canEdit && (
-        <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
-          <Stack
-            direction="row"
-            justifyContent="flex-end"
-            alignItems="center"
-            spacing={1}
-          >
-            {inputValue.isEdit ? (
-              <>
-                <Tooltip placement="top" arrow title="Save">
-                  <IconButton color="primary" onClick={onClickSave}>
-                    <SaveAsIcon />
-                  </IconButton>
-                </Tooltip>
-
-                <Tooltip placement="top" arrow title="Cancel">
-                  <IconButton color="info" onClick={handleCancel}>
-                    <HistoryIcon />
-                  </IconButton>
-                </Tooltip>
-              </>
-            ) : (
-              <>
-                <Tooltip placement="top" arrow title="Edit Order Change">
-                  <IconButton color="info" onClick={onClickEditOrderChange}>
-                    <ModeEditIcon />
-                  </IconButton>
-                </Tooltip>
-
-                <Tooltip placement="top" arrow title="Delete Order Change">
-                  <IconButton color="error" onClick={() => setOpen(true)}>
-                    <DeleteForeverIcon />
-                  </IconButton>
-                </Tooltip>
-              </>
-            )}
-          </Stack>
-        </OrderTableCell>
-      )}
-    </StyledTableRow>
-  );
-};
-
 const OrderRow = ({
   canEdit,
   tradeId,
@@ -251,10 +53,6 @@ const OrderRow = ({
   onSaveOrder,
   onCloseOrder,
   onClickDeleteOrder,
-  onClickAddOrderChange,
-  onRemoveNewOrderChange,
-  onSaveOrderChange,
-  onDeleteOrderChange,
 }) => {
   const [errors, setErrors] = useState([]);
   const [open, setOpen] = useState(false);
@@ -662,7 +460,9 @@ const OrderRow = ({
               onChange={handleChange}
             />
           ) : (
-            <Text>{inputValue.swap}</Text>
+            <Text color={inputValue.swap < 0 ? "red" : "blue"}>
+              {inputValue.swap}
+            </Text>
           )}
         </OrderTableCell>
         <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
@@ -680,39 +480,9 @@ const OrderRow = ({
               helperText={errors.find((e) => e.property === "profit")?.message}
             />
           ) : (
-            <Text>{inputValue.profit}</Text>
-          )}
-        </OrderTableCell>
-        <OrderTableCell
-          isedit={inputValue.isEdit ? 1 : 0}
-          sx={{
-            overflowWrap: "break-word",
-            width: "400px",
-            maxWidth: "400px",
-          }}
-        >
-          {inputValue.isEdit ? (
-            <TextField
-              sx={{
-                overflowWrap: "break-word",
-                width: "400px",
-                maxWidth: "400px",
-              }}
-              autoComplete="off"
-              multiline
-              id="orderComment"
-              label="Comment"
-              variant="outlined"
-              name="comment"
-              value={inputValue.comment}
-              onChange={handleChange}
-              error={
-                errors.find((e) => e.property === "comment") ? true : false
-              }
-              helperText={errors.find((e) => e.property === "comment")?.message}
-            />
-          ) : (
-            <Text sx={{ textAlign: "justify" }}>{inputValue.comment}</Text>
+            <Text color={inputValue.profit < 0 ? "red" : "blue"}>
+              {inputValue.profit}
+            </Text>
           )}
         </OrderTableCell>
         {canEdit && (
@@ -741,12 +511,6 @@ const OrderRow = ({
                 <>
                   {inputValue.open && (
                     <>
-                      {/* <IconButton
-                        color="info"
-                        onClick={() => onClickAddOrderChange(tradeId, data.id)}
-                      >
-                        <PriceCheckIcon />
-                      </IconButton> */}
                       <Tooltip placement="top" arrow title="Edit Order">
                         <IconButton color="info" onClick={onClickEditOrder}>
                           <ModeEditIcon />
@@ -778,20 +542,43 @@ const OrderRow = ({
           </OrderTableCell>
         )}
       </StyledTableRow>
-      {/* {!_.isEmpty(data.order_changes) &&
-        data.order_changes.map((change, index) => (
-          <OrderChangeRow
-            canEdit={canEdit}
-            key={`OrderChangeRow${index}`}
-            data={change}
-            tradeId={tradeId}
-            orderId={data.id}
-            orderChangeIndex={index}
-            onRemoveNewOrderChange={onRemoveNewOrderChange}
-            onSaveOrderChange={onSaveOrderChange}
-            onDeleteOrderChange={onDeleteOrderChange}
-          />
-        ))} */}
+      <StyledTableRow>
+        <OrderTableCell
+          isedit={inputValue.isEdit ? 1 : 0}
+          sx={{
+            overflowWrap: "break-word",
+            width: "400px",
+            maxWidth: "400px",
+          }}
+          colSpan={13}
+        >
+          {inputValue.isEdit ? (
+            <TextField
+              sx={{
+                overflowWrap: "break-word",
+                // width: "400px",
+                // maxWidth: "400px",
+              }}
+              autoComplete="off"
+              multiline
+              id="orderComment"
+              label="Comment"
+              variant="outlined"
+              name="comment"
+              value={inputValue.comment}
+              onChange={handleChange}
+              error={
+                errors.find((e) => e.property === "comment") ? true : false
+              }
+              helperText={errors.find((e) => e.property === "comment")?.message}
+            />
+          ) : (
+            <Text sx={{ textAlign: "justify" }} color="blue">
+              {inputValue.comment}
+            </Text>
+          )}
+        </OrderTableCell>
+      </StyledTableRow>
     </>
   );
 };
@@ -956,9 +743,9 @@ const TradeUpdateRow = memo(
           onConfirm={onClickConfirm}
         />
         <TableRow>
-          <OrderTableCell isedit={isEdit ? 1 : 0}>
+          {/* <OrderTableCell isedit={isEdit ? 1 : 0}>
             <Text sx={{ textAlign: "left" }}>{data?.id}</Text>
-          </OrderTableCell>
+          </OrderTableCell> */}
           {timeFrame.map((tf) => (
             <OrderTableCell align="center" key={tf}>
               <Box component="form">
@@ -1092,10 +879,6 @@ const TradeRow = memo(
     onSaveOrder,
     onCloseOrder,
     onClickDeleteOrder,
-    onClickAddOrderChange,
-    onRemoveNewOrderChange,
-    onSaveOrderChange,
-    onDeleteOrderChange,
   }) => {
     const [selectedImage, setSelectedImage] = useState(false);
 
@@ -1185,44 +968,46 @@ const TradeRow = memo(
             <Text bold="true">{data.comment}</Text>
           </TableCell>
         </TableRow>
-        <StyledTableRow>
-          <TableCell style={{ padding: "15px" }} colSpan={13}>
-            <Box>
-              <Table aria-label="opentrades">
-                <TableHead>
-                  <TableRow>
-                    <StyledTableCell backgroundcolor="lineGreen">
-                      <Text bold="true">Update ID</Text>
-                    </StyledTableCell>
-                    {timeFrame.map((tf) => (
-                      <StyledTableCell
-                        backgroundcolor="lineGreen"
-                        align="center"
-                        key={tf}
-                      >
-                        <Text bold="true">{tf}</Text>
-                      </StyledTableCell>
+        {!_.isEmpty(data.trading_updates) && (
+          <StyledTableRow>
+            <TableCell style={{ padding: "15px" }} colSpan={13}>
+              <Box>
+                <Table aria-label="opentrades">
+                  <TableHead>
+                    <TableRow>
+                      {/* <StyledTableCell backgroundcolor="lineGreen">
+                        <Text bold="true">Update ID</Text>
+                      </StyledTableCell> */}
+                      {timeFrame.map((tf) => (
+                        <StyledTableCell
+                          backgroundcolor="lineGreen"
+                          align="center"
+                          key={tf}
+                        >
+                          <Text bold="true">{tf}</Text>
+                        </StyledTableCell>
+                      ))}
+                      <StyledTableCell backgroundcolor="lineGreen" />
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {data.trading_updates.map((update, index) => (
+                      <TradeUpdateRow
+                        tradeId={data.id}
+                        data={update}
+                        key={`tradeUpdate${index}`}
+                        index={index}
+                        onSaveTradingUpdate={onSaveTradingUpdate}
+                        onCancelTradingUpdate={onCancelTradingUpdate}
+                        onDeleteTradingUpdate={onDeleteTradingUpdate}
+                      />
                     ))}
-                    <StyledTableCell backgroundcolor="lineGreen" />
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {data.trading_updates.map((update, index) => (
-                    <TradeUpdateRow
-                      tradeId={data.id}
-                      data={update}
-                      key={`tradeUpdate${index}`}
-                      index={index}
-                      onSaveTradingUpdate={onSaveTradingUpdate}
-                      onCancelTradingUpdate={onCancelTradingUpdate}
-                      onDeleteTradingUpdate={onDeleteTradingUpdate}
-                    />
-                  ))}
-                </TableBody>
-              </Table>
-            </Box>
-          </TableCell>
-        </StyledTableRow>
+                  </TableBody>
+                </Table>
+              </Box>
+            </TableCell>
+          </StyledTableRow>
+        )}
         {!_.isEmpty(data.orders) && (
           <TableRow>
             <TableCell style={{ padding: 0 }} colSpan={13}>
@@ -1263,9 +1048,6 @@ const TradeRow = memo(
                       <StyledSubTableCell align="center">
                         <Text bold="true">Profit</Text>
                       </StyledSubTableCell>
-                      <StyledSubTableCell align="center">
-                        <Text bold="true">Comment</Text>
-                      </StyledSubTableCell>
                       {canEdit && (
                         <StyledSubTableCell align="center"></StyledSubTableCell>
                       )}
@@ -1284,10 +1066,6 @@ const TradeRow = memo(
                         onSaveOrder={onSaveOrder}
                         onCloseOrder={onCloseOrder}
                         onClickDeleteOrder={onClickDeleteOrder}
-                        onClickAddOrderChange={onClickAddOrderChange}
-                        onRemoveNewOrderChange={onRemoveNewOrderChange}
-                        onSaveOrderChange={onSaveOrderChange}
-                        onDeleteOrderChange={onDeleteOrderChange}
                       />
                     ))}
                   </TableBody>
@@ -1314,10 +1092,6 @@ export const TradesTable = ({
   onSaveOrder,
   onCloseOrder,
   onClickDeleteOrder,
-  onClickAddOrderChange,
-  onRemoveNewOrderChange,
-  onSaveOrderChange,
-  onDeleteOrderChange,
   onReOpenTrade,
 }) => {
   const [selectedTrade, setSelectedTrade] = useState(false);
@@ -1386,22 +1160,18 @@ export const TradesTable = ({
                   canEdit={trade.open}
                   key={trade.id}
                   data={trade}
+                  onCloseTrade={() => setSelectedTrade(trade)}
+                  onReOpenTrade={() => setSelectedTrade(trade)}
+                  onDeleteTrade={() => setSelectedDeleteTrade(trade)}
                   onAddTradingUpdate={() => onAddTradingUpdate(trade.id)}
                   onSaveTradingUpdate={onSaveTradingUpdate}
                   onCancelTradingUpdate={onCancelTradingUpdate}
                   onDeleteTradingUpdate={onDeleteTradingUpdate}
                   onAddOrder={() => onAddOrder(trade.id)}
-                  onCloseTrade={() => setSelectedTrade(trade)}
-                  onReOpenTrade={() => setSelectedTrade(trade)}
-                  onDeleteTrade={() => setSelectedDeleteTrade(trade)}
                   onRemoveNewOrder={onRemoveNewOrder}
                   onSaveOrder={onSaveOrder}
                   onCloseOrder={onCloseOrder}
                   onClickDeleteOrder={onClickDeleteOrder}
-                  onClickAddOrderChange={onClickAddOrderChange}
-                  onRemoveNewOrderChange={onRemoveNewOrderChange}
-                  onSaveOrderChange={onSaveOrderChange}
-                  onDeleteOrderChange={onDeleteOrderChange}
                 />
               ))}
           </TableBody>

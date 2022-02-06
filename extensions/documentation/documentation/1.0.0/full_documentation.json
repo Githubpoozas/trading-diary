@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "02/06/2022 10:24:07 PM"
+    "x-generation-date": "02/07/2022 2:37:10 AM"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -5142,6 +5142,27 @@
               "open": {
                 "type": "boolean"
               },
+              "support": {
+                "type": "boolean"
+              },
+              "resistant": {
+                "type": "boolean"
+              },
+              "srFlip": {
+                "type": "boolean"
+              },
+              "demand": {
+                "type": "boolean"
+              },
+              "supply": {
+                "type": "boolean"
+              },
+              "fakeout": {
+                "type": "boolean"
+              },
+              "fibo": {
+                "type": "boolean"
+              },
               "created_by": {
                 "type": "string"
               },
@@ -5490,6 +5511,27 @@
                 },
                 "MN": {
                   "type": "string"
+                },
+                "support": {
+                  "type": "boolean"
+                },
+                "resistant": {
+                  "type": "boolean"
+                },
+                "srFlip": {
+                  "type": "boolean"
+                },
+                "demand": {
+                  "type": "boolean"
+                },
+                "supply": {
+                  "type": "boolean"
+                },
+                "fakeout": {
+                  "type": "boolean"
+                },
+                "fibo": {
+                  "type": "boolean"
                 },
                 "created_by": {
                   "type": "string"
@@ -6170,6 +6212,34 @@
           "open": {
             "type": "boolean",
             "default": true
+          },
+          "support": {
+            "type": "boolean",
+            "default": false
+          },
+          "resistant": {
+            "type": "boolean",
+            "default": false
+          },
+          "srFlip": {
+            "type": "boolean",
+            "default": false
+          },
+          "demand": {
+            "type": "boolean",
+            "default": false
+          },
+          "supply": {
+            "type": "boolean",
+            "default": false
+          },
+          "fakeout": {
+            "type": "boolean",
+            "default": false
+          },
+          "fibo": {
+            "type": "boolean",
+            "default": false
           }
         }
       },
@@ -6200,6 +6270,34 @@
           "open": {
             "type": "boolean",
             "default": true
+          },
+          "support": {
+            "type": "boolean",
+            "default": false
+          },
+          "resistant": {
+            "type": "boolean",
+            "default": false
+          },
+          "srFlip": {
+            "type": "boolean",
+            "default": false
+          },
+          "demand": {
+            "type": "boolean",
+            "default": false
+          },
+          "supply": {
+            "type": "boolean",
+            "default": false
+          },
+          "fakeout": {
+            "type": "boolean",
+            "default": false
+          },
+          "fibo": {
+            "type": "boolean",
+            "default": false
           },
           "created_by": {
             "type": "string"
@@ -6277,6 +6375,27 @@
                 "type": "string"
               },
               "open": {
+                "type": "boolean"
+              },
+              "support": {
+                "type": "boolean"
+              },
+              "resistant": {
+                "type": "boolean"
+              },
+              "srFlip": {
+                "type": "boolean"
+              },
+              "demand": {
+                "type": "boolean"
+              },
+              "supply": {
+                "type": "boolean"
+              },
+              "fakeout": {
+                "type": "boolean"
+              },
+              "fibo": {
                 "type": "boolean"
               },
               "created_by": {
@@ -6889,6 +7008,34 @@
                 "type": "string"
               }
             }
+          },
+          "support": {
+            "type": "boolean",
+            "default": false
+          },
+          "resistant": {
+            "type": "boolean",
+            "default": false
+          },
+          "srFlip": {
+            "type": "boolean",
+            "default": false
+          },
+          "demand": {
+            "type": "boolean",
+            "default": false
+          },
+          "supply": {
+            "type": "boolean",
+            "default": false
+          },
+          "fakeout": {
+            "type": "boolean",
+            "default": false
+          },
+          "fibo": {
+            "type": "boolean",
+            "default": false
           }
         }
       },
@@ -6902,6 +7049,34 @@
           },
           "trade": {
             "type": "string"
+          },
+          "support": {
+            "type": "boolean",
+            "default": false
+          },
+          "resistant": {
+            "type": "boolean",
+            "default": false
+          },
+          "srFlip": {
+            "type": "boolean",
+            "default": false
+          },
+          "demand": {
+            "type": "boolean",
+            "default": false
+          },
+          "supply": {
+            "type": "boolean",
+            "default": false
+          },
+          "fakeout": {
+            "type": "boolean",
+            "default": false
+          },
+          "fibo": {
+            "type": "boolean",
+            "default": false
           },
           "created_by": {
             "type": "string"

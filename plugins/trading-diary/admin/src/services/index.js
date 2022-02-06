@@ -235,7 +235,21 @@ export const GET_TRADE = gql`
           id
           url
         }
+        support
+        resistant
+        srFlip
+        demand
+        supply
+        fakeout
+        fibo
       }
+      support
+      resistant
+      srFlip
+      demand
+      supply
+      fakeout
+      fibo
       orders {
         id
         ticket

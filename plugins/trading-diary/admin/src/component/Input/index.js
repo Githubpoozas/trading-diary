@@ -7,8 +7,13 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import { default as MuiTextField } from "@mui/material/TextField";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 
 import { StyledAutocomplete } from "./style";
+
+import { strategies } from "../../constant";
 
 export const HelperText = ({ children }) => {
   return <FormHelperText error>{children}</FormHelperText>;
@@ -85,5 +90,27 @@ export const TextField = ({
         {...rest}
       />
     </FormControl>
+  );
+};
+
+export const StrategyCheckbox = ({ onChange, data, disabled }) => {
+  return (
+    <FormGroup sx={{ display: "flex", flexDirection: "row" }}>
+      {strategies.map((strategy) => (
+        <FormControlLabel
+          key={strategy.name}
+          sx={{ margin: 0 }}
+          control={
+            <Checkbox
+              name={strategy.name}
+              onChange={onChange}
+              checked={data[strategy.name]}
+              disabled={disabled}
+            />
+          }
+          label={strategy.label}
+        />
+      ))}
+    </FormGroup>
   );
 };

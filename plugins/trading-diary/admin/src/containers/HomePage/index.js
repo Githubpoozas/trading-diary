@@ -42,7 +42,6 @@ const HomePage = () => {
 
     if (openTradeData) {
       let newTrades = JSON.parse(JSON.stringify(openTradeData.trades));
-      console.log("newTrades", newTrades);
       setOpenTrades(newTrades);
     }
   }, [openTradeData, openTradeError]);
@@ -116,12 +115,20 @@ const HomePage = () => {
       comment: "",
       imageArr: [],
       isEdit: true,
+      strategies: {
+        support: false,
+        resistant: false,
+        srFlip: false,
+        demand: false,
+        supply: false,
+        fakeout: false,
+        fibo: false,
+      },
     });
     setOpenTrades(newTrades);
   };
 
   const handleCancelTradingUpdate = (data) => {
-    console.log("handleCancelTradingUpdate", data);
     let newTrades = JSON.parse(JSON.stringify(openTradeData.trades));
     const findTradeIndex = newTrades.findIndex(
       (trade) => trade.id === data.tradeId
@@ -131,8 +138,6 @@ const HomePage = () => {
   };
 
   const handleSaveTradingUpdate = async (data) => {
-    console.log("handleSaveTradingUpdate", data.deleteImage);
-
     const deleteImageObj = {};
     const deleteImageArr = [];
 
@@ -143,28 +148,23 @@ const HomePage = () => {
       }
     });
 
-    console.log("deleteImageObj", deleteImageObj);
-    console.log("deleteImageArr", deleteImageArr);
-
     try {
       let res;
 
       if (data.id) {
-        console.log("update");
         res = await updateTradingUpdate(data.id, {
           trade: data.tradeId,
           comment: data.comment,
+          ...data.strategiesInput,
           ...deleteImageObj,
         });
       } else {
-        console.log("create");
         res = await createTradingUpdate({
           trade: data.tradeId,
           comment: data.comment,
+          ...data.strategiesInput,
         });
       }
-
-      console.log("res", res);
 
       if (res.status !== 200) {
         throw new Error(res);

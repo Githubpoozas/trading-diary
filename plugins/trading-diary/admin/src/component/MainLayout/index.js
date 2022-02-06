@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect } from "react";
+import React, { memo, useState, useEffect, useMemo } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -40,9 +40,7 @@ const MainLayout = (props) => {
   const location = useLocation();
   const alert = useSelector((state) => state.alert);
 
-  const [value, setValue] = useState(
-    routes.findIndex((r) => r.path === location.pathname)
-  );
+  const [value, setValue] = useState(0);
 
   const handleRouteChange = (value) => {
     setValue(value);
@@ -54,6 +52,10 @@ const MainLayout = (props) => {
       enqueueSnackbar(alert.content, { variant: alert.variant });
     }
   }, [alert]);
+
+  useEffect(() => {
+    setValue(routes.findIndex((r) => r.path === location.pathname));
+  }, [location]);
 
   return (
     <StyleMainLayout>

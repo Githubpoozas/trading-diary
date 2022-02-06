@@ -15,28 +15,33 @@ import Stack from "@mui/material/Stack";
 import Avatar from "@mui/material/Avatar";
 import TextField from "@mui/material/TextField";
 import DateTimePicker from "@mui/lab/DateTimePicker";
-import AddTaskIcon from "@mui/icons-material/AddTask";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
 import ArchiveIcon from "@mui/icons-material/Archive";
-import CancelIcon from "@mui/icons-material/Cancel";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import HistoryIcon from "@mui/icons-material/History";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import NoMeetingRoomIcon from "@mui/icons-material/NoMeetingRoom";
-import PriceCheckIcon from "@mui/icons-material/PriceCheck";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import Tooltip from "@mui/material/Tooltip";
 import AddchartIcon from "@mui/icons-material/Addchart";
+import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
+import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 
 import { averagePrice } from "../../utils/format";
 
-import { Text, Button, ConfirmDialog, Select, HelperText } from "../index";
+import {
+  Text,
+  Button,
+  ConfirmDialog,
+  Select,
+  HelperText,
+  StrategyCheckbox,
+} from "../index";
 
-import { timeFrame } from "../../instance";
+import { timeFrame, strategies } from "../../constant";
 
 import {
   StyledTableCell,
@@ -599,10 +604,22 @@ const TradeUpdateRow = memo(
     const [comment, setComment] = useState("");
     const [isEdit, setIsEdit] = useState(false);
     const [deleteImage, setDeleteImage] = useState([]);
+    const [strategiesInput, setStrategiesInput] = useState({
+      support: false,
+      resistant: false,
+      srFlip: false,
+      demand: false,
+      supply: false,
+      fakeout: false,
+      fibo: false,
+    });
 
     const reset = () => {
-      const newImageArr = [];
       if (data.id) {
+        const newImageArr = [];
+        const newStratigies = {};
+        const strategiesArr = strategies.map((s) => s.name);
+
         for (const key in data) {
           if (timeFrame.includes(key)) {
             if (data[key]) {
@@ -613,18 +630,22 @@ const TradeUpdateRow = memo(
               });
             }
           }
+
+          if (strategiesArr.includes(key)) {
+            newStratigies[key] = data[key];
+          }
         }
+
+        setStrategiesInput(newStratigies);
         setImageArr(newImageArr);
       } else {
         setImageArr(data.imageArr);
       }
-
       setComment(data.comment);
       setIsEdit(data.isEdit);
     };
 
     useEffect(() => {
-      console.log("data", data);
       reset();
     }, [data]);
 
@@ -632,6 +653,13 @@ const TradeUpdateRow = memo(
       const value = e.target.value;
       setComment(value);
       setErrors(errors.filter((error) => error.property !== name));
+    };
+
+    const handleStratigiesChange = (e) => {
+      const name = e.target.name;
+      const newStratigies = { ...strategiesInput };
+      newStratigies[name] = event.target.checked;
+      setStrategiesInput(newStratigies);
     };
 
     const onImageChange = async (e) => {
@@ -707,6 +735,7 @@ const TradeUpdateRow = memo(
         index,
         imageArr,
         deleteImage,
+        strategiesInput,
       });
     };
 
@@ -839,7 +868,55 @@ const TradeUpdateRow = memo(
           </OrderTableCell>
         </TableRow>
         <TableRow>
-          <TableCell style={{ padding: "15px" }} colSpan={13}>
+          <TableCell style={{ padding: "5px 15px" }} colSpan={13}>
+            {isEdit ? (
+              <StrategyCheckbox
+                onChange={handleStratigiesChange}
+                data={strategiesInput}
+              />
+            ) : (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  columnGap: "10px",
+                }}
+              >
+                {strategies.map((strategy) => (
+                  <Box
+                    key={strategy.name}
+                    sx={{
+                      display: "flex",
+                      columnGap: "3px",
+                      alignItems: "center",
+                    }}
+                  >
+                    {strategiesInput[strategy.name] ? (
+                      <CheckCircleRoundedIcon
+                        color="success"
+                        style={{ fontSize: "14px" }}
+                      />
+                    ) : (
+                      <CancelRoundedIcon
+                        color="error"
+                        style={{ fontSize: "14px" }}
+                      />
+                    )}
+                    <Text
+                      sx={{ marginTop: "3px" }}
+                      fontSize="14px"
+                      color={strategiesInput[strategy.name] ? "green" : "red"}
+                    >
+                      {strategy.label}
+                    </Text>
+                  </Box>
+                ))}
+              </Box>
+            )}
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell style={{ padding: "5px 15px" }} colSpan={13}>
             {isEdit ? (
               <TextField
                 required
@@ -964,10 +1041,52 @@ const TradeRow = memo(
           </TableCell>
         </StyledTableRow>
         <TableRow>
+          <TableCell style={{ padding: "5px 15px" }} colSpan={13}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                columnGap: "10px",
+              }}
+            >
+              {strategies.map((strategy) => (
+                <Box
+                  key={strategy.name}
+                  sx={{
+                    display: "flex",
+                    columnGap: "3px",
+                    alignItems: "center",
+                  }}
+                >
+                  {data[strategy.name] ? (
+                    <CheckCircleRoundedIcon
+                      color="success"
+                      style={{ fontSize: "14px" }}
+                    />
+                  ) : (
+                    <CancelRoundedIcon
+                      color="error"
+                      style={{ fontSize: "14px" }}
+                    />
+                  )}
+                  <Text
+                    sx={{ marginTop: "3px" }}
+                    fontSize="14px"
+                    color={data[strategy.name] ? "green" : "red"}
+                  >
+                    {strategy.label}
+                  </Text>
+                </Box>
+              ))}
+            </Box>
+          </TableCell>
+        </TableRow>
+        <TableRow>
           <TableCell style={{ padding: "15px" }} colSpan={13}>
             <Text bold="true">{data.comment}</Text>
           </TableCell>
         </TableRow>
+
         {!_.isEmpty(data.trading_updates) && (
           <StyledTableRow>
             <TableCell style={{ padding: "15px" }} colSpan={13}>

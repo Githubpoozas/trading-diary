@@ -24,6 +24,8 @@ import {
 
 import { formatOrders } from "../../utils/format";
 
+import { timeFrame } from "../../constant";
+
 const HomePage = () => {
   const { enqueueSnackbar } = useSnackbar();
 
@@ -86,8 +88,13 @@ const HomePage = () => {
     }
   };
   const handleDeleteTrade = async (trade) => {
-    const orders = trade.orders;
-    if (!_.isEmpty(orders)) {
+    if (!_.isEmpty(trade.trading_updates)) {
+      enqueueSnackbar(`Cannot delete trade, Please delete all order first`, {
+        variant: "error",
+      });
+      return;
+    }
+    if (!_.isEmpty(trade.orders)) {
       enqueueSnackbar(`Cannot delete trade, Please delete all order first`, {
         variant: "error",
       });
@@ -99,6 +106,20 @@ const HomePage = () => {
 
       if (res.status === 200) {
         enqueueSnackbar("Trade Deleted", { variant: "success" });
+
+        const deleteImageArr = [];
+        for (const key in trade) {
+          if (timeFrame.includes(key) && trade[key]) {
+            deleteImageArr.push(trade[key].id);
+          }
+        }
+
+        await Promise.all(
+          deleteImageArr.map(async (i) => {
+            await deleteMedia(i);
+          })
+        );
+
         openTradeRefetch();
       }
     } catch (error) {

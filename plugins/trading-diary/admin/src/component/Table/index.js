@@ -552,8 +552,7 @@ const OrderRow = ({
           isedit={inputValue.isEdit ? 1 : 0}
           sx={{
             overflowWrap: "break-word",
-            width: "400px",
-            maxWidth: "400px",
+            width: "100%",
           }}
           colSpan={13}
         >
@@ -561,8 +560,7 @@ const OrderRow = ({
             <TextField
               sx={{
                 overflowWrap: "break-word",
-                // width: "400px",
-                // maxWidth: "400px",
+                width: "100%",
               }}
               autoComplete="off"
               multiline
@@ -578,7 +576,14 @@ const OrderRow = ({
               helperText={errors.find((e) => e.property === "comment")?.message}
             />
           ) : (
-            <Text sx={{ textAlign: "justify" }} color="blue">
+            <Text
+              sx={{
+                textAlign: "justify",
+                overflowWrap: "break-word",
+                width: "100%",
+              }}
+              color="blue"
+            >
               {inputValue.comment}
             </Text>
           )}

@@ -114,21 +114,6 @@ export const updateOrders = async (id, data) => {
   return res;
 };
 
-export const createOrderChange = async (data) => {
-  const res = await instance.post(`/order-changes`, data);
-  return res;
-};
-
-export const updateOrderChange = async (id, data) => {
-  const res = await instance.put(`/order-changes/${id}`, data);
-  return res;
-};
-
-export const deleteOrderChange = async (id) => {
-  const res = await instance.delete(`/order-changes/${id}`);
-  return res;
-};
-
 export const GET_PENDING_ORDERS = gql`
   query GET_PENDING_ORDERS {
     orders(
@@ -266,11 +251,6 @@ export const GET_TRADE = gql`
         profit
         comment
         open
-        order_changes {
-          id
-          stopLoss
-          takeProfit
-        }
       }
     }
   }

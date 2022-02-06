@@ -545,37 +545,6 @@
           "profit": {
             "type": "number"
           },
-          "order_changes": {
-            "type": "array",
-            "items": {
-              "required": [
-                "id"
-              ],
-              "properties": {
-                "id": {
-                  "type": "string"
-                },
-                "stopLoss": {
-                  "type": "number"
-                },
-                "takeProfit": {
-                  "type": "number"
-                },
-                "order": {
-                  "type": "string"
-                },
-                "trading_update": {
-                  "type": "string"
-                },
-                "created_by": {
-                  "type": "string"
-                },
-                "updated_by": {
-                  "type": "string"
-                }
-              }
-            }
-          },
           "comment": {
             "type": "string"
           },
@@ -727,12 +696,6 @@
           },
           "profit": {
             "type": "number"
-          },
-          "order_changes": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
           },
           "comment": {
             "type": "string"

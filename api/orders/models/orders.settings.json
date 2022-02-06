@@ -35,10 +35,6 @@
     "profit": {
       "type": "decimal"
     },
-    "order_changes": {
-      "via": "order",
-      "collection": "order-change"
-    },
     "comment": {
       "type": "text"
     },

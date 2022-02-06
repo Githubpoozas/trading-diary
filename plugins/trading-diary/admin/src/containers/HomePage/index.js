@@ -20,9 +20,6 @@ import {
   createTradingUpdate,
   updateTradingUpdate,
   deleteTradingUpdate,
-  createOrderChange,
-  updateOrderChange,
-  deleteOrderChange,
 } from "../../services";
 
 import { formatOrders } from "../../utils/format";
@@ -281,21 +278,6 @@ const HomePage = () => {
     stopLoss,
     takeProfit,
   }) => {
-    let canCreateOrderChange = true;
-    if (id) {
-      let newTrades = JSON.parse(JSON.stringify(openTradeData.trades));
-      const findTradeIndex = newTrades.findIndex(
-        (trade) => trade.id === tradeId
-      );
-      const { oldStopLoss, oldTakeProfit } = newTrades[
-        findTradeIndex
-      ].orders.find((order) => order.id === id);
-
-      if (stopLoss === oldStopLoss && takeProfit === oldTakeProfit) {
-        canCreateOrderChange = false;
-      }
-    }
-
     let orderVariables = {
       ticket: ticket,
       type: type,
@@ -308,15 +290,9 @@ const HomePage = () => {
       profit: profit !== "" ? profit : null,
       comment: comment,
       open: open,
-    };
-    const orderChangeVariables = {
       stopLoss: stopLoss !== "" ? stopLoss : null,
       takeProfit: takeProfit !== "" ? takeProfit : null,
     };
-
-    if (canCreateOrderChange) {
-      orderVariables = { ...orderVariables, ...orderChangeVariables };
-    }
 
     try {
       let res;
@@ -330,28 +306,8 @@ const HomePage = () => {
         enqueueSnackbar(`Order ${id ? "Updated" : "Created"}`, {
           variant: "success",
         });
-
-        if (!canCreateOrderChange) return;
-
-        let orderChangeRes;
-        if (id) {
-          orderChangeRes = await createOrderChange({
-            ...orderChangeVariables,
-            order: res.data.id,
-          });
-        } else {
-          if (stopLoss || takeProfit) {
-            orderChangeRes = await createOrderChange({
-              ...orderChangeVariables,
-              order: res.data.id,
-            });
-          }
-        }
-        if (orderChangeRes.status === 200) {
-          enqueueSnackbar("Order change created", { variant: "success" });
-        }
+        openTradeRefetch();
       }
-      openTradeRefetch();
     } catch (error) {
       enqueueSnackbar(
         `${id ? "Update" : "Create"} Order error: ${
@@ -397,87 +353,6 @@ const HomePage = () => {
     }
   };
 
-  const handleAddOrderChange = async (tradeId, orderId) => {
-    let newTrades = JSON.parse(JSON.stringify(openTradeData.trades));
-
-    const findTradeIndex = newTrades.findIndex((trade) => trade.id === tradeId);
-
-    const findOrderIndex = newTrades[findTradeIndex].orders.findIndex(
-      (order) => order.id === orderId
-    );
-
-    newTrades[findTradeIndex].orders[findOrderIndex].order_changes.push({
-      orderId: orderId,
-      tradeUpdateId: "",
-      takeProfit: "",
-      stopLoss: "",
-      isEdit: true,
-    });
-
-    setOpenTrades(newTrades);
-  };
-
-  const handleRemoveNewOrderChange = (tradeId, orderId, orderChangeIndex) => {
-    let newTrades = JSON.parse(JSON.stringify(openTradeData.trades));
-
-    const findTradeIndex = newTrades.findIndex((trade) => trade.id === tradeId);
-
-    const findOrderIndex = newTrades[findTradeIndex].orders.findIndex(
-      (order) => order.id === orderId
-    );
-
-    newTrades[findTradeIndex].orders[findOrderIndex].order_changes.splice(
-      orderChangeIndex,
-      1
-    );
-
-    setOpenTrades(newTrades);
-  };
-
-  const handleSaveOrderChange = async (value) => {
-    const variables = {
-      stopLoss: value.stopLoss,
-      takeProfit: value.takeProfit,
-      comment: value.comment,
-    };
-
-    try {
-      let res;
-
-      if (value.id) {
-        res = await updateOrderChange(value.id, variables);
-      } else {
-        res = await createOrderChange({ ...variables, order: value.orderId });
-      }
-
-      if (res.status === 200) {
-        enqueueSnackbar("Order change updated", { variant: "success" });
-        openTradeRefetch();
-      }
-    } catch (error) {
-      enqueueSnackbar(
-        `Add order change error: ${error.response.data.message}`,
-        { variant: "error" }
-      );
-    }
-  };
-
-  const handleDeleteOrderChange = async (id) => {
-    try {
-      const res = await deleteOrderChange(id);
-
-      if (res.status === 200) {
-        enqueueSnackbar("Order change deleted", { variant: "success" });
-        openTradeRefetch();
-      }
-    } catch (error) {
-      enqueueSnackbar(
-        `Delete order change error: ${error.response.data.message}`,
-        { variant: "error" }
-      );
-    }
-  };
-
   return (
     <div style={{ display: "flex", flexDirection: "column", rowGap: "20px" }}>
       <div>
@@ -493,6 +368,8 @@ const HomePage = () => {
           <CardContent>
             <TradesTable
               data={openTrades}
+              onCloseTrade={handleCloseTrade}
+              onDeleteTrade={handleDeleteTrade}
               onAddTradingUpdate={handleAddTradingUpdate}
               onSaveTradingUpdate={handleSaveTradingUpdate}
               onCancelTradingUpdate={handleCancelTradingUpdate}
@@ -500,14 +377,8 @@ const HomePage = () => {
               onAddOrder={handleAddOrder}
               onRemoveNewOrder={handleRemoveNewOrder}
               onSaveOrder={handleSaveOrder}
-              onCloseTrade={handleCloseTrade}
-              onDeleteTrade={handleDeleteTrade}
               onClickDeleteOrder={handleDeleteOrder}
               onCloseOrder={handleCloseOrder}
-              onClickAddOrderChange={handleAddOrderChange}
-              onRemoveNewOrderChange={handleRemoveNewOrderChange}
-              onSaveOrderChange={handleSaveOrderChange}
-              onDeleteOrderChange={handleDeleteOrderChange}
             />
           </CardContent>
         </Card>

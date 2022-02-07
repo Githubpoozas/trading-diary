@@ -87,11 +87,15 @@ const HomePage = () => {
       });
     }
   };
+
   const handleDeleteTrade = async (trade) => {
     if (!_.isEmpty(trade.trading_updates)) {
-      enqueueSnackbar(`Cannot delete trade, Please delete all order first`, {
-        variant: "error",
-      });
+      enqueueSnackbar(
+        `Cannot delete trade, Please delete all trading update first`,
+        {
+          variant: "error",
+        }
+      );
       return;
     }
     if (!_.isEmpty(trade.orders)) {
@@ -227,14 +231,27 @@ const HomePage = () => {
     }
   };
 
-  const handleDeleteTradingUpdate = async (id) => {
+  const handleDeleteTradingUpdate = async (tradingUpdate) => {
     try {
-      const res = await deleteTradingUpdate(id);
+      const res = await deleteTradingUpdate(tradingUpdate.id);
 
       if (res.status === 200) {
         enqueueSnackbar(`Trading Update Deleted`, {
           variant: "success",
         });
+
+        const deleteImageArr = [];
+        for (const key in tradingUpdate) {
+          if (timeFrame.includes(key) && tradingUpdate[key]) {
+            deleteImageArr.push(tradingUpdate[key].id);
+          }
+        }
+
+        await Promise.all(
+          deleteImageArr.map(async (i) => {
+            await deleteMedia(i);
+          })
+        );
       }
       openTradeRefetch();
     } catch (error) {
@@ -302,10 +319,10 @@ const HomePage = () => {
     let orderVariables = {
       ticket: ticket,
       type: type,
-      size: size,
+      size: size !== "" ? size : null,
       openTime: openTime,
-      closeTime: closeTime,
-      openPrice: openPrice,
+      closeTime: closeTime !== "" ? closeTime : null,
+      openPrice: openPrice !== "" ? openPrice : null,
       closePrice: closePrice !== "" ? closePrice : null,
       swap: swap !== "" ? swap : null,
       profit: profit !== "" ? profit : null,

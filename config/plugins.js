@@ -7,5 +7,10 @@ module.exports = {
       small: 500,
       xsmall: 64,
     },
+    providerOptions: {
+      localServer: {
+        maxage: 300000,
+      },
+    },
   },
 };

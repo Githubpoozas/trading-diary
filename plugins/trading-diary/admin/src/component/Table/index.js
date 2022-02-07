@@ -39,6 +39,7 @@ import {
   Select,
   HelperText,
   StrategyCheckbox,
+  NoInformation,
 } from "../index";
 
 import { timeFrame, strategies } from "../../constant";
@@ -265,6 +266,7 @@ const OrderRow = ({
                 autoComplete="off"
                 ampm={false}
                 disableFuture
+                maxDate={inputValue.closeTime}
                 label="Open Time"
                 renderInput={(props) => <TextField {...props} />}
                 value={inputValue.openTime}
@@ -303,6 +305,10 @@ const OrderRow = ({
               options={[
                 { value: "buy", label: "Buy" },
                 { value: "sell", label: "Sell" },
+                { value: "sellLimit", label: "Sell Limit" },
+                { value: "buyLimit", label: "Buy Limit" },
+                { value: "sellStop", label: "Sell Stop" },
+                { value: "buyStop", label: "Buy Stop" },
               ]}
             />
           ) : (
@@ -404,6 +410,7 @@ const OrderRow = ({
                 autoComplete="off"
                 ampm={false}
                 disableFuture
+                minDate={inputValue.openTime}
                 renderInput={(props) => <TextField {...props} />}
                 label="Close Time"
                 value={inputValue.closeTime}
@@ -549,11 +556,35 @@ const OrderRow = ({
       </StyledTableRow>
       <StyledTableRow>
         <OrderTableCell
+          sx={{
+            width: "100%",
+            padding: "0 15px",
+          }}
+          colSpan={13}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              columnGap: "10px",
+              alignItems: "center",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Text fontSize="14px">{`created at: ${moment(data.createdAt).format(
+              "YYYY-MM-DD HH:mm:ss"
+            )},`}</Text>
+            <Text fontSize="14px">{` updated at: ${moment(
+              data.updatedAt
+            ).format("YYYY-MM-DD HH:mm:ss")}`}</Text>
+          </Box>
+        </OrderTableCell>
+      </StyledTableRow>
+      <StyledTableRow>
+        <OrderTableCell
           isedit={inputValue.isEdit ? 1 : 0}
           sx={{
             overflowWrap: "break-word",
-            width: "400px",
-            maxWidth: "400px",
+            width: "100%",
           }}
           colSpan={13}
         >
@@ -561,8 +592,7 @@ const OrderRow = ({
             <TextField
               sx={{
                 overflowWrap: "break-word",
-                // width: "400px",
-                // maxWidth: "400px",
+                width: "100%",
               }}
               autoComplete="off"
               multiline
@@ -578,7 +608,14 @@ const OrderRow = ({
               helperText={errors.find((e) => e.property === "comment")?.message}
             />
           ) : (
-            <Text sx={{ textAlign: "justify" }} color="blue">
+            <Text
+              sx={{
+                textAlign: "justify",
+                overflowWrap: "break-word",
+                width: "100%",
+              }}
+              color="blue"
+            >
               {inputValue.comment}
             </Text>
           )}
@@ -752,7 +789,7 @@ const TradeUpdateRow = memo(
     };
 
     const onClickConfirm = () => {
-      onDeleteTradingUpdate(data.id);
+      onDeleteTradingUpdate(data);
       setOpen(false);
     };
 
@@ -779,15 +816,24 @@ const TradeUpdateRow = memo(
             <OrderTableCell align="center" key={tf}>
               <Box component="form">
                 <Box>
-                  <img
+                  <Avatar
                     src={imageArr.find((i) => i.tf === tf)?.preview}
-                    style={{ maxWidth: "100px", cursor: "pointer" }}
+                    variant="square"
+                    sx={{
+                      width: "auto",
+                      margin: "auto",
+                      cursor: imageArr.find((i) => i.tf === tf)
+                        ? "pointer"
+                        : "not-allowed",
+                    }}
                     onClick={() =>
                       setSelectedImage(
                         imageArr.find((i) => i.tf === tf)?.preview
                       )
                     }
-                  />
+                  >
+                    {tf}
+                  </Avatar>
                 </Box>
                 {isEdit && (
                   <Box>
@@ -868,7 +914,7 @@ const TradeUpdateRow = memo(
           </OrderTableCell>
         </TableRow>
         <TableRow>
-          <TableCell style={{ padding: "5px 15px" }} colSpan={13}>
+          <TableCell style={{ padding: "0 15px" }} colSpan={13}>
             {isEdit ? (
               <StrategyCheckbox
                 onChange={handleStratigiesChange}
@@ -878,39 +924,60 @@ const TradeUpdateRow = memo(
               <Box
                 sx={{
                   display: "flex",
-                  flexDirection: "row",
-                  columnGap: "10px",
+                  justifyContent: "space-between",
                 }}
               >
-                {strategies.map((strategy) => (
-                  <Box
-                    key={strategy.name}
-                    sx={{
-                      display: "flex",
-                      columnGap: "3px",
-                      alignItems: "center",
-                    }}
-                  >
-                    {strategiesInput[strategy.name] ? (
-                      <CheckCircleRoundedIcon
-                        color="success"
-                        style={{ fontSize: "14px" }}
-                      />
-                    ) : (
-                      <CancelRoundedIcon
-                        color="error"
-                        style={{ fontSize: "14px" }}
-                      />
-                    )}
-                    <Text
-                      sx={{ marginTop: "3px" }}
-                      fontSize="14px"
-                      color={strategiesInput[strategy.name] ? "green" : "red"}
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    columnGap: "10px",
+                  }}
+                >
+                  {strategies.map((strategy) => (
+                    <Box
+                      key={strategy.name}
+                      sx={{
+                        display: "flex",
+                        columnGap: "3px",
+                        alignItems: "center",
+                      }}
                     >
-                      {strategy.label}
-                    </Text>
-                  </Box>
-                ))}
+                      {strategiesInput[strategy.name] ? (
+                        <CheckCircleRoundedIcon
+                          color="success"
+                          style={{ fontSize: "14px" }}
+                        />
+                      ) : (
+                        <CancelRoundedIcon
+                          color="error"
+                          style={{ fontSize: "14px" }}
+                        />
+                      )}
+                      <Text
+                        sx={{ marginTop: "3px" }}
+                        fontSize="14px"
+                        color={strategiesInput[strategy.name] ? "green" : "red"}
+                      >
+                        {strategy.label}
+                      </Text>
+                    </Box>
+                  ))}
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    columnGap: "10px",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text fontSize="14px">{`created at: ${moment(
+                    data.createdAt
+                  ).format("YYYY-MM-DD HH:mm:ss")},`}</Text>
+                  <Text fontSize="14px">{` updated at: ${moment(
+                    data.updatedAt
+                  ).format("YYYY-MM-DD HH:mm:ss")}`}</Text>
+                </Box>
               </Box>
             )}
           </TableCell>
@@ -931,7 +998,9 @@ const TradeUpdateRow = memo(
                 onChange={handleChange}
               />
             ) : (
-              <Text bold="true">{comment}</Text>
+              <Text bold="true" sx={{ wordBreak: "break-word" }}>
+                {comment}
+              </Text>
             )}
           </TableCell>
         </TableRow>
@@ -980,7 +1049,6 @@ const TradeRow = memo(
           {timeFrame.map((tf) => (
             <OrderTableCell align="center" key={tf}>
               <Avatar
-                alt={tf}
                 src={data[tf] ? API_URI + data[tf].url : null}
                 variant="square"
                 sx={{
@@ -1041,49 +1109,73 @@ const TradeRow = memo(
           </TableCell>
         </StyledTableRow>
         <TableRow>
-          <TableCell style={{ padding: "5px 15px" }} colSpan={13}>
+          <TableCell style={{ padding: "0 15px" }} colSpan={13}>
             <Box
               sx={{
+                width: "100%",
                 display: "flex",
-                flexDirection: "row",
-                columnGap: "10px",
+                justifyContent: "space-between",
               }}
             >
-              {strategies.map((strategy) => (
-                <Box
-                  key={strategy.name}
-                  sx={{
-                    display: "flex",
-                    columnGap: "3px",
-                    alignItems: "center",
-                  }}
-                >
-                  {data[strategy.name] ? (
-                    <CheckCircleRoundedIcon
-                      color="success"
-                      style={{ fontSize: "14px" }}
-                    />
-                  ) : (
-                    <CancelRoundedIcon
-                      color="error"
-                      style={{ fontSize: "14px" }}
-                    />
-                  )}
-                  <Text
-                    sx={{ marginTop: "3px" }}
-                    fontSize="14px"
-                    color={data[strategy.name] ? "green" : "red"}
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  columnGap: "10px",
+                }}
+              >
+                {strategies.map((strategy) => (
+                  <Box
+                    key={strategy.name}
+                    sx={{
+                      display: "flex",
+                      columnGap: "3px",
+                      alignItems: "center",
+                    }}
                   >
-                    {strategy.label}
-                  </Text>
-                </Box>
-              ))}
+                    {data[strategy.name] ? (
+                      <CheckCircleRoundedIcon
+                        color="success"
+                        style={{ fontSize: "14px" }}
+                      />
+                    ) : (
+                      <CancelRoundedIcon
+                        color="error"
+                        style={{ fontSize: "14px" }}
+                      />
+                    )}
+                    <Text
+                      sx={{ marginTop: "3px" }}
+                      fontSize="14px"
+                      color={data[strategy.name] ? "green" : "red"}
+                    >
+                      {strategy.label}
+                    </Text>
+                  </Box>
+                ))}
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  columnGap: "10px",
+                  alignItems: "center",
+                }}
+              >
+                <Text fontSize="14px">{`created at: ${moment(
+                  data.createdAt
+                ).format("YYYY-MM-DD HH:mm:ss")},`}</Text>
+                <Text fontSize="14px">{` updated at: ${moment(
+                  data.updatedAt
+                ).format("YYYY-MM-DD HH:mm:ss")}`}</Text>
+              </Box>
             </Box>
           </TableCell>
         </TableRow>
         <TableRow>
           <TableCell style={{ padding: "15px" }} colSpan={13}>
-            <Text bold="true">{data.comment}</Text>
+            <Text bold="true" sx={{ wordBreak: "break-word" }}>
+              {data.comment}
+            </Text>
           </TableCell>
         </TableRow>
 
@@ -1273,7 +1365,7 @@ export const TradesTable = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {!_.isEmpty(data) &&
+            {!_.isEmpty(data) ? (
               data.map((trade) => (
                 <TradeRow
                   canEdit={trade.open}
@@ -1292,7 +1384,14 @@ export const TradesTable = ({
                   onCloseOrder={onCloseOrder}
                   onClickDeleteOrder={onClickDeleteOrder}
                 />
-              ))}
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={12}>
+                  <NoInformation />
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>

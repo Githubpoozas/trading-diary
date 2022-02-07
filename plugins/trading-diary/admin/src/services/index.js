@@ -153,6 +153,8 @@ export const GET_TRADE = gql`
   query GET_TRADE($open: Boolean!) {
     trades(where: { open: $open }) {
       id
+      createdAt
+      updatedAt
       open
       product {
         id
@@ -198,6 +200,8 @@ export const GET_TRADE = gql`
       }
       trading_updates {
         id
+        createdAt
+        updatedAt
         comment
         M1 {
           id
@@ -252,6 +256,8 @@ export const GET_TRADE = gql`
       fibo
       orders {
         id
+        createdAt
+        updatedAt
         ticket
         type
         size

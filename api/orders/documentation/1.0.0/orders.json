@@ -631,6 +631,18 @@
               "bias": {
                 "type": "string"
               },
+              "qml": {
+                "type": "boolean"
+              },
+              "iqml": {
+                "type": "boolean"
+              },
+              "pa": {
+                "type": "boolean"
+              },
+              "orderBlock": {
+                "type": "boolean"
+              },
               "created_by": {
                 "type": "string"
               },

@@ -137,6 +137,22 @@
     "fibo": {
       "type": "boolean",
       "default": false
+    },
+    "qml": {
+      "type": "boolean",
+      "default": false
+    },
+    "iqml": {
+      "type": "boolean",
+      "default": false
+    },
+    "pa": {
+      "type": "boolean",
+      "default": false
+    },
+    "orderBlock": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

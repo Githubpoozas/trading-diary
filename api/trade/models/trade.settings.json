@@ -154,6 +154,22 @@
       "type": "string",
       "regex": "\\b(sell|buy)\\b",
       "required": true
+    },
+    "qml": {
+      "type": "boolean",
+      "default": false
+    },
+    "iqml": {
+      "type": "boolean",
+      "default": false
+    },
+    "pa": {
+      "type": "boolean",
+      "default": false
+    },
+    "orderBlock": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

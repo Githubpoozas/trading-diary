@@ -633,6 +633,18 @@
                 "fibo": {
                   "type": "boolean"
                 },
+                "qml": {
+                  "type": "boolean"
+                },
+                "iqml": {
+                  "type": "boolean"
+                },
+                "pa": {
+                  "type": "boolean"
+                },
+                "orderBlock": {
+                  "type": "boolean"
+                },
                 "created_by": {
                   "type": "string"
                 },
@@ -1343,6 +1355,22 @@
           },
           "bias": {
             "type": "string"
+          },
+          "qml": {
+            "type": "boolean",
+            "default": false
+          },
+          "iqml": {
+            "type": "boolean",
+            "default": false
+          },
+          "pa": {
+            "type": "boolean",
+            "default": false
+          },
+          "orderBlock": {
+            "type": "boolean",
+            "default": false
           }
         }
       },
@@ -1405,6 +1433,22 @@
           },
           "bias": {
             "type": "string"
+          },
+          "qml": {
+            "type": "boolean",
+            "default": false
+          },
+          "iqml": {
+            "type": "boolean",
+            "default": false
+          },
+          "pa": {
+            "type": "boolean",
+            "default": false
+          },
+          "orderBlock": {
+            "type": "boolean",
+            "default": false
           },
           "created_by": {
             "type": "string"

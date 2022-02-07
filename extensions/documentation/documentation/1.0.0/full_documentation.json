@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "02/07/2022 10:28:15 PM"
+    "x-generation-date": "02/08/2022 4:10:07 AM"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -5167,6 +5167,18 @@
               "bias": {
                 "type": "string"
               },
+              "qml": {
+                "type": "boolean"
+              },
+              "iqml": {
+                "type": "boolean"
+              },
+              "pa": {
+                "type": "boolean"
+              },
+              "orderBlock": {
+                "type": "boolean"
+              },
               "created_by": {
                 "type": "string"
               },
@@ -5538,6 +5550,18 @@
                 "fibo": {
                   "type": "boolean"
                 },
+                "qml": {
+                  "type": "boolean"
+                },
+                "iqml": {
+                  "type": "boolean"
+                },
+                "pa": {
+                  "type": "boolean"
+                },
+                "orderBlock": {
+                  "type": "boolean"
+                },
                 "created_by": {
                   "type": "string"
                 },
@@ -6248,6 +6272,22 @@
           },
           "bias": {
             "type": "string"
+          },
+          "qml": {
+            "type": "boolean",
+            "default": false
+          },
+          "iqml": {
+            "type": "boolean",
+            "default": false
+          },
+          "pa": {
+            "type": "boolean",
+            "default": false
+          },
+          "orderBlock": {
+            "type": "boolean",
+            "default": false
           }
         }
       },
@@ -6310,6 +6350,22 @@
           },
           "bias": {
             "type": "string"
+          },
+          "qml": {
+            "type": "boolean",
+            "default": false
+          },
+          "iqml": {
+            "type": "boolean",
+            "default": false
+          },
+          "pa": {
+            "type": "boolean",
+            "default": false
+          },
+          "orderBlock": {
+            "type": "boolean",
+            "default": false
           },
           "created_by": {
             "type": "string"
@@ -6413,6 +6469,18 @@
               },
               "bias": {
                 "type": "string"
+              },
+              "qml": {
+                "type": "boolean"
+              },
+              "iqml": {
+                "type": "boolean"
+              },
+              "pa": {
+                "type": "boolean"
+              },
+              "orderBlock": {
+                "type": "boolean"
               },
               "created_by": {
                 "type": "string"
@@ -7052,6 +7120,22 @@
           "fibo": {
             "type": "boolean",
             "default": false
+          },
+          "qml": {
+            "type": "boolean",
+            "default": false
+          },
+          "iqml": {
+            "type": "boolean",
+            "default": false
+          },
+          "pa": {
+            "type": "boolean",
+            "default": false
+          },
+          "orderBlock": {
+            "type": "boolean",
+            "default": false
           }
         }
       },
@@ -7091,6 +7175,22 @@
             "default": false
           },
           "fibo": {
+            "type": "boolean",
+            "default": false
+          },
+          "qml": {
+            "type": "boolean",
+            "default": false
+          },
+          "iqml": {
+            "type": "boolean",
+            "default": false
+          },
+          "pa": {
+            "type": "boolean",
+            "default": false
+          },
+          "orderBlock": {
             "type": "boolean",
             "default": false
           },

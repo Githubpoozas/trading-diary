@@ -622,6 +622,18 @@
               "bias": {
                 "type": "string"
               },
+              "qml": {
+                "type": "boolean"
+              },
+              "iqml": {
+                "type": "boolean"
+              },
+              "pa": {
+                "type": "boolean"
+              },
+              "orderBlock": {
+                "type": "boolean"
+              },
               "created_by": {
                 "type": "string"
               },
@@ -1260,6 +1272,22 @@
           "fibo": {
             "type": "boolean",
             "default": false
+          },
+          "qml": {
+            "type": "boolean",
+            "default": false
+          },
+          "iqml": {
+            "type": "boolean",
+            "default": false
+          },
+          "pa": {
+            "type": "boolean",
+            "default": false
+          },
+          "orderBlock": {
+            "type": "boolean",
+            "default": false
           }
         }
       },
@@ -1299,6 +1327,22 @@
             "default": false
           },
           "fibo": {
+            "type": "boolean",
+            "default": false
+          },
+          "qml": {
+            "type": "boolean",
+            "default": false
+          },
+          "iqml": {
+            "type": "boolean",
+            "default": false
+          },
+          "pa": {
+            "type": "boolean",
+            "default": false
+          },
+          "orderBlock": {
             "type": "boolean",
             "default": false
           },

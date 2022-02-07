@@ -149,6 +149,11 @@
     "fibo": {
       "type": "boolean",
       "default": false
+    },
+    "bias": {
+      "type": "string",
+      "regex": "\\b(sell|buy)\\b",
+      "required": true
     }
   }
 }

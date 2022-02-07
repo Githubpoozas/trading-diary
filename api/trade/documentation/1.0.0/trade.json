@@ -518,7 +518,8 @@
         "required": [
           "id",
           "comment",
-          "open"
+          "open",
+          "bias"
         ],
         "properties": {
           "id": {
@@ -1339,13 +1340,17 @@
           "fibo": {
             "type": "boolean",
             "default": false
+          },
+          "bias": {
+            "type": "string"
           }
         }
       },
       "NewTrade": {
         "required": [
           "comment",
-          "open"
+          "open",
+          "bias"
         ],
         "properties": {
           "product": {
@@ -1397,6 +1402,9 @@
           "fibo": {
             "type": "boolean",
             "default": false
+          },
+          "bias": {
+            "type": "string"
           },
           "created_by": {
             "type": "string"

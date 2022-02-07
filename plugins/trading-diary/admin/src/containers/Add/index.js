@@ -28,7 +28,7 @@ const Add = ({ history }) => {
   const [imageArr, setImageArr] = useState([]);
   const [inputValue, setInputValue] = useState({
     product: null,
-    type: "buy",
+    bias: "buy",
     comment: "",
     support: false,
     resistant: false,
@@ -111,10 +111,10 @@ const Add = ({ history }) => {
       });
     }
 
-    if (!inputValue.type) {
+    if (!inputValue.bias) {
       newError.push({
-        property: "type",
-        message: "Please provide a type",
+        property: "bias",
+        message: "Please provide a bias",
       });
     }
 
@@ -289,13 +289,13 @@ const Add = ({ history }) => {
                   />
                   <Select
                     required
-                    labelId="type"
-                    id="type"
-                    label="Type"
-                    name="type"
-                    value={inputValue.type}
+                    labelId="bias"
+                    id="bias"
+                    label="Bias"
+                    name="bias"
+                    value={inputValue.bias}
                     onChange={handleChange}
-                    error={errors.find((e) => e.property === "type")?.message}
+                    error={errors.find((e) => e.property === "bias")?.message}
                     disabled={loading || productLoading}
                     options={[
                       { value: "buy", label: "Buy" },

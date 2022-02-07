@@ -153,6 +153,7 @@ export const GET_TRADE = gql`
   query GET_TRADE($open: Boolean!) {
     trades(where: { open: $open }) {
       id
+      bias
       createdAt
       updatedAt
       open

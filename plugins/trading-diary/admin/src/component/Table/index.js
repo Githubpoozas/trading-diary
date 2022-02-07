@@ -1046,6 +1046,9 @@ const TradeRow = memo(
           <OrderTableCell component="th" scope="row">
             <Text bold="true">{data.product.name}</Text>
           </OrderTableCell>
+          <OrderTableCell>
+            <Text bold="true">{data.bias}</Text>
+          </OrderTableCell>
           {timeFrame.map((tf) => (
             <OrderTableCell align="center" key={tf}>
               <Avatar
@@ -1351,6 +1354,9 @@ export const TradesTable = ({
             <TableRow>
               <StyledTableCell backgroundcolor="black">
                 <Text bold="true">Product</Text>
+              </StyledTableCell>
+              <StyledTableCell backgroundcolor="black" align="center">
+                <Text bold="true">Bias</Text>
               </StyledTableCell>
               {timeFrame.map((tf) => (
                 <StyledTableCell

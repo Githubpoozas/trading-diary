@@ -552,7 +552,8 @@
             "required": [
               "id",
               "comment",
-              "open"
+              "open",
+              "bias"
             ],
             "properties": {
               "id": {
@@ -626,6 +627,9 @@
               },
               "fibo": {
                 "type": "boolean"
+              },
+              "bias": {
+                "type": "string"
               },
               "created_by": {
                 "type": "string"

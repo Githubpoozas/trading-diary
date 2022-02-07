@@ -8,5 +8,9 @@ export const strategies = [
     { name: "supply", label: "Supply" },
     { name: "fakeout", label: "Fakeout" },
     { name: "fibo", label: "Fibo" },
+    { name: "qml", label: "QML" },
+    { name: "iqml", label: "IQML" },
+    { name: "pa", label: "Price Approaching" },
+    { name: "orderBlock", label: "Order Block" },
   ];
   

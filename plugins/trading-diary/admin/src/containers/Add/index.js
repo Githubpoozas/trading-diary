@@ -20,7 +20,7 @@ import {
 
 import { GET_PRODUCTS, uploadMedia, createTrade } from "../../services";
 
-import { timeFrame } from "../../constant";
+import { timeFrame, strategies } from "../../constant";
 
 const Add = ({ history }) => {
   const [errors, setErrors] = useState([]);
@@ -37,6 +37,10 @@ const Add = ({ history }) => {
     supply: false,
     fakeout: false,
     fibo: false,
+    qml: false,
+    iqml: false,
+    pa: false,
+    orderBlock: false,
   });
 
   const handleProductChange = (value) => {
@@ -53,17 +57,7 @@ const Add = ({ history }) => {
 
     const newInputValue = { ...inputValue };
 
-    if (
-      [
-        "support",
-        "resistant",
-        "srFlip",
-        "demand",
-        "supply",
-        "fakeout",
-        "fibo",
-      ].includes(name)
-    ) {
+    if (strategies.map((s) => s.name).includes(name)) {
       newInputValue[name] = event.target.checked;
     } else {
       newInputValue[name] = e.target.value;

@@ -650,6 +650,10 @@ const TradeUpdateRow = memo(
       supply: false,
       fakeout: false,
       fibo: false,
+      qml: false,
+      iqml: false,
+      pa: false,
+      orderBlock: false,
     });
 
     const reset = () => {

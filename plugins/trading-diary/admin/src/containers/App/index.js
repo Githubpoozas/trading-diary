@@ -104,8 +104,11 @@ const App = () => {
         } catch (error) {
           console.log("VerifyToken error: ", error.message);
           setValidToken(false);
+          localStorage.removeItem("str_token");
+          handleGetToken();
         }
       } else {
+        localStorage.removeItem("str_token");
         handleGetToken();
       }
     };

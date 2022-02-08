@@ -14,7 +14,6 @@ import Dialog from "@mui/material/Dialog";
 import Stack from "@mui/material/Stack";
 import Avatar from "@mui/material/Avatar";
 import TextField from "@mui/material/TextField";
-import DateTimePicker from "@mui/lab/DateTimePicker";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
@@ -29,6 +28,7 @@ import Tooltip from "@mui/material/Tooltip";
 import AddchartIcon from "@mui/icons-material/Addchart";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
+import MobileDateTimePicker from "@mui/lab/MobileDateTimePicker";
 
 import { averagePrice } from "../../utils/format";
 
@@ -262,13 +262,11 @@ const OrderRow = ({
         <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
           {inputValue.isEdit ? (
             <>
-              <DateTimePicker
+              <MobileDateTimePicker
                 autoComplete="off"
                 ampm={false}
                 disableFuture
                 maxDate={inputValue.closeTime}
-                label="Open Time"
-                renderInput={(props) => <TextField {...props} />}
                 value={inputValue.openTime}
                 onChange={(newValue) => {
                   setInputValue({
@@ -279,12 +277,10 @@ const OrderRow = ({
                     errors.filter((error) => error.property !== "openTime")
                   );
                 }}
+                label="Open Time"
+                onError={errors.find((e) => e.property === "openTime")?.message}
+                renderInput={(props) => <TextField {...props} />}
               />
-              {errors.find((e) => e.property === "openTime") && (
-                <HelperText>
-                  {errors.find((e) => e.property === "openTime")?.message}
-                </HelperText>
-              )}
             </>
           ) : (
             <Text>
@@ -406,13 +402,11 @@ const OrderRow = ({
         <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
           {inputValue.isEdit ? (
             <>
-              <DateTimePicker
+              <MobileDateTimePicker
                 autoComplete="off"
                 ampm={false}
                 disableFuture
                 minDate={inputValue.openTime}
-                renderInput={(props) => <TextField {...props} />}
-                label="Close Time"
                 value={inputValue.closeTime}
                 onChange={(newValue) => {
                   setInputValue({
@@ -423,12 +417,10 @@ const OrderRow = ({
                     errors.filter((error) => error.property !== "closeTime")
                   );
                 }}
+                label="Close Time"
+                onError={errors.find((e) => e.property === "closeTime")?.message}
+                renderInput={(props) => <TextField {...props} />}
               />
-              {errors.find((e) => e.property === "closeTime") && (
-                <HelperText>
-                  {errors.find((e) => e.property === "closeTime")?.message}
-                </HelperText>
-              )}
             </>
           ) : (
             <Text>

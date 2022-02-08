@@ -579,16 +579,16 @@ const OrderRow = ({
           </Box>
         </OrderTableCell>
       </StyledTableRow>
-      <StyledTableRow>
-        <OrderTableCell
-          isedit={inputValue.isEdit ? 1 : 0}
-          sx={{
-            overflowWrap: "break-word",
-            width: "100%",
-          }}
-          colSpan={13}
-        >
-          {inputValue.isEdit ? (
+      {inputValue.isEdit ? (
+        <StyledTableRow>
+          <OrderTableCell
+            isedit={inputValue.isEdit ? 1 : 0}
+            sx={{
+              overflowWrap: "break-word",
+              width: "100%",
+            }}
+            colSpan={13}
+          >
             <TextField
               sx={{
                 overflowWrap: "break-word",
@@ -607,7 +607,18 @@ const OrderRow = ({
               }
               helperText={errors.find((e) => e.property === "comment")?.message}
             />
-          ) : (
+          </OrderTableCell>
+        </StyledTableRow>
+      ) : inputValue.comment !== "" ? (
+        <StyledTableRow>
+          <OrderTableCell
+            isedit={inputValue.isEdit ? 1 : 0}
+            sx={{
+              overflowWrap: "break-word",
+              width: "100%",
+            }}
+            colSpan={13}
+          >
             <Text
               sx={{
                 textAlign: "justify",
@@ -619,9 +630,11 @@ const OrderRow = ({
             >
               {inputValue.comment}
             </Text>
-          )}
-        </OrderTableCell>
-      </StyledTableRow>
+          </OrderTableCell>
+        </StyledTableRow>
+      ) : (
+        <></>
+      )}
     </>
   );
 };
@@ -987,9 +1000,9 @@ const TradeUpdateRow = memo(
             )}
           </TableCell>
         </TableRow>
-        <TableRow>
-          <TableCell style={{ padding: "5px 15px" }} colSpan={13}>
-            {isEdit ? (
+        {isEdit ? (
+          <TableRow>
+            <TableCell style={{ padding: "5px 15px" }} colSpan={13}>
               <TextField
                 required
                 multiline
@@ -1002,13 +1015,19 @@ const TradeUpdateRow = memo(
                 value={comment}
                 onChange={handleChange}
               />
-            ) : (
+            </TableCell>
+          </TableRow>
+        ) : comment !== "" ? (
+          <TableRow>
+            <TableCell style={{ padding: "5px 15px" }} colSpan={13}>
               <Text sx={{ wordBreak: "break-word", whiteSpace: "pre-line " }}>
                 {comment}
               </Text>
-            )}
-          </TableCell>
-        </TableRow>
+            </TableCell>
+          </TableRow>
+        ) : (
+          <></>
+        )}
       </>
     );
   }

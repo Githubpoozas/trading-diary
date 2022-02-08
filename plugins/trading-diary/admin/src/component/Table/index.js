@@ -1003,10 +1003,7 @@ const TradeUpdateRow = memo(
                 onChange={handleChange}
               />
             ) : (
-              <Text
-                bold="true"
-                sx={{ wordBreak: "break-word", whiteSpace: "pre-line " }}
-              >
+              <Text sx={{ wordBreak: "break-word", whiteSpace: "pre-line " }}>
                 {comment}
               </Text>
             )}
@@ -1184,10 +1181,7 @@ const TradeRow = memo(
         </TableRow>
         <TableRow>
           <TableCell style={{ padding: "15px" }} colSpan={13}>
-            <Text
-              bold="true"
-              sx={{ wordBreak: "break-word", whiteSpace: "pre-line" }}
-            >
+            <Text sx={{ wordBreak: "break-word", whiteSpace: "pre-line" }}>
               {data.comment}
             </Text>
           </TableCell>

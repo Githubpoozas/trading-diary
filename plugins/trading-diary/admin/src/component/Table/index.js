@@ -266,7 +266,7 @@ const OrderRow = ({
                 autoComplete="off"
                 ampm={false}
                 disableFuture
-                maxDate={inputValue.closeTime}
+                maxDate={moment(inputValue.closeTime)}
                 value={inputValue.openTime}
                 onChange={(newValue) => {
                   setInputValue({
@@ -406,7 +406,7 @@ const OrderRow = ({
                 autoComplete="off"
                 ampm={false}
                 disableFuture
-                minDate={inputValue.openTime}
+                minDate={moment(inputValue.openTime)}
                 value={inputValue.closeTime}
                 onChange={(newValue) => {
                   setInputValue({
@@ -418,7 +418,9 @@ const OrderRow = ({
                   );
                 }}
                 label="Close Time"
-                onError={errors.find((e) => e.property === "closeTime")?.message}
+                onError={
+                  errors.find((e) => e.property === "closeTime")?.message
+                }
                 renderInput={(props) => <TextField {...props} />}
               />
             </>

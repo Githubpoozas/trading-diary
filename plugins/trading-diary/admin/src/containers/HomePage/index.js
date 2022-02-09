@@ -6,7 +6,12 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { useSnackbar } from "notistack";
 
-import { Text, TradesTable, ConfirmDialog } from "../../component/index";
+import {
+  Text,
+  TradesTable,
+  ConfirmDialog,
+  Progress,
+} from "../../component/index";
 
 import {
   GET_TRADE,
@@ -30,11 +35,13 @@ const HomePage = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const [openTrades, setOpenTrades] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const {
     data: openTradeData,
     error: openTradeError,
     refetch: openTradeRefetch,
+    loading: openTradeLoading,
   } = useQuery(GET_TRADE, { variables: { open: true } });
 
   useEffect(() => {
@@ -104,6 +111,7 @@ const HomePage = () => {
       });
       return;
     }
+    setLoading(true);
 
     try {
       const res = await deleteTrade(trade.id);
@@ -131,6 +139,7 @@ const HomePage = () => {
         variant: "error",
       });
     }
+    setLoading(false);
   };
 
   const handleAddTradingUpdate = (id) => {
@@ -172,6 +181,8 @@ const HomePage = () => {
         deleteImageArr.push(item[property]);
       }
     });
+
+    setLoading(true);
 
     try {
       let res;
@@ -229,9 +240,12 @@ const HomePage = () => {
         }
       );
     }
+    setLoading(false);
   };
 
   const handleDeleteTradingUpdate = async (tradingUpdate) => {
+    setLoading(true);
+
     try {
       const res = await deleteTradingUpdate(tradingUpdate.id);
 
@@ -262,6 +276,7 @@ const HomePage = () => {
         }
       );
     }
+    setLoading(false);
   };
 
   const handleAddOrder = async (id) => {
@@ -332,6 +347,8 @@ const HomePage = () => {
       takeProfit: takeProfit !== "" ? takeProfit : null,
     };
 
+    setLoading(true);
+
     try {
       let res;
       if (id) {
@@ -356,9 +373,12 @@ const HomePage = () => {
         }
       );
     }
+    setLoading(false);
   };
 
   const handleDeleteOrder = async (id) => {
+    setLoading(true);
+
     try {
       const res = await deleteOrders(id);
       if (res.status === 200) {
@@ -370,9 +390,12 @@ const HomePage = () => {
         variant: "error",
       });
     }
+    setLoading(false);
   };
 
   const handleCloseOrder = async (id, value) => {
+    setLoading(true);
+
     try {
       const res = await updateOrders(id, { open: value });
       if (res.status === 200) {
@@ -389,10 +412,19 @@ const HomePage = () => {
         { variant: "error" }
       );
     }
+    setLoading(false);
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", rowGap: "20px" }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        rowGap: "20px",
+        position: "relative",
+      }}
+    >
+      {(loading || openTradeLoading) && <Progress />}
       <div>
         <Text
           bold="true"

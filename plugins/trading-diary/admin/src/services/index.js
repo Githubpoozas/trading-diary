@@ -247,6 +247,10 @@ export const GET_TRADE = gql`
         supply
         fakeout
         fibo
+        qml
+        iqml
+        pa
+        orderBlock
       }
       support
       resistant
@@ -255,6 +259,10 @@ export const GET_TRADE = gql`
       supply
       fakeout
       fibo
+      qml
+      iqml
+      pa
+      orderBlock
       orders {
         id
         createdAt

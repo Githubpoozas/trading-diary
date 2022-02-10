@@ -161,6 +161,18 @@
     "againstTrend": {
       "type": "boolean",
       "default": false
+    },
+    "dynamic": {
+      "type": "boolean",
+      "default": false
+    },
+    "multiple": {
+      "type": "boolean",
+      "default": false
+    },
+    "drastic": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

@@ -635,6 +635,7 @@ const OrderRow = ({
 
 const TradeUpdateRow = memo(
   ({
+    canEdit,
     tradeId,
     data,
     index,
@@ -651,9 +652,12 @@ const TradeUpdateRow = memo(
     const [deleteImage, setDeleteImage] = useState([]);
     const [strategiesInput, setStrategiesInput] = useState({
       trendFollowing: false,
-      againstTrend:false,
+      againstTrend: false,
       support: false,
       resistant: false,
+      dynamic: false,
+      multiple: false,
+      drastic: false,
       srFlip: false,
       demand: false,
       supply: false,
@@ -891,39 +895,40 @@ const TradeUpdateRow = memo(
               alignItems="center"
               spacing={1}
             >
-              {isEdit ? (
-                <>
-                  <Tooltip placement="top" arrow title="Save">
-                    <IconButton color="primary" onClick={onClickSave}>
-                      <SaveAsIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip placement="top" arrow title="Cancel">
-                    <IconButton color="info" onClick={onClickCancel}>
-                      <HistoryIcon />
-                    </IconButton>
-                  </Tooltip>
-                </>
-              ) : (
-                <>
-                  <Tooltip placement="top" arrow title="Edit Trading Update">
-                    <IconButton color="info" onClick={onClickEdit}>
-                      <ModeEditIcon />
-                    </IconButton>
-                  </Tooltip>
-                  {data.id && (
-                    <Tooltip
-                      placement="top"
-                      arrow
-                      title="Delete Trading Update"
-                    >
-                      <IconButton color="error" onClick={() => setOpen(true)}>
-                        <DeleteForeverIcon />
+              {canEdit &&
+                (isEdit ? (
+                  <>
+                    <Tooltip placement="top" arrow title="Save">
+                      <IconButton color="primary" onClick={onClickSave}>
+                        <SaveAsIcon />
                       </IconButton>
                     </Tooltip>
-                  )}
-                </>
-              )}
+                    <Tooltip placement="top" arrow title="Cancel">
+                      <IconButton color="info" onClick={onClickCancel}>
+                        <HistoryIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </>
+                ) : (
+                  <>
+                    <Tooltip placement="top" arrow title="Edit Trading Update">
+                      <IconButton color="info" onClick={onClickEdit}>
+                        <ModeEditIcon />
+                      </IconButton>
+                    </Tooltip>
+                    {data.id && (
+                      <Tooltip
+                        placement="top"
+                        arrow
+                        title="Delete Trading Update"
+                      >
+                        <IconButton color="error" onClick={() => setOpen(true)}>
+                          <DeleteForeverIcon />
+                        </IconButton>
+                      </Tooltip>
+                    )}
+                  </>
+                ))}
             </Stack>
           </OrderTableCell>
         </TableRow>
@@ -937,8 +942,8 @@ const TradeUpdateRow = memo(
             ) : (
               <Box
                 sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
+                  display: "grid",
+                  gridTemplateColumns: "1fr auto",
                 }}
               >
                 <Box
@@ -946,6 +951,7 @@ const TradeUpdateRow = memo(
                     display: "flex",
                     flexDirection: "row",
                     columnGap: "10px",
+                    flexWrap: "wrap",
                   }}
                 >
                   {strategies.map((strategy) => (
@@ -983,6 +989,7 @@ const TradeUpdateRow = memo(
                     display: "flex",
                     columnGap: "10px",
                     alignItems: "center",
+                    flexDirection: "column",
                   }}
                 >
                   <Text fontSize="14px">{`created at: ${moment(
@@ -1145,6 +1152,7 @@ const TradeRow = memo(
                   display: "flex",
                   flexDirection: "row",
                   columnGap: "10px",
+                  flexWrap: "wrap",
                 }}
               >
                 {strategies.map((strategy) => (
@@ -1179,9 +1187,8 @@ const TradeRow = memo(
               </Box>
               <Box
                 sx={{
-                  display: "flex",
-                  columnGap: "10px",
-                  alignItems: "center",
+                  display: "grid",
+                  gridTemplateColumns: "1fr auto",
                 }}
               >
                 <Text fontSize="14px">{`created at: ${moment(
@@ -1227,6 +1234,7 @@ const TradeRow = memo(
                   <TableBody>
                     {data.trading_updates.map((update, index) => (
                       <TradeUpdateRow
+                        canEdit={canEdit}
                         tradeId={data.id}
                         data={update}
                         key={`tradeUpdate${index}`}

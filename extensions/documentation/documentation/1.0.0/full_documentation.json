@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "02/10/2022 11:09:35 PM"
+    "x-generation-date": "02/11/2022 4:15:09 AM"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -5185,6 +5185,15 @@
               "againstTrend": {
                 "type": "boolean"
               },
+              "dynamic": {
+                "type": "boolean"
+              },
+              "multiple": {
+                "type": "boolean"
+              },
+              "drastic": {
+                "type": "boolean"
+              },
               "created_by": {
                 "type": "string"
               },
@@ -5574,6 +5583,15 @@
                 "againstTrend": {
                   "type": "boolean"
                 },
+                "dynamic": {
+                  "type": "boolean"
+                },
+                "multiple": {
+                  "type": "boolean"
+                },
+                "drastic": {
+                  "type": "boolean"
+                },
                 "created_by": {
                   "type": "string"
                 },
@@ -6308,6 +6326,18 @@
           "againstTrend": {
             "type": "boolean",
             "default": false
+          },
+          "dynamic": {
+            "type": "boolean",
+            "default": false
+          },
+          "multiple": {
+            "type": "boolean",
+            "default": false
+          },
+          "drastic": {
+            "type": "boolean",
+            "default": false
           }
         }
       },
@@ -6392,6 +6422,18 @@
             "default": false
           },
           "againstTrend": {
+            "type": "boolean",
+            "default": false
+          },
+          "dynamic": {
+            "type": "boolean",
+            "default": false
+          },
+          "multiple": {
+            "type": "boolean",
+            "default": false
+          },
+          "drastic": {
             "type": "boolean",
             "default": false
           },
@@ -6514,6 +6556,15 @@
                 "type": "boolean"
               },
               "againstTrend": {
+                "type": "boolean"
+              },
+              "dynamic": {
+                "type": "boolean"
+              },
+              "multiple": {
+                "type": "boolean"
+              },
+              "drastic": {
                 "type": "boolean"
               },
               "created_by": {
@@ -7178,6 +7229,18 @@
           "againstTrend": {
             "type": "boolean",
             "default": false
+          },
+          "dynamic": {
+            "type": "boolean",
+            "default": false
+          },
+          "multiple": {
+            "type": "boolean",
+            "default": false
+          },
+          "drastic": {
+            "type": "boolean",
+            "default": false
           }
         }
       },
@@ -7241,6 +7304,18 @@
             "default": false
           },
           "againstTrend": {
+            "type": "boolean",
+            "default": false
+          },
+          "dynamic": {
+            "type": "boolean",
+            "default": false
+          },
+          "multiple": {
+            "type": "boolean",
+            "default": false
+          },
+          "drastic": {
             "type": "boolean",
             "default": false
           },

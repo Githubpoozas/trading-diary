@@ -651,6 +651,15 @@
                 "againstTrend": {
                   "type": "boolean"
                 },
+                "dynamic": {
+                  "type": "boolean"
+                },
+                "multiple": {
+                  "type": "boolean"
+                },
+                "drastic": {
+                  "type": "boolean"
+                },
                 "created_by": {
                   "type": "string"
                 },
@@ -1385,6 +1394,18 @@
           "againstTrend": {
             "type": "boolean",
             "default": false
+          },
+          "dynamic": {
+            "type": "boolean",
+            "default": false
+          },
+          "multiple": {
+            "type": "boolean",
+            "default": false
+          },
+          "drastic": {
+            "type": "boolean",
+            "default": false
           }
         }
       },
@@ -1469,6 +1490,18 @@
             "default": false
           },
           "againstTrend": {
+            "type": "boolean",
+            "default": false
+          },
+          "dynamic": {
+            "type": "boolean",
+            "default": false
+          },
+          "multiple": {
+            "type": "boolean",
+            "default": false
+          },
+          "drastic": {
             "type": "boolean",
             "default": false
           },

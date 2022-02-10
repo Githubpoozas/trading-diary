@@ -100,6 +100,9 @@ const App = () => {
           // check token expired date
           if (moment(res.exp * 1000).isAfter(moment(), "date")) {
             setValidToken(true);
+          } else {
+            localStorage.removeItem("str_token");
+            handleGetToken();
           }
         } catch (error) {
           console.log("VerifyToken error: ", error.message);

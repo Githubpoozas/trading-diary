@@ -1,18 +1,30 @@
-export const timeFrame = ["M1", "M5", "M15", "M30", "H1", "H4", "D1", "W1", "MN"];
+export const timeFrame = [
+  "M1",
+  "M5",
+  "M15",
+  "M30",
+  "H1",
+  "H4",
+  "D1",
+  "W1",
+  "MN",
+];
 
 export const strategies = [
-    { name: "trendFollowing", label: "Trend Following" },
-    { name: "againstTrend", label: "Against Trend" },
-    { name: "support", label: "Support" },
-    { name: "resistant", label: "Resistant" },
-    { name: "srFlip", label: "SR Flip" },
-    { name: "demand", label: "Demand" },
-    { name: "supply", label: "Supply" },
-    { name: "fakeout", label: "Fakeout" },
-    { name: "fibo", label: "Fibo" },
-    { name: "qml", label: "QML" },
-    { name: "iqml", label: "IQML" },
-    { name: "pa", label: "Price Approaching" },
-    { name: "orderBlock", label: "Order Block" },
-  ];
-  
+  { name: "trendFollowing", label: "Trend Following" },
+  { name: "againstTrend", label: "Against Trend" },
+  { name: "support", label: "Support" },
+  { name: "resistant", label: "Resistant" },
+  { name: "dynamic", label: "Dynamic SR" },
+  { name: "multiple", label: "Multiple Rejections" },
+  { name: "drastic", label: "Drastic Move" },
+  { name: "srFlip", label: "SR Flip" },
+  { name: "demand", label: "Demand" },
+  { name: "supply", label: "Supply" },
+  { name: "fakeout", label: "Fakeout" },
+  { name: "fibo", label: "Fibo" },
+  { name: "qml", label: "QML" },
+  { name: "iqml", label: "IQML" },
+  { name: "pa", label: "Price Approaching" },
+  { name: "orderBlock", label: "Order Block" },
+];

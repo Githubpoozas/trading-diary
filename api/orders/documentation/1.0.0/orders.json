@@ -649,6 +649,15 @@
               "againstTrend": {
                 "type": "boolean"
               },
+              "dynamic": {
+                "type": "boolean"
+              },
+              "multiple": {
+                "type": "boolean"
+              },
+              "drastic": {
+                "type": "boolean"
+              },
               "created_by": {
                 "type": "string"
               },

@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "02/08/2022 4:10:07 AM"
+    "x-generation-date": "02/10/2022 11:09:35 PM"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -5179,6 +5179,12 @@
               "orderBlock": {
                 "type": "boolean"
               },
+              "trendFollowing": {
+                "type": "boolean"
+              },
+              "againstTrend": {
+                "type": "boolean"
+              },
               "created_by": {
                 "type": "string"
               },
@@ -5562,6 +5568,12 @@
                 "orderBlock": {
                   "type": "boolean"
                 },
+                "trendFollowing": {
+                  "type": "boolean"
+                },
+                "againstTrend": {
+                  "type": "boolean"
+                },
                 "created_by": {
                   "type": "string"
                 },
@@ -6288,6 +6300,14 @@
           "orderBlock": {
             "type": "boolean",
             "default": false
+          },
+          "trendFollowing": {
+            "type": "boolean",
+            "default": false
+          },
+          "againstTrend": {
+            "type": "boolean",
+            "default": false
           }
         }
       },
@@ -6364,6 +6384,14 @@
             "default": false
           },
           "orderBlock": {
+            "type": "boolean",
+            "default": false
+          },
+          "trendFollowing": {
+            "type": "boolean",
+            "default": false
+          },
+          "againstTrend": {
             "type": "boolean",
             "default": false
           },
@@ -6480,6 +6508,12 @@
                 "type": "boolean"
               },
               "orderBlock": {
+                "type": "boolean"
+              },
+              "trendFollowing": {
+                "type": "boolean"
+              },
+              "againstTrend": {
                 "type": "boolean"
               },
               "created_by": {
@@ -7136,6 +7170,14 @@
           "orderBlock": {
             "type": "boolean",
             "default": false
+          },
+          "trendFollowing": {
+            "type": "boolean",
+            "default": false
+          },
+          "againstTrend": {
+            "type": "boolean",
+            "default": false
           }
         }
       },
@@ -7191,6 +7233,14 @@
             "default": false
           },
           "orderBlock": {
+            "type": "boolean",
+            "default": false
+          },
+          "trendFollowing": {
+            "type": "boolean",
+            "default": false
+          },
+          "againstTrend": {
             "type": "boolean",
             "default": false
           },

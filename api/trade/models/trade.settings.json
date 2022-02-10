@@ -170,6 +170,14 @@
     "orderBlock": {
       "type": "boolean",
       "default": false
+    },
+    "trendFollowing": {
+      "type": "boolean",
+      "default": false
+    },
+    "againstTrend": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

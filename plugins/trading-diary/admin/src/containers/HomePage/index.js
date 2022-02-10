@@ -60,26 +60,26 @@ const HomePage = () => {
   }, []);
 
   const handleCloseTrade = async (trade) => {
-    const orders = trade.orders;
+    // const orders = trade.orders;
 
-    if (_.isEmpty(orders)) {
-      enqueueSnackbar(`Cannot close trade with empty order`, {
-        variant: "error",
-      });
-      return;
-    }
+    // if (_.isEmpty(orders)) {
+    //   enqueueSnackbar(`Cannot close trade with empty order`, {
+    //     variant: "error",
+    //   });
+    //   return;
+    // }
 
-    if (_.some(orders, { open: true })) {
-      enqueueSnackbar(
-        `Cannot close trade, Order ${
-          _.find(orders, { open: true }).ticket
-        } still open`,
-        {
-          variant: "error",
-        }
-      );
-      return;
-    }
+    // if (_.some(orders, { open: true })) {
+    //   enqueueSnackbar(
+    //     `Cannot close trade, Order ${
+    //       _.find(orders, { open: true }).ticket
+    //     } still open`,
+    //     {
+    //       variant: "error",
+    //     }
+    //   );
+    //   return;
+    // }
 
     try {
       const res = await closeTrade(trade.id);
@@ -150,6 +150,8 @@ const HomePage = () => {
       imageArr: [],
       isEdit: true,
       strategies: {
+        trendFollowing: false,
+        againstTrend: false,
         support: false,
         resistant: false,
         srFlip: false,

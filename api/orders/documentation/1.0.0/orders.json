@@ -643,6 +643,12 @@
               "orderBlock": {
                 "type": "boolean"
               },
+              "trendFollowing": {
+                "type": "boolean"
+              },
+              "againstTrend": {
+                "type": "boolean"
+              },
               "created_by": {
                 "type": "string"
               },

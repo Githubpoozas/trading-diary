@@ -240,6 +240,8 @@ export const GET_TRADE = gql`
           id
           url
         }
+        trendFollowing
+        support
         support
         resistant
         srFlip
@@ -252,6 +254,8 @@ export const GET_TRADE = gql`
         pa
         orderBlock
       }
+      trendFollowing
+      support
       support
       resistant
       srFlip

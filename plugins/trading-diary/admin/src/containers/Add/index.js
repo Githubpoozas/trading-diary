@@ -30,6 +30,8 @@ const Add = ({ history }) => {
     product: null,
     bias: "buy",
     comment: "",
+    trendFollowing: false,
+    againstTrend: false,
     support: false,
     resistant: false,
     srFlip: false,

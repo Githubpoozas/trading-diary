@@ -650,6 +650,8 @@ const TradeUpdateRow = memo(
     const [isEdit, setIsEdit] = useState(false);
     const [deleteImage, setDeleteImage] = useState([]);
     const [strategiesInput, setStrategiesInput] = useState({
+      trendFollowing: false,
+      againstTrend:false,
       support: false,
       resistant: false,
       srFlip: false,

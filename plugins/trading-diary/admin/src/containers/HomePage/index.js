@@ -17,9 +17,9 @@ import {
   GET_TRADE,
   deleteMedia,
   uploadMedia,
-  createOrders,
-  deleteOrders,
-  updateOrders,
+  // createOrders,
+  // deleteOrders,
+  // updateOrders,
   closeTrade,
   deleteTrade,
   createTradingUpdate,
@@ -284,141 +284,141 @@ const HomePage = () => {
     setLoading(false);
   };
 
-  const handleAddOrder = async (id) => {
-    let newTrades = JSON.parse(JSON.stringify(openTradeData.trades));
-    const findTradeIndex = newTrades.findIndex((trade) => trade.id === id);
+  // const handleAddOrder = async (id) => {
+  //   let newTrades = JSON.parse(JSON.stringify(openTradeData.trades));
+  //   const findTradeIndex = newTrades.findIndex((trade) => trade.id === id);
 
-    newTrades[findTradeIndex].orders.push({
-      tradeId: id,
-      ticket: "",
-      size: "",
-      openTime: null,
-      closeTime: null,
-      openPrice: "",
-      closePrice: "",
-      stopLoss: "",
-      takeProfit: "",
-      swap: "",
-      profit: "",
-      comment: "",
-      type: "buy",
-      open: true,
-      isEdit: true,
-    });
+  //   newTrades[findTradeIndex].orders.push({
+  //     tradeId: id,
+  //     ticket: "",
+  //     size: "",
+  //     openTime: null,
+  //     closeTime: null,
+  //     openPrice: "",
+  //     closePrice: "",
+  //     stopLoss: "",
+  //     takeProfit: "",
+  //     swap: "",
+  //     profit: "",
+  //     comment: "",
+  //     type: "buy",
+  //     open: true,
+  //     isEdit: true,
+  //   });
 
-    setOpenTrades(newTrades);
-  };
+  //   setOpenTrades(newTrades);
+  // };
 
-  const handleRemoveNewOrder = (tradeId, orderIndex) => {
-    let newTrades = JSON.parse(JSON.stringify(openTradeData.trades));
+  // const handleRemoveNewOrder = (tradeId, orderIndex) => {
+  //   let newTrades = JSON.parse(JSON.stringify(openTradeData.trades));
 
-    const findTradeIndex = newTrades.findIndex((trade) => trade.id === tradeId);
+  //   const findTradeIndex = newTrades.findIndex((trade) => trade.id === tradeId);
 
-    newTrades[findTradeIndex].orders.splice(orderIndex, 1);
+  //   newTrades[findTradeIndex].orders.splice(orderIndex, 1);
 
-    setOpenTrades(newTrades);
-  };
+  //   setOpenTrades(newTrades);
+  // };
 
-  const handleSaveOrder = async ({
-    tradeId,
-    id,
-    ticket,
-    type,
-    size,
-    openTime,
-    closeTime,
-    openPrice,
-    closePrice,
-    swap,
-    profit,
-    comment,
-    open,
-    stopLoss,
-    takeProfit,
-  }) => {
-    let orderVariables = {
-      ticket: ticket,
-      type: type,
-      size: size !== "" ? size : null,
-      openTime: openTime,
-      closeTime: closeTime !== "" ? closeTime : null,
-      openPrice: openPrice !== "" ? openPrice : null,
-      closePrice: closePrice !== "" ? closePrice : null,
-      swap: swap !== "" ? swap : null,
-      profit: profit !== "" ? profit : null,
-      comment: comment,
-      open: open,
-      stopLoss: stopLoss !== "" ? stopLoss : null,
-      takeProfit: takeProfit !== "" ? takeProfit : null,
-    };
+  // const handleSaveOrder = async ({
+  //   tradeId,
+  //   id,
+  //   ticket,
+  //   type,
+  //   size,
+  //   openTime,
+  //   closeTime,
+  //   openPrice,
+  //   closePrice,
+  //   swap,
+  //   profit,
+  //   comment,
+  //   open,
+  //   stopLoss,
+  //   takeProfit,
+  // }) => {
+  //   let orderVariables = {
+  //     ticket: ticket,
+  //     type: type,
+  //     size: size !== "" ? size : null,
+  //     openTime: openTime,
+  //     closeTime: closeTime !== "" ? closeTime : null,
+  //     openPrice: openPrice !== "" ? openPrice : null,
+  //     closePrice: closePrice !== "" ? closePrice : null,
+  //     swap: swap !== "" ? swap : null,
+  //     profit: profit !== "" ? profit : null,
+  //     comment: comment,
+  //     open: open,
+  //     stopLoss: stopLoss !== "" ? stopLoss : null,
+  //     takeProfit: takeProfit !== "" ? takeProfit : null,
+  //   };
 
-    setLoading(true);
+  //   setLoading(true);
 
-    try {
-      let res;
-      if (id) {
-        res = await updateOrders(id, orderVariables);
-      } else {
-        res = await createOrders({ ...orderVariables, trade: tradeId });
-      }
+  //   try {
+  //     let res;
+  //     if (id) {
+  //       res = await updateOrders(id, orderVariables);
+  //     } else {
+  //       res = await createOrders({ ...orderVariables, trade: tradeId });
+  //     }
 
-      if (res.status === 200) {
-        enqueueSnackbar(`Order ${id ? "Updated" : "Created"}`, {
-          variant: "success",
-        });
-        openTradeRefetch();
-      }
-    } catch (error) {
-      enqueueSnackbar(
-        `${id ? "Update" : "Create"} Order error: ${
-          error.response.data.message
-        }`,
-        {
-          variant: "error",
-        }
-      );
-    }
-    setLoading(false);
-  };
+  //     if (res.status === 200) {
+  //       enqueueSnackbar(`Order ${id ? "Updated" : "Created"}`, {
+  //         variant: "success",
+  //       });
+  //       openTradeRefetch();
+  //     }
+  //   } catch (error) {
+  //     enqueueSnackbar(
+  //       `${id ? "Update" : "Create"} Order error: ${
+  //         error.response.data.message
+  //       }`,
+  //       {
+  //         variant: "error",
+  //       }
+  //     );
+  //   }
+  //   setLoading(false);
+  // };
 
-  const handleDeleteOrder = async (id) => {
-    setLoading(true);
+  // const handleDeleteOrder = async (id) => {
+  //   setLoading(true);
 
-    try {
-      const res = await deleteOrders(id);
-      if (res.status === 200) {
-        enqueueSnackbar("Order Deleted", { variant: "success" });
-        openTradeRefetch();
-      }
-    } catch (error) {
-      enqueueSnackbar(`Delete Order error: ${error.response.data.message}`, {
-        variant: "error",
-      });
-    }
-    setLoading(false);
-  };
+  //   try {
+  //     const res = await deleteOrders(id);
+  //     if (res.status === 200) {
+  //       enqueueSnackbar("Order Deleted", { variant: "success" });
+  //       openTradeRefetch();
+  //     }
+  //   } catch (error) {
+  //     enqueueSnackbar(`Delete Order error: ${error.response.data.message}`, {
+  //       variant: "error",
+  //     });
+  //   }
+  //   setLoading(false);
+  // };
 
-  const handleCloseOrder = async (id, value) => {
-    setLoading(true);
+  // const handleCloseOrder = async (id, value) => {
+  //   setLoading(true);
 
-    try {
-      const res = await updateOrders(id, { open: value });
-      if (res.status === 200) {
-        enqueueSnackbar(`Order ${value ? "Open" : "Closed"}`, {
-          variant: "success",
-        });
-        openTradeRefetch();
-      }
-    } catch (error) {
-      enqueueSnackbar(
-        `Order ${value ? "Open" : "Closed"} error: ${
-          error.response.data.message
-        }`,
-        { variant: "error" }
-      );
-    }
-    setLoading(false);
-  };
+  //   try {
+  //     const res = await updateOrders(id, { open: value });
+  //     if (res.status === 200) {
+  //       enqueueSnackbar(`Order ${value ? "Open" : "Closed"}`, {
+  //         variant: "success",
+  //       });
+  //       openTradeRefetch();
+  //     }
+  //   } catch (error) {
+  //     enqueueSnackbar(
+  //       `Order ${value ? "Open" : "Closed"} error: ${
+  //         error.response.data.message
+  //       }`,
+  //       { variant: "error" }
+  //     );
+  //   }
+  //   setLoading(false);
+  // };
 
   return (
     <div
@@ -449,11 +449,11 @@ const HomePage = () => {
               onSaveTradingUpdate={handleSaveTradingUpdate}
               onCancelTradingUpdate={handleCancelTradingUpdate}
               onDeleteTradingUpdate={handleDeleteTradingUpdate}
-              onAddOrder={handleAddOrder}
-              onRemoveNewOrder={handleRemoveNewOrder}
-              onSaveOrder={handleSaveOrder}
-              onClickDeleteOrder={handleDeleteOrder}
-              onCloseOrder={handleCloseOrder}
+              // onAddOrder={handleAddOrder}
+              // onRemoveNewOrder={handleRemoveNewOrder}
+              // onSaveOrder={handleSaveOrder}
+              // onClickDeleteOrder={handleDeleteOrder}
+              // onCloseOrder={handleCloseOrder}
             />
           </CardContent>
         </Card>

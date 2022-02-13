@@ -51,587 +51,587 @@ import {
   OrderTableCell,
 } from "./style";
 
-const OrderRow = ({
-  canEdit,
-  tradeId,
-  data,
-  onRemoveNewOrder,
-  onSaveOrder,
-  onCloseOrder,
-  onClickDeleteOrder,
-}) => {
-  const [errors, setErrors] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [inputValue, setInputValue] = useState({
-    ticket: "",
-    size: "",
-    openTime: null,
-    closeTime: null,
-    openPrice: "",
-    closePrice: "",
-    stopLoss: "",
-    takeProfit: "",
-    swap: "",
-    profit: "",
-    comment: "",
-    type: "buy",
-    open: true,
-    isEdit: false,
-  });
+// const OrderRow = ({
+//   canEdit,
+//   tradeId,
+//   data,
+//   onRemoveNewOrder,
+//   onSaveOrder,
+//   onCloseOrder,
+//   onClickDeleteOrder,
+// }) => {
+//   const [errors, setErrors] = useState([]);
+//   const [open, setOpen] = useState(false);
+//   const [inputValue, setInputValue] = useState({
+//     ticket: "",
+//     size: "",
+//     openTime: null,
+//     closeTime: null,
+//     openPrice: "",
+//     closePrice: "",
+//     stopLoss: "",
+//     takeProfit: "",
+//     swap: "",
+//     profit: "",
+//     comment: "",
+//     type: "buy",
+//     open: true,
+//     isEdit: false,
+//   });
 
-  const reset = () => {
-    const {
-      id,
-      ticket,
-      size,
-      openTime,
-      closeTime,
-      openPrice,
-      closePrice,
-      takeProfit,
-      stopLoss,
-      swap,
-      profit,
-      comment,
-      type,
-      open,
-      isEdit,
-    } = data;
-    setInputValue({
-      tradeId: tradeId,
-      id: id,
-      ticket: ticket || "",
-      size: size || "",
-      openTime: openTime || null,
-      closeTime: closeTime || null,
-      openPrice: openPrice || "",
-      closePrice: closePrice || "",
-      stopLoss: stopLoss || "",
-      takeProfit: takeProfit || "",
-      swap: swap || "",
-      profit: profit || "",
-      comment: comment || "",
-      type: type,
-      open: open,
-      isEdit: isEdit,
-    });
-  };
+//   const reset = () => {
+//     const {
+//       id,
+//       ticket,
+//       size,
+//       openTime,
+//       closeTime,
+//       openPrice,
+//       closePrice,
+//       takeProfit,
+//       stopLoss,
+//       swap,
+//       profit,
+//       comment,
+//       type,
+//       open,
+//       isEdit,
+//     } = data;
+//     setInputValue({
+//       tradeId: tradeId,
+//       id: id,
+//       ticket: ticket || "",
+//       size: size || "",
+//       openTime: openTime || null,
+//       closeTime: closeTime || null,
+//       openPrice: openPrice || "",
+//       closePrice: closePrice || "",
+//       stopLoss: stopLoss || "",
+//       takeProfit: takeProfit || "",
+//       swap: swap || "",
+//       profit: profit || "",
+//       comment: comment || "",
+//       type: type,
+//       open: open,
+//       isEdit: isEdit,
+//     });
+//   };
 
-  useEffect(() => {
-    reset();
-  }, [data]);
+//   useEffect(() => {
+//     reset();
+//   }, [data]);
 
-  const handleChange = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
+//   const handleChange = (e) => {
+//     const name = e.target.name;
+//     const value = e.target.value;
 
-    if (
-      ["size", "openPrice", "closePrice", "stopLoss", "takeProfit"].includes(
-        name
-      ) &&
-      parseFloat(value) < 0
-    ) {
-      return;
-    }
-    setInputValue({
-      ...inputValue,
-      [name]: value,
-    });
+//     if (
+//       ["size", "openPrice", "closePrice", "stopLoss", "takeProfit"].includes(
+//         name
+//       ) &&
+//       parseFloat(value) < 0
+//     ) {
+//       return;
+//     }
+//     setInputValue({
+//       ...inputValue,
+//       [name]: value,
+//     });
 
-    setErrors(errors.filter((error) => error.property !== name));
-  };
+//     setErrors(errors.filter((error) => error.property !== name));
+//   };
 
-  const handleCancel = () => {
-    if (data.tradeId) {
-      onRemoveNewOrder();
-    } else {
-      setInputValue({ ...data, isEdit: false });
-    }
-  };
+//   const handleCancel = () => {
+//     if (data.tradeId) {
+//       onRemoveNewOrder();
+//     } else {
+//       setInputValue({ ...data, isEdit: false });
+//     }
+//   };
 
-  const onClickEditOrder = () => {
-    setInputValue({ ...inputValue, isEdit: true });
-  };
+//   const onClickEditOrder = () => {
+//     setInputValue({ ...inputValue, isEdit: true });
+//   };
 
-  const onClickSave = () => {
-    onSaveOrder(inputValue);
-    setInputValue({ ...inputValue, isEdit: false });
-  };
+//   const onClickSave = () => {
+//     onSaveOrder(inputValue);
+//     setInputValue({ ...inputValue, isEdit: false });
+//   };
 
-  const onClickClose = () => {
-    const newErrors = [];
-    if (inputValue.ticket === "") {
-      newErrors.push({
-        property: "ticket",
-        message: "Please provide a ticket",
-      });
-    }
+//   const onClickClose = () => {
+//     const newErrors = [];
+//     if (inputValue.ticket === "") {
+//       newErrors.push({
+//         property: "ticket",
+//         message: "Please provide a ticket",
+//       });
+//     }
 
-    if (inputValue.size === "") {
-      newErrors.push({
-        property: "size",
-        message: "Please provide a size",
-      });
-    }
+//     if (inputValue.size === "") {
+//       newErrors.push({
+//         property: "size",
+//         message: "Please provide a size",
+//       });
+//     }
 
-    if (inputValue.openTime === null) {
-      newErrors.push({
-        property: "openTime",
-        message: "Please provide a open time",
-      });
-    }
+//     if (inputValue.openTime === null) {
+//       newErrors.push({
+//         property: "openTime",
+//         message: "Please provide a open time",
+//       });
+//     }
 
-    if (inputValue.closeTime === null) {
-      newErrors.push({
-        property: "closeTime",
-        message: "Please provide a closeTime",
-      });
-    }
+//     if (inputValue.closeTime === null) {
+//       newErrors.push({
+//         property: "closeTime",
+//         message: "Please provide a closeTime",
+//       });
+//     }
 
-    if (inputValue.openPrice === "") {
-      newErrors.push({
-        property: "openPrice",
-        message: "Please provide a open price",
-      });
-    }
+//     if (inputValue.openPrice === "") {
+//       newErrors.push({
+//         property: "openPrice",
+//         message: "Please provide a open price",
+//       });
+//     }
 
-    if (inputValue.closePrice === "") {
-      newErrors.push({
-        property: "closePrice",
-        message: "Please provide a close price",
-      });
-    }
+//     if (inputValue.closePrice === "") {
+//       newErrors.push({
+//         property: "closePrice",
+//         message: "Please provide a close price",
+//       });
+//     }
 
-    if (inputValue.profit === "") {
-      newErrors.push({
-        property: "profit",
-        message: "Please provide a profit",
-      });
-    }
+//     if (inputValue.profit === "") {
+//       newErrors.push({
+//         property: "profit",
+//         message: "Please provide a profit",
+//       });
+//     }
 
-    if (inputValue.comment === "") {
-      newErrors.push({
-        property: "comment",
-        message: "Please provide a comment",
-      });
-    }
+//     if (inputValue.comment === "") {
+//       newErrors.push({
+//         property: "comment",
+//         message: "Please provide a comment",
+//       });
+//     }
 
-    if (!_.isEmpty(newErrors)) {
-      setErrors(newErrors);
-      setInputValue({ ...inputValue, isEdit: true });
-      return;
-    }
+//     if (!_.isEmpty(newErrors)) {
+//       setErrors(newErrors);
+//       setInputValue({ ...inputValue, isEdit: true });
+//       return;
+//     }
 
-    onCloseOrder(data.id, !data.open);
-  };
+//     onCloseOrder(data.id, !data.open);
+//   };
 
-  const onClickConfirm = () => {
-    onClickDeleteOrder(data.id);
-    setOpen(false);
-  };
+//   const onClickConfirm = () => {
+//     onClickDeleteOrder(data.id);
+//     setOpen(false);
+//   };
 
-  return (
-    <>
-      <StyledTableRow closed={!inputValue.open ? 1 : 0}>
-        <ConfirmDialog
-          open={open}
-          title={`Confirm close order`}
-          onClose={() => setOpen(false)}
-          onConfirm={onClickConfirm}
-        />
-        <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
-          {inputValue.isEdit ? (
-            <TextField
-              autoComplete="off"
-              id="orderTicket"
-              label="Ticket"
-              variant="outlined"
-              name="ticket"
-              type="number"
-              InputProps={{ inputProps: { min: 0 } }}
-              value={inputValue.ticket}
-              onChange={handleChange}
-              error={errors.find((e) => e.property === "ticket") ? true : false}
-              helperText={errors.find((e) => e.property === "ticket")?.message}
-            />
-          ) : (
-            <Text>{inputValue.ticket}</Text>
-          )}
-        </OrderTableCell>
+//   return (
+//     <>
+//       <StyledTableRow closed={!inputValue.open ? 1 : 0}>
+//         <ConfirmDialog
+//           open={open}
+//           title={`Confirm close order`}
+//           onClose={() => setOpen(false)}
+//           onConfirm={onClickConfirm}
+//         />
+//         <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
+//           {inputValue.isEdit ? (
+//             <TextField
+//               autoComplete="off"
+//               id="orderTicket"
+//               label="Ticket"
+//               variant="outlined"
+//               name="ticket"
+//               type="number"
+//               InputProps={{ inputProps: { min: 0 } }}
+//               value={inputValue.ticket}
+//               onChange={handleChange}
+//               error={errors.find((e) => e.property === "ticket") ? true : false}
+//               helperText={errors.find((e) => e.property === "ticket")?.message}
+//             />
+//           ) : (
+//             <Text>{inputValue.ticket}</Text>
+//           )}
+//         </OrderTableCell>
 
-        <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
-          {inputValue.isEdit ? (
-            <>
-              <MobileDateTimePicker
-                autoComplete="off"
-                ampm={false}
-                disableFuture
-                maxDate={moment(inputValue.closeTime)}
-                value={inputValue.openTime}
-                onChange={(newValue) => {
-                  setInputValue({
-                    ...inputValue,
-                    openTime: newValue,
-                  });
-                  setErrors(
-                    errors.filter((error) => error.property !== "openTime")
-                  );
-                }}
-                label="Open Time"
-                onError={errors.find((e) => e.property === "openTime")?.message}
-                renderInput={(props) => <TextField {...props} />}
-              />
-            </>
-          ) : (
-            <Text>
-              {moment(inputValue.openTime).format("YYYY.MM.DD HH:mm")}
-            </Text>
-          )}
-        </OrderTableCell>
-        <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
-          {inputValue.isEdit ? (
-            <Select
-              required
-              labelId="type"
-              id="type"
-              label="Type"
-              name="type"
-              value={inputValue.type}
-              onChange={handleChange}
-              options={[
-                { value: "buy", label: "Buy" },
-                { value: "sell", label: "Sell" },
-                { value: "sellLimit", label: "Sell Limit" },
-                { value: "buyLimit", label: "Buy Limit" },
-                { value: "sellStop", label: "Sell Stop" },
-                { value: "buyStop", label: "Buy Stop" },
-              ]}
-            />
-          ) : (
-            <Text>{inputValue.type}</Text>
-          )}
-        </OrderTableCell>
-        <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
-          {inputValue.isEdit ? (
-            <TextField
-              autoComplete="off"
-              id="orderSize"
-              label="Size"
-              variant="outlined"
-              name="size"
-              type="number"
-              InputProps={{ inputProps: { min: 0.01, step: 0.01 } }}
-              value={inputValue.size}
-              onChange={handleChange}
-              error={errors.find((e) => e.property === "size") ? true : false}
-              helperText={errors.find((e) => e.property === "size")?.message}
-            />
-          ) : (
-            <Text>{inputValue.size}</Text>
-          )}
-        </OrderTableCell>
-        <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
-          {inputValue.isEdit ? (
-            <TextField
-              autoComplete="off"
-              id="orderOpenPrice"
-              label="OpenPrice"
-              variant="outlined"
-              name="openPrice"
-              type="number"
-              InputProps={{ inputProps: { min: 0 } }}
-              value={inputValue.openPrice}
-              onChange={handleChange}
-              error={
-                errors.find((e) => e.property === "openPrice") ? true : false
-              }
-              helperText={
-                errors.find((e) => e.property === "openPrice")?.message
-              }
-            />
-          ) : (
-            <Text>{inputValue.openPrice}</Text>
-          )}
-        </OrderTableCell>
-        <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
-          {inputValue.isEdit ? (
-            <TextField
-              autoComplete="off"
-              id="orderStopLoss"
-              label="Stop Loss"
-              variant="outlined"
-              name="stopLoss"
-              type="number"
-              InputProps={{ inputProps: { min: 0 } }}
-              value={inputValue.stopLoss}
-              onChange={handleChange}
-              error={
-                errors.find((e) => e.property === "stopLoss") ? true : false
-              }
-              helperText={
-                errors.find((e) => e.property === "stopLoss")?.message
-              }
-            />
-          ) : (
-            <Text>{inputValue.stopLoss}</Text>
-          )}
-        </OrderTableCell>
-        <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
-          {inputValue.isEdit ? (
-            <TextField
-              autoComplete="off"
-              id="orderTakeProfit"
-              label="Take Profit"
-              variant="outlined"
-              name="takeProfit"
-              type="number"
-              InputProps={{ inputProps: { min: 0 } }}
-              value={inputValue.takeProfit}
-              onChange={handleChange}
-              error={
-                errors.find((e) => e.property === "takeProfit") ? true : false
-              }
-              helperText={
-                errors.find((e) => e.property === "takeProfit")?.message
-              }
-            />
-          ) : (
-            <Text>{inputValue.takeProfit}</Text>
-          )}
-        </OrderTableCell>
-        <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
-          {inputValue.isEdit ? (
-            <>
-              <MobileDateTimePicker
-                autoComplete="off"
-                ampm={false}
-                disableFuture
-                minDate={moment(inputValue.openTime)}
-                value={inputValue.closeTime}
-                onChange={(newValue) => {
-                  setInputValue({
-                    ...inputValue,
-                    closeTime: newValue,
-                  });
-                  setErrors(
-                    errors.filter((error) => error.property !== "closeTime")
-                  );
-                }}
-                label="Close Time"
-                onError={
-                  errors.find((e) => e.property === "closeTime")?.message
-                }
-                renderInput={(props) => <TextField {...props} />}
-              />
-            </>
-          ) : (
-            <Text>
-              {moment(inputValue.closeTime).format("YYYY.MM.DD HH:mm")}
-            </Text>
-          )}
-        </OrderTableCell>
-        <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
-          {inputValue.isEdit ? (
-            <TextField
-              autoComplete="off"
-              id="orderClosePrice"
-              label="Close Price"
-              variant="outlined"
-              name="closePrice"
-              type="number"
-              InputProps={{ inputProps: { min: 0 } }}
-              value={inputValue.closePrice}
-              onChange={handleChange}
-              error={
-                errors.find((e) => e.property === "closePrice") ? true : false
-              }
-              helperText={
-                errors.find((e) => e.property === "closePrice")?.message
-              }
-            />
-          ) : (
-            <Text>{inputValue.closePrice}</Text>
-          )}
-        </OrderTableCell>
-        <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
-          {inputValue.isEdit ? (
-            <TextField
-              autoComplete="off"
-              id="orderSwap"
-              label="Swap"
-              variant="outlined"
-              name="swap"
-              type="number"
-              value={inputValue.swap}
-              onChange={handleChange}
-            />
-          ) : (
-            <Text color={inputValue.swap < 0 ? "red" : "blue"}>
-              {inputValue.swap}
-            </Text>
-          )}
-        </OrderTableCell>
-        <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
-          {inputValue.isEdit ? (
-            <TextField
-              autoComplete="off"
-              id="orderProfit"
-              label="Profit"
-              variant="outlined"
-              name="profit"
-              type="number"
-              value={inputValue.profit}
-              onChange={handleChange}
-              error={errors.find((e) => e.property === "profit") ? true : false}
-              helperText={errors.find((e) => e.property === "profit")?.message}
-            />
-          ) : (
-            <Text color={inputValue.profit < 0 ? "red" : "blue"}>
-              {inputValue.profit}
-            </Text>
-          )}
-        </OrderTableCell>
-        {canEdit && (
-          <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
-            <Stack
-              direction="row"
-              justifyContent="flex-end"
-              alignItems="center"
-              spacing={1}
-            >
-              {inputValue.isEdit ? (
-                <>
-                  <Tooltip placement="top" arrow title="Save">
-                    <IconButton color="primary" onClick={onClickSave}>
-                      <SaveAsIcon />
-                    </IconButton>
-                  </Tooltip>
+//         <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
+//           {inputValue.isEdit ? (
+//             <>
+//               <MobileDateTimePicker
+//                 autoComplete="off"
+//                 ampm={false}
+//                 disableFuture
+//                 maxDate={moment(inputValue.closeTime)}
+//                 value={inputValue.openTime}
+//                 onChange={(newValue) => {
+//                   setInputValue({
+//                     ...inputValue,
+//                     openTime: newValue,
+//                   });
+//                   setErrors(
+//                     errors.filter((error) => error.property !== "openTime")
+//                   );
+//                 }}
+//                 label="Open Time"
+//                 onError={errors.find((e) => e.property === "openTime")?.message}
+//                 renderInput={(props) => <TextField {...props} />}
+//               />
+//             </>
+//           ) : (
+//             <Text>
+//               {moment(inputValue.openTime).format("YYYY.MM.DD HH:mm")}
+//             </Text>
+//           )}
+//         </OrderTableCell>
+//         <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
+//           {inputValue.isEdit ? (
+//             <Select
+//               required
+//               labelId="type"
+//               id="type"
+//               label="Type"
+//               name="type"
+//               value={inputValue.type}
+//               onChange={handleChange}
+//               options={[
+//                 { value: "buy", label: "Buy" },
+//                 { value: "sell", label: "Sell" },
+//                 { value: "sellLimit", label: "Sell Limit" },
+//                 { value: "buyLimit", label: "Buy Limit" },
+//                 { value: "sellStop", label: "Sell Stop" },
+//                 { value: "buyStop", label: "Buy Stop" },
+//               ]}
+//             />
+//           ) : (
+//             <Text>{inputValue.type}</Text>
+//           )}
+//         </OrderTableCell>
+//         <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
+//           {inputValue.isEdit ? (
+//             <TextField
+//               autoComplete="off"
+//               id="orderSize"
+//               label="Size"
+//               variant="outlined"
+//               name="size"
+//               type="number"
+//               InputProps={{ inputProps: { min: 0.01, step: 0.01 } }}
+//               value={inputValue.size}
+//               onChange={handleChange}
+//               error={errors.find((e) => e.property === "size") ? true : false}
+//               helperText={errors.find((e) => e.property === "size")?.message}
+//             />
+//           ) : (
+//             <Text>{inputValue.size}</Text>
+//           )}
+//         </OrderTableCell>
+//         <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
+//           {inputValue.isEdit ? (
+//             <TextField
+//               autoComplete="off"
+//               id="orderOpenPrice"
+//               label="OpenPrice"
+//               variant="outlined"
+//               name="openPrice"
+//               type="number"
+//               InputProps={{ inputProps: { min: 0 } }}
+//               value={inputValue.openPrice}
+//               onChange={handleChange}
+//               error={
+//                 errors.find((e) => e.property === "openPrice") ? true : false
+//               }
+//               helperText={
+//                 errors.find((e) => e.property === "openPrice")?.message
+//               }
+//             />
+//           ) : (
+//             <Text>{inputValue.openPrice}</Text>
+//           )}
+//         </OrderTableCell>
+//         <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
+//           {inputValue.isEdit ? (
+//             <TextField
+//               autoComplete="off"
+//               id="orderStopLoss"
+//               label="Stop Loss"
+//               variant="outlined"
+//               name="stopLoss"
+//               type="number"
+//               InputProps={{ inputProps: { min: 0 } }}
+//               value={inputValue.stopLoss}
+//               onChange={handleChange}
+//               error={
+//                 errors.find((e) => e.property === "stopLoss") ? true : false
+//               }
+//               helperText={
+//                 errors.find((e) => e.property === "stopLoss")?.message
+//               }
+//             />
+//           ) : (
+//             <Text>{inputValue.stopLoss}</Text>
+//           )}
+//         </OrderTableCell>
+//         <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
+//           {inputValue.isEdit ? (
+//             <TextField
+//               autoComplete="off"
+//               id="orderTakeProfit"
+//               label="Take Profit"
+//               variant="outlined"
+//               name="takeProfit"
+//               type="number"
+//               InputProps={{ inputProps: { min: 0 } }}
+//               value={inputValue.takeProfit}
+//               onChange={handleChange}
+//               error={
+//                 errors.find((e) => e.property === "takeProfit") ? true : false
+//               }
+//               helperText={
+//                 errors.find((e) => e.property === "takeProfit")?.message
+//               }
+//             />
+//           ) : (
+//             <Text>{inputValue.takeProfit}</Text>
+//           )}
+//         </OrderTableCell>
+//         <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
+//           {inputValue.isEdit ? (
+//             <>
+//               <MobileDateTimePicker
+//                 autoComplete="off"
+//                 ampm={false}
+//                 disableFuture
+//                 minDate={moment(inputValue.openTime)}
+//                 value={inputValue.closeTime}
+//                 onChange={(newValue) => {
+//                   setInputValue({
+//                     ...inputValue,
+//                     closeTime: newValue,
+//                   });
+//                   setErrors(
+//                     errors.filter((error) => error.property !== "closeTime")
+//                   );
+//                 }}
+//                 label="Close Time"
+//                 onError={
+//                   errors.find((e) => e.property === "closeTime")?.message
+//                 }
+//                 renderInput={(props) => <TextField {...props} />}
+//               />
+//             </>
+//           ) : (
+//             <Text>
+//               {moment(inputValue.closeTime).format("YYYY.MM.DD HH:mm")}
+//             </Text>
+//           )}
+//         </OrderTableCell>
+//         <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
+//           {inputValue.isEdit ? (
+//             <TextField
+//               autoComplete="off"
+//               id="orderClosePrice"
+//               label="Close Price"
+//               variant="outlined"
+//               name="closePrice"
+//               type="number"
+//               InputProps={{ inputProps: { min: 0 } }}
+//               value={inputValue.closePrice}
+//               onChange={handleChange}
+//               error={
+//                 errors.find((e) => e.property === "closePrice") ? true : false
+//               }
+//               helperText={
+//                 errors.find((e) => e.property === "closePrice")?.message
+//               }
+//             />
+//           ) : (
+//             <Text>{inputValue.closePrice}</Text>
+//           )}
+//         </OrderTableCell>
+//         <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
+//           {inputValue.isEdit ? (
+//             <TextField
+//               autoComplete="off"
+//               id="orderSwap"
+//               label="Swap"
+//               variant="outlined"
+//               name="swap"
+//               type="number"
+//               value={inputValue.swap}
+//               onChange={handleChange}
+//             />
+//           ) : (
+//             <Text color={inputValue.swap < 0 ? "red" : "blue"}>
+//               {inputValue.swap}
+//             </Text>
+//           )}
+//         </OrderTableCell>
+//         <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
+//           {inputValue.isEdit ? (
+//             <TextField
+//               autoComplete="off"
+//               id="orderProfit"
+//               label="Profit"
+//               variant="outlined"
+//               name="profit"
+//               type="number"
+//               value={inputValue.profit}
+//               onChange={handleChange}
+//               error={errors.find((e) => e.property === "profit") ? true : false}
+//               helperText={errors.find((e) => e.property === "profit")?.message}
+//             />
+//           ) : (
+//             <Text color={inputValue.profit < 0 ? "red" : "blue"}>
+//               {inputValue.profit}
+//             </Text>
+//           )}
+//         </OrderTableCell>
+//         {canEdit && (
+//           <OrderTableCell isedit={inputValue.isEdit ? 1 : 0}>
+//             <Stack
+//               direction="row"
+//               justifyContent="flex-end"
+//               alignItems="center"
+//               spacing={1}
+//             >
+//               {inputValue.isEdit ? (
+//                 <>
+//                   <Tooltip placement="top" arrow title="Save">
+//                     <IconButton color="primary" onClick={onClickSave}>
+//                       <SaveAsIcon />
+//                     </IconButton>
+//                   </Tooltip>
 
-                  <Tooltip placement="top" arrow title="Cancel">
-                    <IconButton color="info" onClick={handleCancel}>
-                      <HistoryIcon />
-                    </IconButton>
-                  </Tooltip>
-                </>
-              ) : (
-                <>
-                  {inputValue.open && (
-                    <>
-                      <Tooltip placement="top" arrow title="Edit Order">
-                        <IconButton color="info" onClick={onClickEditOrder}>
-                          <ModeEditIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip placement="top" arrow title="Delete Order">
-                        <IconButton color="error" onClick={() => setOpen(true)}>
-                          <DeleteForeverIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </>
-                  )}
-                  <Tooltip
-                    placement="top"
-                    arrow
-                    title={inputValue.open ? "Close Order" : "Open Order"}
-                  >
-                    <IconButton color="primary" onClick={onClickClose}>
-                      {inputValue.open ? (
-                        <MeetingRoomIcon />
-                      ) : (
-                        <NoMeetingRoomIcon />
-                      )}
-                    </IconButton>
-                  </Tooltip>
-                </>
-              )}
-            </Stack>
-          </OrderTableCell>
-        )}
-      </StyledTableRow>
-      <StyledTableRow>
-        <OrderTableCell
-          sx={{
-            width: "100%",
-            padding: "0 15px",
-          }}
-          colSpan={13}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              columnGap: "10px",
-              alignItems: "center",
-              justifyContent: "flex-end",
-            }}
-          >
-            <Text fontSize="14px">{`created at: ${moment(data.createdAt).format(
-              "YYYY-MM-DD HH:mm:ss"
-            )},`}</Text>
-            <Text fontSize="14px">{` updated at: ${moment(
-              data.updatedAt
-            ).format("YYYY-MM-DD HH:mm:ss")}`}</Text>
-          </Box>
-        </OrderTableCell>
-      </StyledTableRow>
-      {inputValue.isEdit ? (
-        <StyledTableRow>
-          <OrderTableCell
-            isedit={inputValue.isEdit ? 1 : 0}
-            sx={{
-              overflowWrap: "break-word",
-              width: "100%",
-            }}
-            colSpan={13}
-          >
-            <TextField
-              sx={{
-                overflowWrap: "break-word",
-                width: "100%",
-              }}
-              autoComplete="off"
-              multiline
-              id="orderComment"
-              label="Comment"
-              variant="outlined"
-              name="comment"
-              value={inputValue.comment}
-              onChange={handleChange}
-              error={
-                errors.find((e) => e.property === "comment") ? true : false
-              }
-              helperText={errors.find((e) => e.property === "comment")?.message}
-            />
-          </OrderTableCell>
-        </StyledTableRow>
-      ) : inputValue.comment !== "" ? (
-        <StyledTableRow>
-          <OrderTableCell
-            isedit={inputValue.isEdit ? 1 : 0}
-            sx={{
-              overflowWrap: "break-word",
-              width: "100%",
-            }}
-            colSpan={13}
-          >
-            <Text
-              sx={{
-                textAlign: "justify",
-                overflowWrap: "break-word",
-                width: "100%",
-                whiteSpace: "pre-line",
-              }}
-              color="blue"
-            >
-              {inputValue.comment}
-            </Text>
-          </OrderTableCell>
-        </StyledTableRow>
-      ) : (
-        <></>
-      )}
-    </>
-  );
-};
+//                   <Tooltip placement="top" arrow title="Cancel">
+//                     <IconButton color="info" onClick={handleCancel}>
+//                       <HistoryIcon />
+//                     </IconButton>
+//                   </Tooltip>
+//                 </>
+//               ) : (
+//                 <>
+//                   {inputValue.open && (
+//                     <>
+//                       <Tooltip placement="top" arrow title="Edit Order">
+//                         <IconButton color="info" onClick={onClickEditOrder}>
+//                           <ModeEditIcon />
+//                         </IconButton>
+//                       </Tooltip>
+//                       <Tooltip placement="top" arrow title="Delete Order">
+//                         <IconButton color="error" onClick={() => setOpen(true)}>
+//                           <DeleteForeverIcon />
+//                         </IconButton>
+//                       </Tooltip>
+//                     </>
+//                   )}
+//                   <Tooltip
+//                     placement="top"
+//                     arrow
+//                     title={inputValue.open ? "Close Order" : "Open Order"}
+//                   >
+//                     <IconButton color="primary" onClick={onClickClose}>
+//                       {inputValue.open ? (
+//                         <MeetingRoomIcon />
+//                       ) : (
+//                         <NoMeetingRoomIcon />
+//                       )}
+//                     </IconButton>
+//                   </Tooltip>
+//                 </>
+//               )}
+//             </Stack>
+//           </OrderTableCell>
+//         )}
+//       </StyledTableRow>
+//       <StyledTableRow>
+//         <OrderTableCell
+//           sx={{
+//             width: "100%",
+//             padding: "0 15px",
+//           }}
+//           colSpan={13}
+//         >
+//           <Box
+//             sx={{
+//               display: "flex",
+//               columnGap: "10px",
+//               alignItems: "center",
+//               justifyContent: "flex-end",
+//             }}
+//           >
+//             <Text fontSize="14px">{`created at: ${moment(data.createdAt).format(
+//               "YYYY-MM-DD HH:mm:ss"
+//             )},`}</Text>
+//             <Text fontSize="14px">{` updated at: ${moment(
+//               data.updatedAt
+//             ).format("YYYY-MM-DD HH:mm:ss")}`}</Text>
+//           </Box>
+//         </OrderTableCell>
+//       </StyledTableRow>
+//       {inputValue.isEdit ? (
+//         <StyledTableRow>
+//           <OrderTableCell
+//             isedit={inputValue.isEdit ? 1 : 0}
+//             sx={{
+//               overflowWrap: "break-word",
+//               width: "100%",
+//             }}
+//             colSpan={13}
+//           >
+//             <TextField
+//               sx={{
+//                 overflowWrap: "break-word",
+//                 width: "100%",
+//               }}
+//               autoComplete="off"
+//               multiline
+//               id="orderComment"
+//               label="Comment"
+//               variant="outlined"
+//               name="comment"
+//               value={inputValue.comment}
+//               onChange={handleChange}
+//               error={
+//                 errors.find((e) => e.property === "comment") ? true : false
+//               }
+//               helperText={errors.find((e) => e.property === "comment")?.message}
+//             />
+//           </OrderTableCell>
+//         </StyledTableRow>
+//       ) : inputValue.comment !== "" ? (
+//         <StyledTableRow>
+//           <OrderTableCell
+//             isedit={inputValue.isEdit ? 1 : 0}
+//             sx={{
+//               overflowWrap: "break-word",
+//               width: "100%",
+//             }}
+//             colSpan={13}
+//           >
+//             <Text
+//               sx={{
+//                 textAlign: "justify",
+//                 overflowWrap: "break-word",
+//                 width: "100%",
+//                 whiteSpace: "pre-line",
+//               }}
+//               color="blue"
+//             >
+//               {inputValue.comment}
+//             </Text>
+//           </OrderTableCell>
+//         </StyledTableRow>
+//       ) : (
+//         <></>
+//       )}
+//     </>
+//   );
+// };
 
 const TradeUpdateRow = memo(
   ({
@@ -1044,14 +1044,14 @@ const TradeRow = memo(
     onSaveTradingUpdate,
     onCancelTradingUpdate,
     onDeleteTradingUpdate,
-    onAddOrder,
+    // onAddOrder,
     onCloseTrade,
     onDeleteTrade,
     onReOpenTrade,
-    onRemoveNewOrder,
-    onSaveOrder,
-    onCloseOrder,
-    onClickDeleteOrder,
+    // onRemoveNewOrder,
+    // onSaveOrder,
+    // onCloseOrder,
+    // onClickDeleteOrder,
   }) => {
     const [selectedImage, setSelectedImage] = useState(false);
 
@@ -1110,11 +1110,11 @@ const TradeRow = memo(
                       <AddchartIcon />
                     </IconButton>
                   </Tooltip>
-                  <Tooltip placement="top" arrow title="Add Order">
+                  {/* <Tooltip placement="top" arrow title="Add Order">
                     <IconButton color="primary" onClick={onAddOrder}>
                       <AddCircleOutlineIcon />
                     </IconButton>
-                  </Tooltip>
+                  </Tooltip> */}
 
                   <Tooltip placement="top" arrow title="Close Trade">
                     <IconButton color="success" onClick={onCloseTrade}>
@@ -1143,8 +1143,9 @@ const TradeRow = memo(
             <Box
               sx={{
                 width: "100%",
-                display: "flex",
-                justifyContent: "space-between",
+                display: "grid",
+                gridTemplateColumns: "1fr auto",
+                columnGap: "10px",
               }}
             >
               <Box
@@ -1187,8 +1188,9 @@ const TradeRow = memo(
               </Box>
               <Box
                 sx={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr auto",
+                  display: "flex",
+                  alignItems: "center",
+                  flexDirection: "column",
                 }}
               >
                 <Text fontSize="14px">{`created at: ${moment(
@@ -1250,7 +1252,7 @@ const TradeRow = memo(
             </TableCell>
           </StyledTableRow>
         )}
-        {!_.isEmpty(data.orders) && (
+        {/* {!_.isEmpty(data.orders) && (
           <TableRow>
             <TableCell style={{ padding: 0 }} colSpan={13}>
               <Box sx={{ margin: 1 }}>
@@ -1315,7 +1317,7 @@ const TradeRow = memo(
               </Box>
             </TableCell>
           </TableRow>
-        )}
+        )} */}
       </>
     );
   }
@@ -1327,7 +1329,7 @@ export const TradesTable = ({
   onSaveTradingUpdate,
   onCancelTradingUpdate,
   onDeleteTradingUpdate,
-  onAddOrder,
+  // onAddOrder,
   onCloseTrade,
   onDeleteTrade,
   onRemoveNewOrder,
@@ -1412,11 +1414,11 @@ export const TradesTable = ({
                   onSaveTradingUpdate={onSaveTradingUpdate}
                   onCancelTradingUpdate={onCancelTradingUpdate}
                   onDeleteTradingUpdate={onDeleteTradingUpdate}
-                  onAddOrder={() => onAddOrder(trade.id)}
-                  onRemoveNewOrder={onRemoveNewOrder}
-                  onSaveOrder={onSaveOrder}
-                  onCloseOrder={onCloseOrder}
-                  onClickDeleteOrder={onClickDeleteOrder}
+                  // onAddOrder={() => onAddOrder(trade.id)}
+                  // onRemoveNewOrder={onRemoveNewOrder}
+                  // onSaveOrder={onSaveOrder}
+                  // onCloseOrder={onCloseOrder}
+                  // onClickDeleteOrder={onClickDeleteOrder}
                 />
               ))
             ) : (

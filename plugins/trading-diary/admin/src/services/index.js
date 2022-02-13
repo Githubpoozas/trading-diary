@@ -99,20 +99,20 @@ export const deleteTradingUpdate = async (id) => {
   return res;
 };
 
-export const createOrders = async (data) => {
-  const res = await instance.post("/Orders", data);
-  return res;
-};
+// export const createOrders = async (data) => {
+//   const res = await instance.post("/Orders", data);
+//   return res;
+// };
 
-export const deleteOrders = async (id) => {
-  const res = await instance.delete(`/orders/${id}`);
-  return res;
-};
+// export const deleteOrders = async (id) => {
+//   const res = await instance.delete(`/orders/${id}`);
+//   return res;
+// };
 
-export const updateOrders = async (id, data) => {
-  const res = await instance.put(`/orders/${id}`, data);
-  return res;
-};
+// export const updateOrders = async (id, data) => {
+//   const res = await instance.put(`/orders/${id}`, data);
+//   return res;
+// };
 
 export const GET_PENDING_ORDERS = gql`
   query GET_PENDING_ORDERS {
